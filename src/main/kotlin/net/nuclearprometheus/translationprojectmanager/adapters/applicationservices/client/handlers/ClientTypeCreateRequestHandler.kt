@@ -1,0 +1,9 @@
+package net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.handlers
+
+import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.requests.ClientTypeCreateRequest
+import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.responses.ClientTypeCreateResponse
+
+
+interface ClientTypeCreateRequestHandler {
+    fun createClientType(request: ClientTypeCreateRequest): ClientTypeCreateResponse
+}
