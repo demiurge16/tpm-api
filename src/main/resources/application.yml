@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: translation-project-manager-api
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/translation-project-manager
+    username: postgres
+    password: 1qaz@WSX
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: 1qaz@WSX
+    timeout: 60000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  sil-international:
+    client:
+      code-set-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3.tab
+      names-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3_Name_Index.tab
+      macrolanguages-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3-macrolanguages.tab
+      retirements-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3_Retirements.tab
