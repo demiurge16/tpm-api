@@ -1,0 +1,3 @@
+package net.nuclearprometheus.translationprojectmanager.queries.operations
+
+interface Operation
