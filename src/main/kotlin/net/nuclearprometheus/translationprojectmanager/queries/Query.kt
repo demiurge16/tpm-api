@@ -10,6 +10,8 @@ class Query<T : Any>(
 ) {
 
     fun evaluate(entity: T): Boolean {
+        if (operationStack.isEmpty()) return true
+
         val stack = mutableListOf<Boolean>()
         operationStack.forEach { token ->
             when {
