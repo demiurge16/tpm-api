@@ -1,1 +1,1 @@
-rootProject.name = "translation-project-manager"
+rootProject.name = "tpm-api"
