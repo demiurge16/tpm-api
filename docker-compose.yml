@@ -1,22 +1,19 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  app:
-    container_name: app
+  api:
+    container_name: api
     build:
       context: ./
       dockerfile: Dockerfile
+      args:
+        SPRING_PROFILES_ACTIVE: dev
+    links:
+      - db
+      - cache
+      - logstash
     ports:
       - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tpm-api
-      - SPRING_DATASOURCE_USERNAME=tpm-api
-      - SPRING_DATASOURCE_PASSWORD=1qaz@WSX
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - LOGSTASH_HOST=logstash:5000
-      - LOGSTASH_APP_NAME=tpm-api
     volumes:
       - app-data:/app
 
@@ -42,7 +39,7 @@ services:
       - cache-data:/data
 
   elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:7.6.2"
+    image: "docker.elastic.co/elasticsearch/elasticsearch:8.5.3"
     container_name: elasticsearch
     ports:
       - "9200:9200"
@@ -51,6 +48,7 @@ services:
       - discovery.type=single-node
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -60,7 +58,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
 
   kibana:
-    image: "docker.elastic.co/kibana/kibana:7.6.2"
+    image: "docker.elastic.co/kibana/kibana:8.5.3"
     container_name: kibana
     ports:
       - "5601:5601"
@@ -70,11 +68,17 @@ services:
       - elasticsearch
 
   logstash:
-    image: "docker.elastic.co/logstash/logstash:7.6.2"
+    image: "docker.elastic.co/logstash/logstash:8.5.3"
     container_name: logstash
     ports:
       - "5000:5000"
       - "5044:5044"
+      - "9600:9600"
+    environment:
+      - elasticsearch.hosts=http://elasticsearch:9200
+      - app_name=tpm-api
+      - host=localhost
+      - app_port=8080
     volumes:
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:

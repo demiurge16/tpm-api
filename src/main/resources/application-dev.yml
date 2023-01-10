@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://db:5432/tpm-api
+    username: tpm-api
+    password: 1qaz@WSX
+  redis:
+    host: cache
+    port: 6379
+    password: 1qaz@WSX
+    timeout: 60000
+  jpa:
+    hibernate:
+      ddl-auto: update
