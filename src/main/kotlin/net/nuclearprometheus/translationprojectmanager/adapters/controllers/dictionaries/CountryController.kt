@@ -2,6 +2,7 @@ package net.nuclearprometheus.translationprojectmanager.adapters.controllers.dic
 
 import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.dictionaries.CountryApplicationService
 import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.dictionaries.requests.CountryListQuery
+import net.nuclearprometheus.translationprojectmanager.utils.logging.loggerFor
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -10,8 +11,14 @@ import java.util.*
 @RequestMapping("/api/v1/country")
 class CountryController(private val service: CountryApplicationService) {
 
+    private val logger = loggerFor(this::class.java)
+
     @GetMapping("")
-    fun getCountries(query: CountryListQuery) = service.getCountries(query)
+    fun getCountries(query: CountryListQuery) =
+        with(logger) {
+            info("Countries controller, method getCountries")
+            service.getCountries(query)
+        }
 
     @GetMapping("/{code}")
     fun getCountryByCode(@PathVariable(name = "code") code: String) = service.getCountry(code)

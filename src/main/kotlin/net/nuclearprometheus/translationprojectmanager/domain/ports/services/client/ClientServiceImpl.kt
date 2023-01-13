@@ -9,12 +9,13 @@ import net.nuclearprometheus.translationprojectmanager.domain.model.dictionaries
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.dictionaries.CountryRepository
-import java.util.*
+import net.nuclearprometheus.translationprojectmanager.domain.ports.services.logging.Logger
 
 class ClientServiceImpl(
     private val repository: ClientRepository,
     private val clientTypeRepository: ClientTypeRepository,
-    private val countryRespository: CountryRepository
+    private val countryRespository: CountryRepository,
+    private val logger: Logger
 ) : ClientService {
 
     override fun create(

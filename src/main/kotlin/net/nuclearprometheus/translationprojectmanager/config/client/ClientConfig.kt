@@ -1,5 +1,6 @@
 package net.nuclearprometheus.translationprojectmanager.config.client
 
+import net.nuclearprometheus.translationprojectmanager.utils.logging.loggerFor
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.dictionaries.CountryRepository
@@ -14,5 +15,7 @@ class ClientConfig(
     private val clientTypeRepository: ClientTypeRepository,
     private val countryRepository: CountryRepository
 ) {
-    @Bean fun clientService(): ClientService = ClientServiceImpl(clientRepository, clientTypeRepository, countryRepository)
+    private val logger = loggerFor(ClientService::class.java)
+
+    @Bean fun clientService(): ClientService = ClientServiceImpl(clientRepository, clientTypeRepository, countryRepository, logger)
 }

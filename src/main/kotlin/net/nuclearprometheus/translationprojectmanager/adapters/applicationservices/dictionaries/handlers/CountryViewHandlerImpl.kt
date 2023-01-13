@@ -4,19 +4,19 @@ import net.nuclearprometheus.translationprojectmanager.adapters.applicationservi
 import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.dictionaries.requests.CountryListQuery
 import net.nuclearprometheus.translationprojectmanager.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.translationprojectmanager.domain.ports.repositories.dictionaries.CountryRepository
-import org.slf4j.LoggerFactory
+import net.nuclearprometheus.translationprojectmanager.utils.logging.loggerFor
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
 class CountryViewHandlerImpl(private val repository: CountryRepository) : CountryViewHandler {
 
-    private val logger = LoggerFactory.getLogger(CountryViewHandlerImpl::class.java)
+    private val logger = loggerFor(this::class.java)
 
     @Cacheable("countries-cache")
     override fun getCountries(query: CountryListQuery) =
         with(logger) {
-            info("Getting countries")
+            info("Country view handler, no cache, method getCountries")
             info("Query: $query")
 
             repository.getAll()
