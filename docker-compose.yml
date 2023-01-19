@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  api:
-    container_name: api
+  application:
+    container_name: application
     build:
-      context: ./
-      dockerfile: Dockerfile
+      context: application-server
+      dockerfile: application-server/Dockerfile
       args:
         SPRING_PROFILES_ACTIVE: dev
     links:
@@ -15,7 +15,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - app-data:/app
+      - application-data:/application
 
   db:
     image: "postgres:alpine"
@@ -85,7 +85,7 @@ services:
       - elasticsearch
 
 volumes:
-  app-data:
+  application-data:
   db-data:
   cache-data:
   elasticsearch-data:

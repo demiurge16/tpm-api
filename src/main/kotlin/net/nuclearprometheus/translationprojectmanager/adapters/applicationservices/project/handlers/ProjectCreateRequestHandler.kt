@@ -1,8 +1,0 @@
-package net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.project.handlers
-
-import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.project.requests.ProjectCreateRequest
-import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.project.responses.ProjectCreateResponse
-
-interface ProjectCreateRequestHandler {
-    fun createProject(projectCreate: ProjectCreateRequest): ProjectCreateResponse
-}

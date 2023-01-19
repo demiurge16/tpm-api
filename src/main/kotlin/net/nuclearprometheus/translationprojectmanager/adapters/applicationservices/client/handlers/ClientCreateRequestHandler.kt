@@ -1,8 +1,0 @@
-package net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.handlers
-
-import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.requests.ClientCreateRequest
-import net.nuclearprometheus.translationprojectmanager.adapters.applicationservices.client.responses.ClientCreateResponse
-
-interface ClientCreateRequestHandler {
-    fun create(request: ClientCreateRequest): ClientCreateResponse
-}
