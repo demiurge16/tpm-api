@@ -1,4 +1,4 @@
-package net.nuclearprometheus.translationprojectmanager
+package net.nuclearprometheus.tpm.applicationserver
 
 import net.nuclearprometheus.tpm.applicationserver.queries.*
 import org.junit.jupiter.api.Test

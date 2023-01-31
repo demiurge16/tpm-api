@@ -13,6 +13,7 @@ class CorrelationIdInterceptor : HandlerInterceptor {
 
     private val correlationIdHeader = "X-Correlation-ID"
     private val correlationIdKey = ThreadContextKey.CORRELATION_ID.key
+
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val correlationId = request.getHeader(correlationIdHeader) ?: LoggingContext.newCorrelationId()
         ThreadContext.put(correlationIdKey, correlationId)

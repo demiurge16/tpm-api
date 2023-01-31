@@ -7,7 +7,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/client-type")
-class ClientTypeController(private val service: net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientTypeApplicationService) {
+class ClientTypeController(private val service: ClientTypeApplicationService) {
 
     @GetMapping("")
     fun getClientTypes() = service.getClientTypes()

@@ -4,8 +4,8 @@ services:
   application:
     container_name: application
     build:
-      context: application-server
-      dockerfile: application-server/Dockerfile
+      context: .
+      dockerfile: ./Dockerfile
       args:
         SPRING_PROFILES_ACTIVE: dev
     links:

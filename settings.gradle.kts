@@ -1,1 +1,1 @@
-rootProject.name = "application-server"
+rootProject.name = "tpm-api"
