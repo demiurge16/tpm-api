@@ -6,5 +6,10 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 
 fun ISO6393Language.toDomain() = Language(
     code = LanguageCode(id),
+    iso6392B = part2B,
+    iso6392T = part2T,
+    iso6391 = part1,
+    scope = scope.toDomain(),
+    type = languageType.toDomain(),
     name = referenceName,
 )
