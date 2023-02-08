@@ -6,6 +6,6 @@ import java.util.*
 interface ClientRepository {
     fun getAll(): List<Client>
     fun get(id: UUID): Client?
-    fun create(clientType: Client): Client
-    fun update(clientType: Client): Client
+    fun create(client: Client): Client
+    fun update(client: Client): Client
 }

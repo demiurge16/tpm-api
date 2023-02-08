@@ -14,7 +14,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair
 import java.time.Duration
 
-
 @Configuration
 class RedisCacheConfig {
 
@@ -29,6 +28,10 @@ class RedisCacheConfig {
         }
 
         properties.languages.let { (ttl, name) ->
+            builder.defaultFor(name, ttl)
+        }
+
+        properties.currencies.let { (ttl, name) ->
             builder.defaultFor(name, ttl)
         }
     }

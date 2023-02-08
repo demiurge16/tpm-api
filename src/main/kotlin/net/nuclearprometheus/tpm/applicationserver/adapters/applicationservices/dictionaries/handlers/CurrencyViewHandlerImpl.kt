@@ -1,16 +1,47 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.handlers
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
 class CurrencyViewHandlerImpl(private val repository: CurrencyRepository) : CurrencyViewHandler {
 
-    override fun getAll() = repository.getAll().map { it.toView() }
-    override fun getByCode(code: String) = repository.getByCode(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
-    override fun getExchangeRates(code: String, amount: BigDecimal) = repository.getExchangeRates(CurrencyCode(code), amount).toView()
+    private val logger = loggerFor(this::class.java)
+
+    @Cacheable("currencies-cache")
+    override fun getAll(query: FilteredRequest<Currency>) =
+        with(logger) {
+            info("Currency view handler, method getAll")
+            info("Query: $query")
+
+            repository.getAll().applyQuery(query).map { it.toView() }
+        }
+
+    @Cacheable("currencies-cache")
+    override fun getByCode(code: String) =
+        with(logger) {
+            info("Currency view handler, method getByCode")
+            info("Code: $code")
+
+            repository.getByCode(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
+        }
+
+    @Cacheable("currencies-cache")
+    override fun getExchangeRates(code: String, amount: BigDecimal) =
+        with(logger) {
+            info("Currency view handler, method getExchangeRates")
+            info("Code: $code")
+            info("Amount: $amount")
+
+            repository.getExchangeRates(CurrencyCode(code), amount).toView()
+        }
 }

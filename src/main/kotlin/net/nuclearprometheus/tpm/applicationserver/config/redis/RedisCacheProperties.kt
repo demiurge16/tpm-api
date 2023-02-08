@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 class RedisCacheProperties(
     val countries: CacheProperties = CacheProperties(name = "countries-cache"),
     val languages: CacheProperties = CacheProperties(name = "languages-cache"),
+    val currencies: CacheProperties = CacheProperties(name = "currencies-cache")
 ) {
     data class CacheProperties(
         var ttl: Long = 86400,

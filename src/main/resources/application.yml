@@ -35,3 +35,6 @@ app:
     languages:
       name: languages-cache
       ttl: 86400
+    currencies:
+      name: currencies-cache
+      ttl: 86400
