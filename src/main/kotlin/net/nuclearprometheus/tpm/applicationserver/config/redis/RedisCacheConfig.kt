@@ -34,6 +34,14 @@ class RedisCacheConfig {
         properties.currencies.let { (ttl, name) ->
             builder.defaultFor(name, ttl)
         }
+
+        properties.clientTypes.let { (ttl, name) ->
+            builder.defaultFor(name, ttl)
+        }
+
+        properties.clients.let { (ttl, name) ->
+            builder.defaultFor(name, ttl)
+        }
     }
 
     private val kotlinModule = KotlinModule.Builder()

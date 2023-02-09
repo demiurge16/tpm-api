@@ -38,3 +38,9 @@ app:
     currencies:
       name: currencies-cache
       ttl: 86400
+    client-types:
+      name: client-types-cache
+      ttl: 86400
+    clients:
+      name: clients-cache
+      ttl: 86400
