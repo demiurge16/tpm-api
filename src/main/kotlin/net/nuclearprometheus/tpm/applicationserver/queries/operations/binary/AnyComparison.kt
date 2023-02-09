@@ -12,7 +12,7 @@ class AnyComparison<TEntity : Any>(override val field: String, override val valu
                 fieldValue is Collection<*> -> fieldValue.map { it.toString() }
                     .intersect(value.map { it.removeSurrounding("\"") }.toSet())
                     .isNotEmpty()
-                else -> throw IllegalArgumentException("Operation <any> is not supported for field type: ${fieldValue::class}")
+                else -> fieldValue.toString() in value
             }
         } ?: false
 

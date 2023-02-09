@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.client
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientTypeApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.*
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -9,7 +10,7 @@ import java.util.UUID
 @RequestMapping("/api/v1/client-type")
 class ClientTypeController(private val service: ClientTypeApplicationService) {
 
-    private val logger = org.slf4j.LoggerFactory.getLogger(this::class.java)
+    private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
     fun getClientTypes(query: ClientTypeListRequest) =
