@@ -4,11 +4,16 @@ class AnyComparison<TEntity : Any>(override val field: String, override val valu
     : BinaryComparisonOperation<TEntity, List<String>> {
 
     override fun evaluate(entity: TEntity) =
-        when (val fieldValue = getFieldValue(entity)) {
-            is String -> fieldValue in value
-            is Collection<*> -> fieldValue.map { it.toString() }
-                .intersect(value.map { it.removeSurrounding("\"") }.toSet())
-                .isNotEmpty()
-            else -> throw IllegalArgumentException("Operation <any> is not supported for field type: ${fieldValue!!::class}")
-        }
+        getFieldValue(entity)?.let { fieldValue ->
+            when {
+                fieldValue is String -> fieldValue in value
+                fieldValue::class.java.isEnum -> value.map { it.removeSurrounding("\"") }.toSet()
+                    .contains(fieldValue.toString())
+                fieldValue is Collection<*> -> fieldValue.map { it.toString() }
+                    .intersect(value.map { it.removeSurrounding("\"") }.toSet())
+                    .isNotEmpty()
+                else -> throw IllegalArgumentException("Operation <any> is not supported for field type: ${fieldValue::class}")
+            }
+        } ?: false
+
 }

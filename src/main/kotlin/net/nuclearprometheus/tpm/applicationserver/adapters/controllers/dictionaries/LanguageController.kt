@@ -34,4 +34,18 @@ class LanguageController(private val service: LanguageApplicationService) {
             info("Language controller, method getByName")
             service.getLanguageByNameLike(name)
         }
+
+    @GetMapping("/refdata/scopes")
+    fun getScopes() =
+        with(logger) {
+            info("Language controller, method getScopes")
+            service.getScopes()
+        }
+
+    @GetMapping("/refdata/types")
+    fun getTypes() =
+        with(logger) {
+            info("Language controller, method getTypes")
+            service.getTypes()
+        }
 }
