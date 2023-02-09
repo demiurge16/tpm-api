@@ -13,7 +13,7 @@ class ClientTypeActiveStatusRequestHandlerImpl(private val service: ClientTypeSe
 
     private val logger = loggerFor(this::class.java)
 
-    @CacheEvict(value = ["client-types"], allEntries = true)
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
     override fun activate(id: UUID) =
         with(logger) {
             info("ClientType active status request handler, method activate")
@@ -22,7 +22,7 @@ class ClientTypeActiveStatusRequestHandlerImpl(private val service: ClientTypeSe
             service.activate(ClientTypeId(id)).toActiveStatusResponse()
         }
 
-    @CacheEvict(value = ["client-types"], allEntries = true)
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
     override fun deactivate(id: UUID) =
         with(logger) {
             info("ClientType active status request handler, method deactivate")

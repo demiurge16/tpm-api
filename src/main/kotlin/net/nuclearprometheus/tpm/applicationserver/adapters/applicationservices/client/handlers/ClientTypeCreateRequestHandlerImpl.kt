@@ -12,7 +12,7 @@ class ClientTypeCreateRequestHandlerImpl(private val service: ClientTypeService)
 
     private val logger = loggerFor(this::class.java)
 
-    @CacheEvict(value = ["client-types"], allEntries = true)
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
     override fun createClientType(request: ClientTypeCreateRequest) =
         with(logger) {
             info("ClientType create request handler, method createClientType")

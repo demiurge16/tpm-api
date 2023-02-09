@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class ClientTypeUpdateRequestHandlerImpl(private val service: ClientTypeService) : ClientTypeUpdateRequestHandler {
+class ClientTypeUpdateRequestHandlerImpl(
+    private val service: ClientTypeService
+) : ClientTypeUpdateRequestHandler {
 
     private val logger = loggerFor(this::class.java)
 
-    @CacheEvict(value = ["client-types"], allEntries = true)
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
     override fun updateClientType(id: UUID, request: ClientTypeUpdateRequest) =
         with(logger) {
             info("ClientType update request handler, method updateClientType")
