@@ -1,0 +1,14 @@
+CREATE USER "application" WITH PASSWORD '1qaz@WSX';
+CREATE USER "keycloak" WITH PASSWORD '1qaz@WSX';
+
+CREATE DATABASE "tpm";
+GRANT CONNECT, TEMPORARY ON DATABASE "tpm" TO "application";
+GRANT CONNECT, TEMPORARY ON DATABASE "tpm" TO "keycloak";
+
+\c tpm
+
+CREATE SCHEMA IF NOT EXISTS "application";
+GRANT ALL PRIVILEGES ON SCHEMA "application" TO "application";
+
+CREATE SCHEMA IF NOT EXISTS "keycloak";
+GRANT ALL PRIVILEGES ON SCHEMA "keycloak" TO "keycloak";

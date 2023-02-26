@@ -1,32 +1,33 @@
 package net.nuclearprometheus.tpm.applicationserver.config.security
 
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.web.SecurityFilterChain
+
 
 @Configuration
-class SecurityConfiguration {
-
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+class SecurityConfiguration(
+    private val keycloakLogoutHandler: KeycloakLogoutHandler
+) {
     @Bean
-    fun httpSecurityConfig() = WebSecurityCustomizer {
-        it.ignoring().antMatchers("/api/v1/**", "api/v1**")
-    }
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
-    @Bean
-    fun corsFilter(): CorsFilter {
-        val config = CorsConfiguration()
-        config.let {
-            it.addAllowedOrigin("*")
-            it.addAllowedHeader("*")
-            it.addAllowedMethod("*")
-        }
+        http.cors().and().csrf().disable()
+            .authorizeHttpRequests { it.anyRequest().authenticated() }
+            .oauth2Login()
+            .and()
+            .logout()
+            .addLogoutHandler(keycloakLogoutHandler)
+            .logoutSuccessUrl("/")
+            .and()
+            .oauth2ResourceServer { it.jwt() }
 
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", config)
-
-        return CorsFilter(source)
+        return http.build()
     }
 }

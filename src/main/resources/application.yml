@@ -6,10 +6,31 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: application
+            client-secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/tpm
+            user-info-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
+            authorization-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/auth
+            token-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/token
+            user-name-attribute: application
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/tpm
+          jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/tpm-api
-    username: tpm-api
+    url: jdbc:postgresql://localhost:5432/tpm
+    username: application
     password: 1qaz@WSX
   redis:
     host: localhost
@@ -20,6 +41,9 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: application
 
 app:
   sil-international:
@@ -44,3 +68,6 @@ app:
     clients:
       name: clients-cache
       ttl: 86400
+
+server:
+  port: 8080

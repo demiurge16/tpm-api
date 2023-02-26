@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.CountryApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CountryListRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -14,6 +15,7 @@ class CountryController(private val service: CountryApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountries(query: CountryListRequest) =
         with(logger) {
             info("Countries controller, method getCountries")
@@ -21,6 +23,7 @@ class CountryController(private val service: CountryApplicationService) {
         }
 
     @GetMapping("/{code}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountryByCode(@PathVariable(name = "code") code: String) =
         with(logger) {
             info("Countries controller, method getCountryByCode")
@@ -28,6 +31,7 @@ class CountryController(private val service: CountryApplicationService) {
         }
 
     @GetMapping("/name/{name}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountriesByNameLike(@PathVariable(name = "name") name: String) =
         with(logger) {
             info("Countries controller, method getCountriesByNameLike")

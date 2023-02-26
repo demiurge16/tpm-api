@@ -1,54 +1,99 @@
 version: "3.8"
 
 services:
+  reverse-proxy:
+    container_name: reverse-proxy
+    build:
+      context: ./infrastructure/reverse-proxy
+      dockerfile: ./reverse-proxy.Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - tpm-network
+
   application:
     container_name: application
+    hostname: api.tpm.localhost
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
         SPRING_PROFILES_ACTIVE: dev
-    links:
+    expose:
+      - "8080"
+    networks:
+      - tpm-network
+    volumes:
+      - application-data:/application
+    depends_on:
       - db
       - cache
       - logstash
-    ports:
-      - "8080:8080"
-    volumes:
-      - application-data:/application
+
+  auth-server:
+    container_name: auth-server
+    hostname: auth.tpm.localhost
+    build:
+      context: ./infrastructure/auth-server
+      dockerfile: ./keycloak.Dockerfile
+    expose:
+      - "80"
+      - "443"
+    networks:
+      - tpm-network
+    depends_on:
+      - db
+      - cache
+      - logstash
 
   db:
     image: "postgres:alpine"
     container_name: db
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
+    networks:
+      - tpm-network
     environment:
-      POSTGRES_USER: tpm-api
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: 1qaz@WSX
-      POSTGRES_DB: tpm-api
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   cache:
     image: "redis/redis-stack"
     container_name: cache
-    ports:
-      - "6379:6379"
-      - "8001:8001"
+    expose:
+      - "6379"
+      - "8001"
+    networks:
+      - tpm-network
     volumes:
       - cache-data:/data
+
+  pgadmin:
+    image: "dpage/pgadmin4"
+    container_name: pgadmin
+    expose:
+      - "80"
+    networks:
+      - tpm-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@tpm.nuclear-prometheus.net"
+      PGADMIN_DEFAULT_PASSWORD: "1qaz@WSX"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
   elasticsearch:
     image: "docker.elastic.co/elasticsearch/elasticsearch:8.5.3"
     container_name: elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
+    expose:
+      - "9200"
+      - "9300"
+    networks:
+      - tpm-network
     environment:
-      - discovery.type=single-node
-      - cluster.name=elasticsearch
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -56,24 +101,29 @@ services:
         hard: -1
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+      - ./infrastructure/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 
   kibana:
     image: "docker.elastic.co/kibana/kibana:8.5.3"
     container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    expose:
+      - "5601"
+    networks:
+      - tpm-network
+    volumes:
+      - ./infrastructure/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     depends_on:
       - elasticsearch
 
   logstash:
     image: "docker.elastic.co/logstash/logstash:8.5.3"
     container_name: logstash
-    ports:
-      - "5000:5000"
-      - "5044:5044"
-      - "9600:9600"
+    expose:
+      - "5000"
+      - "5044"
+      - "9600"
+    networks:
+      - tpm-network
     environment:
       - elasticsearch.hosts=http://elasticsearch:9200
       - app_name=tpm-api
@@ -87,5 +137,11 @@ services:
 volumes:
   application-data:
   db-data:
+  pgadmin-data:
   cache-data:
   elasticsearch-data:
+  debug-data:
+
+networks:
+  tpm-network:
+    driver: bridge

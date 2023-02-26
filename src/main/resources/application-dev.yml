@@ -1,8 +1,23 @@
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://auth.tpm.localhost/realms/tpm
+            user-info-uri: http://auth.tpm.localhost/realms/tpm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://auth.tpm.localhost/realms/tpm/protocol/openid-connect/certs
+            authorization-uri: http://auth.tpm.localhost/realms/tpm/protocol/openid-connect/auth
+            token-uri: http://auth.tpm.localhost/realms/tpm/protocol/openid-connect/token
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.tpm.localhost/realms/tpm
+          jwk-set-uri: http://auth.tpm.localhost/realms/tpm/protocol/openid-connect/certs
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://db:5432/tpm-api
-    username: tpm-api
+    url: jdbc:postgresql://db:5432/tpm
+    username: application
     password: 1qaz@WSX
   redis:
     host: cache
@@ -12,6 +27,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
-server:
-  port: 8080
+springfox:
+  documentation:
+    swagger:
+      v2:
+        host: api.tpm.localhost
