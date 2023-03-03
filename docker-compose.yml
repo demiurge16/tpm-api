@@ -59,7 +59,7 @@ services:
       POSTGRES_PASSWORD: 1qaz@WSX
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   cache:
     image: "redis/redis-stack"
@@ -85,62 +85,269 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
-  elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:8.5.3"
-    container_name: elasticsearch
-    expose:
-      - "9200"
-      - "9300"
-    networks:
-      - tpm-network
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-      - ./infrastructure/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  # Logging and monitoring services
 
-  kibana:
-    image: "docker.elastic.co/kibana/kibana:8.5.3"
-    container_name: kibana
-    expose:
-      - "5601"
+  # The 'setup' service runs a one-off script which initializes users inside
+  # Elasticsearch — such as 'logstash_internal' and 'kibana_system' — with the
+  # values of the passwords defined in the '.env' file.
+  #
+  # This task is only performed during the *initial* startup of the stack. On all
+  # subsequent runs, the service simply returns immediately, without performing
+  # any modification to existing users.
+  monitoring-setup:
+    container_name: monitoring-setup
+    build:
+      context: ./infrastructure/monitoring/setup
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    volumes:
+      - ./infrastructure/monitoring/setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./infrastructure/monitoring/setup/lib.sh:/lib.sh:ro,Z
+      - ./infrastructure/monitoring/setup/roles:/roles:ro,Z
+      - monitoring-setup-data:/state:Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      METRICBEAT_INTERNAL_PASSWORD: ${METRICBEAT_INTERNAL_PASSWORD:-}
+      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
+      HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
+      MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
     networks:
       - tpm-network
-    volumes:
-      - ./infrastructure/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     depends_on:
       - elasticsearch
 
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: ./infrastructure/monitoring/elasticsearch
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./infrastructure/monitoring/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch-data:/usr/share/elasticsearch/data:Z
+    expose:
+      - "9200"
+      - "9300"
+    environment:
+      node.name: elasticsearch
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      discovery.type: single-node
+    networks:
+      - tpm-network
+    restart: unless-stopped
+
   logstash:
-    image: "docker.elastic.co/logstash/logstash:8.5.3"
     container_name: logstash
+    build:
+      context: ./infrastructure/monitoring/logstash
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./infrastructure/monitoring/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./infrastructure/monitoring/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
     expose:
       - "5000"
       - "5044"
       - "9600"
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
     networks:
       - tpm-network
-    environment:
-      - elasticsearch.hosts=http://elasticsearch:9200
-      - app_name=tpm-api
-      - host=localhost
-      - app_port=8080
-    volumes:
-      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
       - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    container_name: kibana
+    build:
+      context: ./infrastructure/monitoring/kibana
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./infrastructure/monitoring/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    expose:
+      - "5601"
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  enterprise-search:
+    container_name: enterprise-search
+    build:
+      context: ./infrastructure/monitoring/enterprise-search
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./infrastructure/monitoring/enterprise-search/config/enterprise-search.yml:/usr/share/enterprise-search/config/enterprise-search.yml:ro,Z
+    environment:
+      JAVA_OPTS: -Xms2g -Xmx2g
+      ENT_SEARCH_DEFAULT_PASSWORD: 'changeme'
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    expose:
+      - "3002"
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    container_name: filebeat
+    build:
+      context: ./infrastructure/monitoring/filebeat
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    user: root
+    command:
+      - -e
+      - --strict.perms=false
+    volumes:
+      - ./infrastructure/monitoring/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro,Z
+      - type: bind
+        source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    environment:
+      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+
+  apm-server:
+    container_name: apm-server
+    build:
+      context: ./infrastructure/monitoring/fleet
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - apm-server-data:/usr/share/elastic-agent/state:Z
+    environment:
+      FLEET_ENROLL: '1'
+      FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
+      FLEET_INSECURE: '1'
+      FLEET_URL: http://fleet-server:8220
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+    expose:
+      - "8200"
+    hostname: apm-server
+    restart: on-failure
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+      - kibana
+      - fleet-server
+
+  fleet-server:
+    container_name: fleet-server
+    build:
+      context: ./infrastructure/monitoring/fleet
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - fleet-server-data:/usr/share/elastic-agent/state:Z
+    environment:
+      FLEET_SERVER_ENABLE: '1'
+      FLEET_SERVER_INSECURE_HTTP: '1'
+      FLEET_SERVER_HOST: 0.0.0.0
+      FLEET_SERVER_POLICY_ID: fleet-server-policy
+      KIBANA_FLEET_SETUP: '1'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
+    expose:
+      - "8220"
+    hostname: fleet-server
+    restart: on-failure
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+      - kibana
+
+  heartbeat:
+    container_name: heartbeat
+    build:
+      context: ./infrastructure/monitoring/heartbeat
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    command:
+      - -e
+      - --strict.perms=false
+    volumes:
+      - ./infrastructure/monitoring/heartbeat/config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro,Z
+    environment:
+      HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+
+  metricbeat:
+    container_name: metricbeat
+    build:
+      context: ./infrastructure/monitoring/metricbeat
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    user: root
+    command:
+      - -e
+      - --strict.perms=false
+      - --system.hostfs=/hostfs
+    volumes:
+      - ./infrastructure/monitoring/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro,Z
+      - type: bind
+        source: /
+        target: /hostfs
+        read_only: true
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /hostfs/sys/fs/cgroup
+        read_only: true
+      - type: bind
+        source: /proc
+        target: /hostfs/proc
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    environment:
+      METRICBEAT_INTERNAL_PASSWORD: ${METRICBEAT_INTERNAL_PASSWORD:-}
+      MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
+      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
+    networks:
+      - tpm-network
+    depends_on:
+      - elasticsearch
+      - kibana
+
 
 volumes:
   application-data:
   db-data:
   pgadmin-data:
   cache-data:
+  monitoring-setup-data:
   elasticsearch-data:
-  debug-data:
+  apm-server-data:
+  fleet-server-data:
 
 networks:
   tpm-network:

@@ -1,7 +1,0 @@
-discovery.type: single-node
-
-cluster.name: elasticsearch
-
-bootstrap.memory_lock: true
-
-xpack.security.enabled: true

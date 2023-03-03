@@ -1,5 +1,0 @@
-metricbeat.config.modules:
-  # Mounted `metricbeat.yml` contains `path: ${path.config}/modules.d/*.yml`
-  # So this should be enough:
-  path: ${path.config}/modules.d/*.yml
-  reload.enabled: false
