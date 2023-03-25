@@ -32,11 +32,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/tpm
     username: application
     password: 1qaz@WSX
-  redis:
-    host: localhost
-    port: 6379
-    password: 1qaz@WSX
-    timeout: 60000
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1qaz@WSX
+      timeout: 60000
   jpa:
     hibernate:
       ddl-auto: update
@@ -44,6 +45,9 @@ spring:
     properties:
       hibernate:
         default_schema: application
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+    default-schema: application
 
 app:
   sil-international:
@@ -71,3 +75,23 @@ app:
 
 server:
   port: 8080
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    config-url: /v3/api-docs/swagger-config
+    disable-swagger-default-url: true
+  packages-to-scan: net.nuclearprometheus.tpm.applicationserver
+
+elastic:
+  apm:
+    enabled: true
+    server-url: http://apm-server:8200
+    service-name: tpm-application-server
+    secret-token: 8a5f8174a5cf7d1a9448c848c8dbfe59047264b1422e274e49723367a0cb8a16
+    application-packages: net.nuclearprometheus.tpm.applicationserver
+    log-level: INFO

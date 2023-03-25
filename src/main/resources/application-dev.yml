@@ -19,16 +19,12 @@ spring:
     url: jdbc:postgresql://db:5432/tpm
     username: application
     password: 1qaz@WSX
-  redis:
-    host: cache
-    port: 6379
-    password: 1qaz@WSX
-    timeout: 60000
+  data:
+    redis:
+      host: cache
+      port: 6379
+      password: 1qaz@WSX
+      timeout: 60000
   jpa:
     hibernate:
       ddl-auto: update
-springfox:
-  documentation:
-    swagger:
-      v2:
-        host: api.tpm.localhost

@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.database.client.entities
 
 import java.util.UUID
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "client")

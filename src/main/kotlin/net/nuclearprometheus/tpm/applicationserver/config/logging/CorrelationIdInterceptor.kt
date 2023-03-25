@@ -5,8 +5,8 @@ import net.nuclearprometheus.tpm.applicationserver.logging.ThreadContextKey
 import org.apache.logging.log4j.ThreadContext
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 @Component
 class CorrelationIdInterceptor : HandlerInterceptor {

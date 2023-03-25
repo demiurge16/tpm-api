@@ -17,6 +17,6 @@ class ClientRepositoryImpl(
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(countryRepository) }
     override fun get(id: UUID): Client? = jpaRepository.findById(id).map { it.toDomain(countryRepository) }.orElse(null)
-    override fun create(clientType: Client) = jpaRepository.save(clientType.toDatabaseModel()).toDomain(countryRepository)
-    override fun update(clientType: Client) = jpaRepository.save(clientType.toDatabaseModel()).toDomain(countryRepository)
+    override fun create(client: Client) = jpaRepository.save(client.toDatabaseModel()).toDomain(countryRepository)
+    override fun update(client: Client) = jpaRepository.save(client.toDatabaseModel()).toDomain(countryRepository)
 }

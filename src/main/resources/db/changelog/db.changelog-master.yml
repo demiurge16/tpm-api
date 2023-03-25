@@ -1,0 +1,144 @@
+databaseChangeLog:
+- changeSet:
+    id: 1679787879792-1
+    author: olegs (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: client_pkey
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: active
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: address
+            type: VARCHAR(512)
+        - column:
+            constraints:
+              nullable: false
+            name: city
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: country_code
+            type: VARCHAR(16)
+        - column:
+            constraints:
+              nullable: false
+            name: email
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: notes
+            type: VARCHAR(512)
+        - column:
+            constraints:
+              nullable: false
+            name: phone
+            type: VARCHAR(64)
+        - column:
+            constraints:
+              nullable: false
+            name: state
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: vat
+            type: VARCHAR(64)
+        - column:
+            constraints:
+              nullable: false
+            name: zip
+            type: VARCHAR(32)
+        - column:
+            name: type_id
+            type: UUID
+        tableName: client
+- changeSet:
+    id: 1679787879792-2
+    author: olegs (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: client_type_pkey
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: active
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: corporate
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: description
+            type: VARCHAR(512)
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        tableName: client_type
+- changeSet:
+    id: 1679787879792-3
+    author: olegs (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: type_id
+        baseTableName: client
+        constraintName: fk4sefn0aoafa3x44anx5w9xfbo
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: client_type
+        validate: true
+
+databaseChangeLog:
+- changeSet:
+    id: 1679788239018-1
+    author: olegs (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: client
+        constraintName: fk4sefn0aoafa3x44anx5w9xfbo
+- changeSet:
+    id: 1679788239018-2
+    author: olegs (generated)
+    changes:
+    - dropTable:
+        tableName: client
+- changeSet:
+    id: 1679788239018-3
+    author: olegs (generated)
+    changes:
+    - dropTable:
+        tableName: client_type
+
