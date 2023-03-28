@@ -1,24 +1,35 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.note
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.note.Note
 import net.nuclearprometheus.tpm.applicationserver.domain.model.note.NoteId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.note.NoteRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 
-class NoteServiceImpl : NoteService {
-    override fun getAll(): List<Note> {
-        TODO("Not yet implemented")
-    }
+class NoteServiceImpl(
+    private val noteRepository: NoteRepository,
+    private val teamMemberRepository: TeamMemberRepository,
+    private val projectRepository: ProjectRepository
+) : NoteService {
 
-    override fun get(id: NoteId): Note? {
-        TODO("Not yet implemented")
-    }
+    override fun create(content: String, authorId: TeamMemberId, projectId: ProjectId): Note {
+        teamMemberRepository.get(authorId) ?: throw NotFoundException("Author does not exist")
+        projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
 
-    override fun create(content: String, authorId: UserId, projectId: ProjectId): Note {
-        TODO("Not yet implemented")
+        val note = Note(
+            content = content,
+            authorId = authorId,
+            projectId = projectId
+        )
+
+        return noteRepository.create(note)
     }
 
     override fun delete(id: NoteId) {
-        TODO("Not yet implemented")
+        noteRepository.delete(id)
     }
 }
