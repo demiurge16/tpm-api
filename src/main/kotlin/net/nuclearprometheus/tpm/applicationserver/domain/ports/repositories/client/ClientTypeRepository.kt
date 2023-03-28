@@ -2,11 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.cl
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTypeId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.BaseRepository
 import java.util.UUID
 
-interface ClientTypeRepository {
-    fun getAll(): List<ClientType>
-    fun get(id: ClientTypeId): ClientType?
-    fun create(clientType: ClientType): ClientType
-    fun update(clientType: ClientType): ClientType
-}
+interface ClientTypeRepository : BaseRepository<ClientType, ClientTypeId>
