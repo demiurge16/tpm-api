@@ -1,31 +1,45 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.FileId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 
-class FileServiceImpl : FileService {
-    override fun getAll(): List<File> {
-        TODO("Not yet implemented")
-    }
-
-    override fun get(id: FileId): File? {
-        TODO("Not yet implemented")
-    }
+class FileServiceImpl(
+    private val fileRepository: FileRepository,
+    private val teamMemberRepository: TeamMemberRepository,
+    private val projectRepository: ProjectRepository,
+) : FileService {
 
     override fun create(
         name: String,
         size: Long,
         type: String,
-        uploaderId: UserId,
+        uploaderId: TeamMemberId,
         projectId: ProjectId,
         location: String
     ): File {
-        TODO("Not yet implemented")
+        teamMemberRepository.get(uploaderId) ?: throw NotFoundException("Team member with id $uploaderId does not exist")
+        projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId does not exist")
+
+        val file = File(
+            name = name,
+            size = size,
+            type = type,
+            uploaderId = uploaderId,
+            projectId = projectId,
+            location = location
+        )
+
+        return fileRepository.create(file)
     }
 
     override fun delete(id: FileId) {
-        TODO("Not yet implemented")
+        fileRepository.delete(id)
     }
 }
