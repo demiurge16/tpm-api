@@ -5,6 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Acc
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import java.math.BigDecimal

@@ -38,17 +38,17 @@ interface TaskService {
         amount: Int,
         budget: BigDecimal,
         currency: CurrencyCode,
-    )
+    ): Task
 
-    fun moveStart(id: TaskId, expectedStart: ZonedDateTime)
-    fun moveDeadline(id: TaskId, deadline: ZonedDateTime)
-    fun assignTeamMember(id: TaskId, teamMemberId: TeamMemberId)
-    fun unassignTeamMember(id: TaskId)
-    fun start(id: TaskId)
-    fun complete(id: TaskId)
-    fun requestRevisions(id: TaskId)
-    fun completeRevisions(id: TaskId)
-    fun deliver(id: TaskId)
-    fun cancel(id: TaskId)
-    fun reopen(id: TaskId)
+    fun moveStart(id: TaskId, expectedStart: ZonedDateTime): Task
+    fun moveDeadline(id: TaskId, deadline: ZonedDateTime): Task
+    fun assignTeamMember(id: TaskId, teamMemberId: TeamMemberId): Task
+    fun unassignTeamMember(id: TaskId): Task
+    fun start(id: TaskId): Task
+    fun complete(id: TaskId): Task
+    fun requestRevisions(id: TaskId): Task
+    fun completeRevisions(id: TaskId): Task
+    fun deliver(id: TaskId): Task
+    fun cancel(id: TaskId): Task
+    fun reopen(id: TaskId): Task
 }
