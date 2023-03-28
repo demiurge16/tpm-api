@@ -64,7 +64,7 @@ class ClientServiceImpl(
         notes: String,
         clientTypeId: ClientTypeId
     ): Client {
-        val client = repository.get(id.value) ?: throw NotFoundException("Client not found")
+        val client = repository.get(id) ?: throw NotFoundException("Client not found")
         val clientType = clientTypeRepository.get(clientTypeId) ?: throw NotFoundException("Client type not found")
         val country = countryRespository.getByCode(countryCode.value) ?: UnknownCountry(countryCode)
 
@@ -74,14 +74,14 @@ class ClientServiceImpl(
     }
 
     override fun activate(id: ClientId): Client {
-        val client = repository.get(id.value) ?: throw NotFoundException("Client not found")
+        val client = repository.get(id) ?: throw NotFoundException("Client not found")
         client.activate()
 
         return repository.update(client)
     }
 
     override fun deactivate(id: ClientId): Client {
-        val client = repository.get(id.value) ?: throw NotFoundException("Client not found")
+        val client = repository.get(id) ?: throw NotFoundException("Client not found")
         client.deactivate()
 
         return repository.update(client)

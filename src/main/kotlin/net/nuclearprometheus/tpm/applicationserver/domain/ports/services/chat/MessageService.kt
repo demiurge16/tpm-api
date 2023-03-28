@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 interface MessageService {
     fun create(
         chatId: ChatId,
-        sender: TeamMemberId,
+        author: TeamMemberId,
         content: String
     )
 }
