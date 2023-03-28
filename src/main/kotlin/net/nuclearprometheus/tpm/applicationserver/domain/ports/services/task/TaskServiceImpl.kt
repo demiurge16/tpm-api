@@ -9,13 +9,6 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 class TaskServiceImpl : TaskService {
-    override fun getAll(): List<Task> {
-        TODO("Not yet implemented")
-    }
-
-    override fun get(id: TaskId): Task {
-        TODO("Not yet implemented")
-    }
 
     override fun create(
         title: String,

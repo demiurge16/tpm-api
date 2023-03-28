@@ -10,9 +10,6 @@ import java.time.ZonedDateTime
 
 interface TaskService {
 
-    fun getAll(): List<Task>
-    fun get(id: TaskId): Task
-
     fun create(
         title: String,
         description: String,

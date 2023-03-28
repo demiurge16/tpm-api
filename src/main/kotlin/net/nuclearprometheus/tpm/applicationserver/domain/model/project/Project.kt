@@ -3,12 +3,12 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectStatusChangeException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
-import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Message
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.note.Note

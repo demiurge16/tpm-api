@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 class LanguageClientAdapter(private val client: SILInternationalCodeTablesClient) : LanguageRepository {
     override fun getAll() = client.iso6393CodeSet().map { it.toDomain() }
 
-    override fun getByCode(code: LanguageCode) = client.iso6393CodeSet()
+    override fun get(code: LanguageCode) = client.iso6393CodeSet()
         .filter { it.id == code.value }
         .map { it.toDomain() }
         .firstOrNull()

@@ -14,7 +14,7 @@ class CurrencyClientAdapter(private val client: CurrencyClient) : CurrencyReposi
         .symbols
         .map { Currency(CurrencyCode(it.key), it.value.description) }
 
-    override fun getByCode(code: CurrencyCode) = client.getSymbols()
+    override fun get(code: CurrencyCode) = client.getSymbols()
         .symbols
         .filterKeys { it == code.value.uppercase() }
         .map { Currency(CurrencyCode(it.key), it.value.description) }

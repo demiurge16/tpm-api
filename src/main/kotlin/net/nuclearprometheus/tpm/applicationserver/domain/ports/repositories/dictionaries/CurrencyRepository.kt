@@ -7,6 +7,6 @@ import java.math.BigDecimal
 
 interface CurrencyRepository {
     fun getAll(): List<Currency>
-    fun getByCode(code: CurrencyCode): Currency?
+    fun get(code: CurrencyCode): Currency?
     fun getExchangeRates(code: CurrencyCode, amount: BigDecimal): CurrencyExchangeRates
 }

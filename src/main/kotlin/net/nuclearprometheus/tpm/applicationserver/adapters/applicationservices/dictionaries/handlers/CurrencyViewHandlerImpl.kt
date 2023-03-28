@@ -32,7 +32,7 @@ class CurrencyViewHandlerImpl(private val repository: CurrencyRepository) : Curr
             info("Currency view handler, method getByCode")
             info("Code: $code")
 
-            repository.getByCode(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
+            repository.get(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
         }
 
     @Cacheable("currencies-cache")

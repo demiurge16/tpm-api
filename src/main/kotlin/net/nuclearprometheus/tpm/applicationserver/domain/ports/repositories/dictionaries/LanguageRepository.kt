@@ -5,6 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 
 interface LanguageRepository {
     fun getAll(): List<Language>
-    fun getByCode(code: LanguageCode): Language?
+    fun get(code: LanguageCode): Language?
+    fun get(codes: List<LanguageCode>): List<Language>
     fun getByNameLike(name: String): List<Language>
 }

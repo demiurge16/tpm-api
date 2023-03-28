@@ -31,7 +31,7 @@ class LanguageViewHandlerImpl(private val repository: LanguageRepository) : Lang
             info("Language view handler, method getLanguage")
             info("Code: $code")
 
-            repository.getByCode(LanguageCode(code))?.toView() ?: throw NotFoundException("Language with code $code not found")
+            repository.get(LanguageCode(code))?.toView() ?: throw NotFoundException("Language with code $code not found")
         }
 
     @Cacheable("languages-cache")
