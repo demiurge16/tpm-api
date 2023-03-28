@@ -7,9 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 
 interface TeamMemberService {
-    fun getAll(): List<TeamMember>
-    fun get(ids: List<TeamMemberId>): List<TeamMember>
-    fun get(id: TeamMemberId): TeamMember?
     fun create(userId: UserId, role: TeamMemberRole, projectId: ProjectId): TeamMember
     fun delete(id: TeamMemberId)
     fun changeRole(id: TeamMemberId, role: TeamMemberRole)
