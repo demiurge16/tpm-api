@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.chat
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 
 class Chat(
@@ -8,14 +9,17 @@ class Chat(
     description: String,
     status: ChatStatus = ChatStatus.ACTIVE,
     owner: TeamMember,
-    val participants: MutableList<TeamMember> = mutableListOf(),
-    val messages: MutableList<Message> = mutableListOf()
+    val projectId: ProjectId,
+    participants: List<TeamMember> = listOf(),
+    messages: List<Message> = listOf()
 ) {
 
     var name = name; private set
     var description = description; private set
     var status = status; private set
     var owner = owner; private set
+    var participants = participants; private set
+    var messages = messages; private set
 
     fun update(name: String, description: String) {
         this.name = name
@@ -39,14 +43,14 @@ class Chat(
     }
 
     fun addParticipant(participant: TeamMember) {
-        participants.add(participant)
+        participants = participants.plus(participant)
     }
 
     fun removeParticipant(participant: TeamMember) {
-        participants.remove(participant)
+        participants = participants.minus(participant)
     }
 
     fun addMessage(message: Message) {
-        messages.add(message)
+        messages = messages.plus(message)
     }
 }

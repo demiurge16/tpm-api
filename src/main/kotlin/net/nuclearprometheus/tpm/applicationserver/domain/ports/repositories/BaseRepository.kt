@@ -1,12 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories
 
-import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
-import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-
 interface BaseRepository<TEntity, TEntityId> {
     fun getAll(): List<TEntity>
-    fun get(id: ProjectId): TEntity?
-    fun create(project: Project): TEntity
-    fun update(project: Project): TEntity
-    fun delete(id: ProjectId)
+    fun get(id: TEntityId): TEntity?
+    fun get(ids: List<TEntityId>): List<TEntity>
+    fun create(project: TEntity): TEntity
+    fun update(project: TEntity): TEntity
+    fun delete(id: TEntityId)
 }

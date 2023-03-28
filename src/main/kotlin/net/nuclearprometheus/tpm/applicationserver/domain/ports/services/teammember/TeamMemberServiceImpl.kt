@@ -11,7 +11,11 @@ class TeamMemberServiceImpl : TeamMemberService {
         TODO("Not yet implemented")
     }
 
-    override fun get(id: TeamMemberId): TeamMember {
+    override fun get(ids: List<TeamMemberId>): List<TeamMember> {
+        TODO("Not yet implemented")
+    }
+
+    override fun get(id: TeamMemberId): TeamMember? {
         TODO("Not yet implemented")
     }
 
