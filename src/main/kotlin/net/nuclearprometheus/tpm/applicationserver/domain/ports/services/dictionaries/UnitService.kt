@@ -9,6 +9,6 @@ interface UnitService {
     fun get(id: UnitId): Unit?
     fun create(name: String, description: String): Unit
     fun update(id: UnitId, name: String, description: String): Unit
-    fun activate(id: UnitId)
-    fun deactivate(id: UnitId)
+    fun activate(id: UnitId): Unit
+    fun deactivate(id: UnitId): Unit
 }

@@ -1,3 +1,28 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
-data class Industry(val id: IndustryId = IndustryId(), val name: String, val description: String)
+class Industry(
+    val id: IndustryId = IndustryId(),
+    name: String,
+    description: String,
+    active: Boolean = true
+) {
+    var name: String = name
+        private set
+    var description: String = description
+        private set
+    var active: Boolean = active
+        private set
+
+    fun update(name: String, description: String) {
+        this.name = name
+        this.description = description
+    }
+
+    fun activate() {
+        active = true
+    }
+
+    fun deactivate() {
+        active = false
+    }
+}

@@ -2,29 +2,43 @@ package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictio
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
 
-class UnitServiceImpl : UnitService {
+class UnitServiceImpl(
+    private val unitRepository: UnitRepository
+) : UnitService {
     override fun getAll(): List<Unit> {
-        TODO("Not yet implemented")
+        return unitRepository.getAll()
     }
 
     override fun get(id: UnitId): Unit? {
-        TODO("Not yet implemented")
+        return unitRepository.get(id)
     }
 
     override fun create(name: String, description: String): Unit {
-        TODO("Not yet implemented")
+        val unit = Unit(name = name, description = description)
+
+        return unitRepository.create(unit)
     }
 
     override fun update(id: UnitId, name: String, description: String): Unit {
-        TODO("Not yet implemented")
+        val unit = unitRepository.get(id) ?: throw IllegalArgumentException("Unit with id $id does not exist")
+        unit.update(name, description)
+
+        return unitRepository.update(unit)
     }
 
-    override fun activate(id: UnitId) {
-        TODO("Not yet implemented")
+    override fun activate(id: UnitId): Unit {
+        val unit = unitRepository.get(id) ?: throw IllegalArgumentException("Unit with id $id does not exist")
+        unit.activate()
+
+        return unitRepository.update(unit)
     }
 
-    override fun deactivate(id: UnitId) {
-        TODO("Not yet implemented")
+    override fun deactivate(id: UnitId): Unit {
+        val unit = unitRepository.get(id) ?: throw IllegalArgumentException("Unit with id $id does not exist")
+        unit.deactivate()
+
+        return unitRepository.update(unit)
     }
 }

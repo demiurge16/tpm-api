@@ -9,6 +9,6 @@ interface AccuracyService {
     fun get(id: AccuracyId): Accuracy?
     fun create(name: String, description: String): Accuracy
     fun update(id: AccuracyId, name: String, description: String): Accuracy
-    fun activate(id: AccuracyId)
-    fun deactivate(id: AccuracyId)
+    fun activate(id: AccuracyId): Accuracy
+    fun deactivate(id: AccuracyId): Accuracy
 }
