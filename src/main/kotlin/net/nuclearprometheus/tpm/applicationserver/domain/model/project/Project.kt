@@ -2,39 +2,23 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectStatusChangeException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
-import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
+import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Message
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
+import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
+import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
+import net.nuclearprometheus.tpm.applicationserver.domain.model.note.Note
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import java.math.BigDecimal
 import java.time.ZonedDateTime
-import java.util.Currency
-import java.util.UUID
 
-data class UserId(val value: UUID = UUID.randomUUID())
-
-/**
- * Translation project model
- * @param id project id
- * @param title project title
- * @param description project description
- * @param sourceLanguage source language
- * @param targetLanguages target languages
- * @param accuracy expected translation accuracy
- * @param industry which industry does translation project belong to
- * @param unit unit of translation
- * @param amount amount of translation
- * @param expectedStart expected start
- * @param internalDeadline internal deadline
- * @param externalDeadline external deadline
- * @param budget budget
- * @param currency currency
- * @param status status
- * @param managerId manager id
- * @param clientId client id
- */
 class Project(
-    id: ProjectId = ProjectId(),
+    val id: ProjectId = ProjectId(),
     title: String,
     description: String,
     sourceLanguage: Language,
@@ -49,10 +33,14 @@ class Project(
     budget: BigDecimal,
     currency: Currency,
     status: ProjectStatus = ProjectStatus.DRAFT,
-    managerId: UserId,
-    clientId: ClientId
+    teamMembers: List<TeamMember> = mutableListOf(),
+    tasks: List<Task> = mutableListOf(),
+    expenses: List<Expense> = mutableListOf(),
+    notes: List<Note> = mutableListOf(),
+    files: List<File> = mutableListOf(),
+    chat: Chat = Chat(),
+    client: Client
 ) {
-    var id = id; private set
     var title = title; private set
     var description = description; private set
     var sourceLanguage = sourceLanguage; private set
@@ -67,8 +55,13 @@ class Project(
     var budget = budget; private set
     var currency = currency; private set
     var status = status; private set
-    var managerId = managerId; private set
-    var clientId = clientId; private set
+    var teamMembers = teamMembers; private set
+    var tasks = tasks; private set
+    var expenses = expenses; private set
+    var notes = notes; private set
+    var files = files; private set
+    var chat = chat; private set
+    var client = client; private set
 
     init {
         validateTitle()
@@ -115,8 +108,7 @@ class Project(
         amount: Int,
         budget: BigDecimal,
         currency: Currency,
-        managerId: UserId,
-        clientId: ClientId
+        client: Client
     ) {
         this.title = title
         this.description = description
@@ -128,8 +120,7 @@ class Project(
         this.amount = amount
         this.budget = budget
         this.currency = currency
-        this.managerId = managerId
-        this.clientId = clientId
+        this.client = client
 
         validateTitle()
         validateAmount()
@@ -147,6 +138,42 @@ class Project(
         this.externalDeadline = externalDeadline
 
         validateDates()
+    }
+
+    fun addTeamMember(teamMember: TeamMember) {
+        teamMembers = teamMembers.plus(teamMember)
+    }
+
+    fun removeTeamMember(teamMember: TeamMember) {
+        teamMembers = teamMembers.minus(teamMember)
+    }
+
+    fun addTask(task: Task) {
+        tasks = tasks.plus(task)
+    }
+
+    fun removeTask(task: Task) {
+        tasks = tasks.minus(task)
+    }
+
+    fun addExpense(expense: Expense) {
+        expenses = expenses.plus(expense)
+    }
+
+    fun removeExpense(expense: Expense) {
+        expenses = expenses.minus(expense)
+    }
+
+    fun addNote(note: Note) {
+        notes = notes.plus(note)
+    }
+
+    fun addFile(file: File) {
+        files = files.plus(file)
+    }
+
+    fun addChatMessage(message: Message) {
+        chat.addMessage(message)
     }
 
     fun finishDraft() {
@@ -167,11 +194,11 @@ class Project(
         if (status != ProjectStatus.READY_TO_START) {
             throw ProjectStatusChangeException("Project must be in ready to start status")
         }
-        status = ProjectStatus.IN_PROGRESS
+        status = ProjectStatus.ACTIVE
     }
 
     fun finishProgress() {
-        if (status != ProjectStatus.IN_PROGRESS) {
+        if (status != ProjectStatus.ACTIVE) {
             throw ProjectStatusChangeException("Project must be in progress status")
         }
         status = ProjectStatus.READY_TO_DELIVER
@@ -181,7 +208,7 @@ class Project(
         if (status != ProjectStatus.READY_TO_DELIVER) {
             throw ProjectStatusChangeException("Project must be in ready to deliver status")
         }
-        status = ProjectStatus.IN_PROGRESS
+        status = ProjectStatus.ACTIVE
     }
 
     fun deliver() {
@@ -205,16 +232,43 @@ class Project(
         status = ProjectStatus.PAID
     }
 
+    fun putOnHold() {
+        if (status !in listOf(
+                ProjectStatus.DRAFT,
+                ProjectStatus.READY_TO_START,
+                ProjectStatus.ACTIVE,
+                ProjectStatus.READY_TO_DELIVER
+            )
+        ) {
+            throw ProjectStatusChangeException("Project must be in draft, ready to start, in progress or ready to deliver status")
+        }
+        status = ProjectStatus.ON_HOLD
+    }
+
+    fun resume() {
+        if (status != ProjectStatus.ON_HOLD) {
+            throw ProjectStatusChangeException("Project must be in on hold status")
+        }
+        status = ProjectStatus.ACTIVE
+    }
+
     fun cancel() {
         if (status !in listOf(
                 ProjectStatus.DRAFT,
                 ProjectStatus.READY_TO_START,
-                ProjectStatus.IN_PROGRESS,
+                ProjectStatus.ACTIVE,
                 ProjectStatus.READY_TO_DELIVER
             )
         ) {
             throw ProjectStatusChangeException("Project must be in draft, ready to start, in progress or ready to deliver status")
         }
         status = ProjectStatus.CANCELLED
+    }
+
+    fun reopen() {
+        if (status != ProjectStatus.CANCELLED) {
+            throw ProjectStatusChangeException("Project must be in cancelled status")
+        }
+        status = ProjectStatus.DRAFT
     }
 }

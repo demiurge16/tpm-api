@@ -3,24 +3,8 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.client
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.client.ClientValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
 
-/**
- * Client model
- * @param id Client id
- * @param name Client name
- * @param email Client email
- * @param phone Client phone
- * @param address Client address
- * @param city Client city
- * @param state Client state
- * @param zip Client zip
- * @param country Client country
- * @param vat Client VAT
- * @param notes Client notes
- * @param type Client type
- * @param active Client active
- */
 class Client(
-    id: ClientId = ClientId(),
+    val id: ClientId = ClientId(),
     name: String,
     email: String,
     phone: String,
@@ -34,7 +18,6 @@ class Client(
     type: ClientType,
     active: Boolean = true
 ) {
-    var id: ClientId = id; private set
     var name: String = name; private set
     var email: String = email; private set
     var phone: String = phone; private set

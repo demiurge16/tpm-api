@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.client
 
-class ClientType(id: ClientTypeId = ClientTypeId(), name: String, description: String, corporate: Boolean, active: Boolean = true) {
-    var id: ClientTypeId = id; private set
+class ClientType(val id: ClientTypeId = ClientTypeId(), name: String, description: String, corporate: Boolean, active: Boolean = true) {
     var name: String = name; private set
     var description: String = description; private set
     var corporate: Boolean = corporate; private set
