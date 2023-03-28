@@ -38,7 +38,7 @@ class Project(
     expenses: List<Expense> = mutableListOf(),
     notes: List<Note> = mutableListOf(),
     files: List<File> = mutableListOf(),
-    chat: Chat = Chat(),
+    chats: List<Chat> = mutableListOf(),
     client: Client
 ) {
     var title = title; private set
@@ -60,7 +60,7 @@ class Project(
     var expenses = expenses; private set
     var notes = notes; private set
     var files = files; private set
-    var chat = chat; private set
+    var chats = chats; private set
     var client = client; private set
 
     init {
@@ -172,8 +172,8 @@ class Project(
         files = files.plus(file)
     }
 
-    fun addChatMessage(message: Message) {
-        chat.addMessage(message)
+    fun addChat(chat: Chat) {
+        chats = chats.plus(chat)
     }
 
     fun finishDraft() {
