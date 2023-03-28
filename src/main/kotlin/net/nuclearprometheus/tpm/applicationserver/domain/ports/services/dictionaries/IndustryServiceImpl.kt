@@ -7,13 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 class IndustryServiceImpl(
     private val industryRepository: IndustryRepository
 ) : IndustryService {
-    override fun getAll(): List<Industry> {
-        return industryRepository.getAll()
-    }
-
-    override fun get(id: IndustryId): Industry? {
-        return industryRepository.get(id)
-    }
 
     override fun create(name: String, description: String): Industry {
         val industry = Industry(name = name, description = description)

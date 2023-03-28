@@ -7,13 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 class AccuracyServiceImpl(
     private val accuracyRepository: AccuracyRepository
 ) : AccuracyService {
-    override fun getAll(): List<Accuracy> {
-        return accuracyRepository.getAll()
-    }
-
-    override fun get(id: AccuracyId): Accuracy? {
-        return accuracyRepository.get(id)
-    }
 
     override fun create(name: String, description: String): Accuracy {
         val accuracy = Accuracy(name = name, description = description)

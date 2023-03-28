@@ -3,29 +3,42 @@ package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expens
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.ExpenseId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import java.time.ZonedDateTime
 
-class ExpenseServiceImpl : ExpenseService {
-    override fun getAll(): List<Expense> {
-        TODO("Not yet implemented")
-    }
-
-    override fun get(id: ExpenseId): Expense? {
-        TODO("Not yet implemented")
-    }
+class ExpenseServiceImpl(
+    private val expenseRepository: ExpenseRepository,
+    private val projectRepository: ProjectRepository,
+    private val teamMemberRepository: TeamMemberRepository
+) : ExpenseService {
 
     override fun create(
         projectId: ProjectId,
-        userId: UserId,
+        teamMemberId: TeamMemberId,
         description: String,
         amount: Double,
         date: ZonedDateTime
     ): Expense {
-        TODO("Not yet implemented")
+        projectRepository.get(projectId) ?: throw IllegalArgumentException("Project with id $projectId does not exist")
+        teamMemberRepository.get(teamMemberId) ?: throw IllegalArgumentException("Team member with id $teamMemberId does not exist")
+
+        val expense = Expense(
+            projectId = projectId,
+            teamMemberId = teamMemberId,
+            description = description,
+            amount = amount,
+            date = date
+        )
+
+        return expenseRepository.create(expense)
     }
 
     override fun delete(id: ExpenseId) {
-        TODO("Not yet implemented")
+        expenseRepository.delete(id)
     }
 }

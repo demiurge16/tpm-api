@@ -7,9 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 
 interface ChatService {
-
-    fun getAll(): List<Chat>
-    fun get(id: ChatId): Chat?
     fun create(
         name: String,
         description: String,

@@ -7,17 +7,16 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Message
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember.TeamMemberService
 
 class ChatServiceImpl(
     private val chatRepository: ChatRepository,
-    private val teamMemberService: TeamMemberService,
-    private val projectService: ProjectService,
+    private val teamMemberRepository: TeamMemberRepository,
+    private val projectRepository: ProjectRepository
 ) : ChatService {
-    override fun getAll() = chatRepository.getAll()
-
-    override fun get(id: ChatId) = chatRepository.get(id)
 
     override fun create(
         name: String,
@@ -26,14 +25,14 @@ class ChatServiceImpl(
         owner: TeamMemberId,
         participants: List<TeamMemberId>
     ): Chat {
-        projectService.get(projectId) ?: throw NotFoundException("Project does not exist")
+        projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
 
         val chat = Chat(
             name = name,
             description = description,
             projectId = projectId,
-            owner = teamMemberService.get(owner) ?: throw NotFoundException("Owner does not exist"),
-            participants = teamMemberService.get(participants)
+            owner = teamMemberRepository.get(owner) ?: throw NotFoundException("Owner does not exist"),
+            participants = teamMemberRepository.get(participants)
         )
 
         return chatRepository.create(chat)
@@ -69,21 +68,21 @@ class ChatServiceImpl(
 
     override fun transferOwnership(id: ChatId, newOwner: TeamMemberId): Chat {
         val chat = chatRepository.get(id) ?: throw NotFoundException("Chat does not exist")
-        chat.transferOwnership(teamMemberService.get(newOwner) ?: throw NotFoundException("New owner does not exist"))
+        chat.transferOwnership(teamMemberRepository.get(newOwner) ?: throw NotFoundException("New owner does not exist"))
 
         return chatRepository.update(chat)
     }
 
     override fun addParticipant(id: ChatId, participant: TeamMemberId): Chat {
         val chat = chatRepository.get(id) ?: throw NotFoundException("Chat does not exist")
-        chat.addParticipant(teamMemberService.get(participant) ?: throw NotFoundException("Participant does not exist"))
+        chat.addParticipant(teamMemberRepository.get(participant) ?: throw NotFoundException("Participant does not exist"))
 
         return chatRepository.update(chat)
     }
 
     override fun removeParticipant(id: ChatId, participant: TeamMemberId): Chat {
         val chat = chatRepository.get(id) ?: throw NotFoundException("Chat does not exist")
-        chat.removeParticipant(teamMemberService.get(participant) ?: throw NotFoundException("Participant does not exist"))
+        chat.removeParticipant(teamMemberRepository.get(participant) ?: throw NotFoundException("Participant does not exist"))
 
         return chatRepository.update(chat)
     }
