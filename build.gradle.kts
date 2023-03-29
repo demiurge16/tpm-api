@@ -47,6 +47,14 @@ val elasticApmAgentVersion: String by extra {
     "1.36.0"
 }
 
+val minioVersion: String by extra {
+    "8.5.2"
+}
+
+val picocliVersion: String by extra {
+    "4.6.3"
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
@@ -76,9 +84,10 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
     implementation("co.elastic.apm:apm-agent-attach:$elasticApmAgentVersion")
+    implementation("io.minio:minio:$minioVersion")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     runtimeOnly("org.postgresql:postgresql")
-    liquibaseRuntime("info.picocli:picocli:4.6.3")
+    liquibaseRuntime("info.picocli:picocli:$picocliVersion")
     liquibaseRuntime("org.liquibase:liquibase-core:$liquibaseVersion")
     liquibaseRuntime("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
     liquibaseRuntime("org.postgresql:postgresql")
@@ -99,11 +108,12 @@ liquibase {
     activities {
         create("main") {
             arguments = mapOf(
+                "driver" to "org.postgresql.Driver",
                 "url" to "jdbc:postgresql://localhost:5432/tpm",
                 "username" to "application",
                 "password" to "1qaz@WSX",
-                "changeLogFile" to "./src/main/resources/db/changelog/db.changelog-master.yml",
-                "referenceUrl" to "hibernate:spring:net.nuclearpromentheus.tpm.applicationserver?dialect=org.hibernate.dialect.PostgreSQLDialect",
+                "changelogFile" to "./src/main/resources/db/changelog/db.changelog-master.yml",
+                "referenceUrl" to "hibernate:spring:net.nuclearprometheus.tpm.applicationserver.adapters.database?dialect=org.hibernate.dialect.PostgreSQLDialect"
             )
         }
     }

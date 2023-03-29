@@ -5,6 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.Filt
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.cache.annotation.Cacheable
@@ -31,6 +32,6 @@ class ClientViewRequestHandlerImpl(private val repository: ClientRepository) : C
             info("Client view request handler, method getClient")
             info("Id: $id")
 
-            repository.get(id)?.toView() ?: throw NotFoundException("Client with id $id not found")
+            repository.get(ClientId(id))?.toView() ?: throw NotFoundException("Client with id $id not found")
         }
 }

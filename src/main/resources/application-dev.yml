@@ -28,3 +28,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+app:
+  file-storage:
+    minio:
+      endpoint: http://minio.tpm.localhost:9000
+      access-key: admin
+      secret-key: 1qaz@WSX
+      bucket-name: tpm

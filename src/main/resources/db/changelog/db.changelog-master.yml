@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1679787879792-1
+    id: 1680126028240-1
     author: olegs (generated)
     changes:
     - createTable:
@@ -9,9 +9,9 @@ databaseChangeLog:
             constraints:
               nullable: false
               primaryKey: true
-              primaryKeyName: client_pkey
+              primaryKeyName: clientPK
             name: id
-            type: UUID
+            type: BYTEA
         - column:
             constraints:
               nullable: false
@@ -30,7 +30,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: country_code
+            name: countryCode
             type: VARCHAR(16)
         - column:
             constraints:
@@ -69,10 +69,10 @@ databaseChangeLog:
             type: VARCHAR(32)
         - column:
             name: type_id
-            type: UUID
+            type: BYTEA
         tableName: client
 - changeSet:
-    id: 1679787879792-2
+    id: 1680126028240-2
     author: olegs (generated)
     changes:
     - createTable:
@@ -81,9 +81,9 @@ databaseChangeLog:
             constraints:
               nullable: false
               primaryKey: true
-              primaryKeyName: client_type_pkey
+              primaryKeyName: client_typePK
             name: id
-            type: UUID
+            type: BYTEA
         - column:
             constraints:
               nullable: false
@@ -106,39 +106,15 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: client_type
 - changeSet:
-    id: 1679787879792-3
+    id: 1680126028240-3
     author: olegs (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: type_id
         baseTableName: client
-        constraintName: fk4sefn0aoafa3x44anx5w9xfbo
+        constraintName: FK4sefn0aoafa3x44anx5w9xfbo
         deferrable: false
         initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: client_type
         validate: true
-
-databaseChangeLog:
-- changeSet:
-    id: 1679788239018-1
-    author: olegs (generated)
-    changes:
-    - dropForeignKeyConstraint:
-        baseTableName: client
-        constraintName: fk4sefn0aoafa3x44anx5w9xfbo
-- changeSet:
-    id: 1679788239018-2
-    author: olegs (generated)
-    changes:
-    - dropTable:
-        tableName: client
-- changeSet:
-    id: 1679788239018-3
-    author: olegs (generated)
-    changes:
-    - dropTable:
-        tableName: client_type
-

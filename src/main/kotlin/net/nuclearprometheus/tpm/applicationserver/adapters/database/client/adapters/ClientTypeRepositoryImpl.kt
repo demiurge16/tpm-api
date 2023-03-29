@@ -14,6 +14,8 @@ class ClientTypeRepositoryImpl(private var jpaRepository: ClientTypeJpaRepositor
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ClientTypeId): ClientType? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
+    override fun get(ids: List<ClientTypeId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun create(clientType: ClientType) = jpaRepository.save(clientType.toDatabaseModel()).toDomain()
     override fun update(clientType: ClientType) = jpaRepository.save(clientType.toDatabaseModel()).toDomain()
+    override fun delete(id: ClientTypeId) = jpaRepository.deleteById(id.value)
 }

@@ -50,6 +50,12 @@ spring:
     default-schema: application
 
 app:
+  file-storage:
+    minio:
+      endpoint: http://localhost:9000
+      access-key: admin
+      secret-key: 1qaz@WSX
+      bucket-name: tpm
   sil-international:
     client:
       code-set-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3.tab

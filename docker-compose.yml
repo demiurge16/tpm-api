@@ -74,6 +74,29 @@ services:
     volumes:
       - cache-data:/data
 
+  file-storage:
+    image: "quay.io/minio/minio:RELEASE.2023-03-24T21-41-23Z"
+    container_name: file-storage
+    hostname: minio.tpm.localhost
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    expose:
+      - "9000"
+      - "9001"
+    networks:
+      - tpm-network
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: 1qaz@WSX
+    command:
+      - server
+      - --console-address
+      - ":9001"
+      - /data
+    volumes:
+      - file-storage-data:/data
+
   pgadmin:
     image: "dpage/pgadmin4"
     container_name: pgadmin
@@ -348,6 +371,7 @@ volumes:
   db-data:
   pgadmin-data:
   cache-data:
+  file-storage-data:
   monitoring-setup-data:
   elasticsearch-data:
   apm-server-data:
