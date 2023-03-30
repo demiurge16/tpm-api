@@ -9,8 +9,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember.TeamMemberService
 
 class ChatServiceImpl(
     private val chatRepository: ChatRepository,
@@ -28,7 +26,7 @@ class ChatServiceImpl(
         projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
 
         val chat = Chat(
-            name = name,
+            title = name,
             description = description,
             projectId = projectId,
             owner = teamMemberRepository.get(owner) ?: throw NotFoundException("Owner does not exist"),

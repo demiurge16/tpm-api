@@ -6,12 +6,9 @@ class Industry(
     description: String,
     active: Boolean = true
 ) {
-    var name: String = name
-        private set
-    var description: String = description
-        private set
-    var active: Boolean = active
-        private set
+    var name = name; private set
+    var description = description; private set
+    var active = active; private set
 
     fun update(name: String, description: String) {
         this.name = name

@@ -5,8 +5,8 @@ import java.time.ZonedDateTime
 
 class Message(
     val id: MessageId = MessageId(),
+    val message: String,
     val author: TeamMember,
     val chatId: ChatId,
-    val message: String,
     val timestamp: ZonedDateTime = ZonedDateTime.now()
 )

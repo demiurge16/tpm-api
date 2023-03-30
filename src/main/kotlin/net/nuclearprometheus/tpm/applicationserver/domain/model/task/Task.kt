@@ -25,7 +25,7 @@ class Task(
     deadline: ZonedDateTime,
     budget: BigDecimal,
     currency: Currency,
-    teamMember: TeamMember? = null,
+    assignee: TeamMember? = null,
     status: TaskStatus = TaskStatus.DRAFT,
     projectId: ProjectId
 ) {
@@ -41,7 +41,7 @@ class Task(
     var deadline = deadline; private set
     var budget = budget; private set
     var currency = currency; private set
-    var teamMember = teamMember; private set
+    var assignee = assignee; private set
     var status = status; private set
     var projectId = projectId; private set
 
@@ -114,8 +114,8 @@ class Task(
         validateDates()
     }
 
-    fun assignTeamMember(teamMember: TeamMember) {
-        this.teamMember = teamMember
+    fun assignTeamMember(assignee: TeamMember) {
+        this.assignee = assignee
 
         if (status == TaskStatus.DRAFT) {
             status = TaskStatus.ASSIGNED
@@ -123,7 +123,7 @@ class Task(
     }
 
     fun unassignTeamMember() {
-        this.teamMember = null
+        this.assignee = null
         status = TaskStatus.DRAFT
     }
 

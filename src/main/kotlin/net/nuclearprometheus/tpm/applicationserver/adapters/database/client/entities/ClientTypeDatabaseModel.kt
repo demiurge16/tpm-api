@@ -6,12 +6,12 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
-@Entity
+@Entity(name = "ClientType")
 @Table(name = "client_type")
 open class ClientTypeDatabaseModel(
-    @get:Id() open var id: UUID,
-    @get:Column(nullable = false, length = 255) open var name: String,
-    @get:Column(nullable = false, length = 512) open var description: String,
-    @get:Column(nullable = false) open var corporate: Boolean,
-    @get:Column(nullable = false) open var active: Boolean
+    @Id() open var id: UUID,
+    @Column(nullable = false, length = 255) open var name: String,
+    @Column(nullable = false, length = 512) open var description: String,
+    @Column(nullable = false) open var corporate: Boolean,
+    @Column(nullable = false) open var active: Boolean
 )

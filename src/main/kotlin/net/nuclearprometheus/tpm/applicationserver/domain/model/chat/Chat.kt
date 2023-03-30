@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 
 class Chat(
     val id: ChatId = ChatId(),
-    name: String,
+    title: String,
     description: String,
     status: ChatStatus = ChatStatus.ACTIVE,
     owner: TeamMember,
@@ -14,15 +14,15 @@ class Chat(
     messages: List<Message> = listOf()
 ) {
 
-    var name = name; private set
+    var title = title; private set
     var description = description; private set
     var status = status; private set
     var owner = owner; private set
     var participants = participants; private set
     var messages = messages; private set
 
-    fun update(name: String, description: String) {
-        this.name = name
+    fun update(title: String, description: String) {
+        this.title = title
         this.description = description
     }
 
