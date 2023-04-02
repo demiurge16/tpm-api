@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-initial-schema-expense
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: expense
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: expensePK
+              - column:
+                  name: amount
+                  type: FLOAT(53)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: expense_project_id_fk
+                    referencedTableName: project
+                    referencedColumnNames: id
+              - column:
+                  name: team_member_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: expense_team_member_id_fk
+                    referencedTableName: team_member
+                    referencedColumnNames: id

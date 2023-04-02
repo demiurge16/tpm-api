@@ -12,6 +12,6 @@ open class NoteDatabaseModel(
     @Id() open var id: UUID,
     @Column(nullable = false, length = 512) open var content: String,
     @Column(nullable = false) open var createdAt: ZonedDateTime,
-    @ManyToOne @JoinColumn(nullable = false) open var authorId: TeamMemberDatabaseModel,
+    @ManyToOne @JoinColumn(nullable = false) open var author: TeamMemberDatabaseModel,
     @ManyToOne @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
 )

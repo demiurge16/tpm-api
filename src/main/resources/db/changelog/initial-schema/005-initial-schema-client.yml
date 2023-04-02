@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-initial-schema-client
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: clientPK
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  type: VARCHAR(255)
+                  name: city
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country_code
+                  type: VARCHAR(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: notes
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: vat
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: zip
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: client_typeFK
+                    referencedTableName: client_type
+                    referencedColumnNames: id

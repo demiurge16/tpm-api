@@ -23,6 +23,7 @@ interface TaskService {
         deadline: ZonedDateTime,
         budget: BigDecimal,
         currency: CurrencyCode,
+        priorityId: PriorityId,
         projectId: ProjectId
     ): Task
 
@@ -42,6 +43,7 @@ interface TaskService {
 
     fun moveStart(id: TaskId, expectedStart: ZonedDateTime): Task
     fun moveDeadline(id: TaskId, deadline: ZonedDateTime): Task
+    fun changePriority(id: TaskId, priorityId: PriorityId): Task
     fun assignTeamMember(id: TaskId, teamMemberId: TeamMemberId): Task
     fun unassignTeamMember(id: TaskId): Task
     fun start(id: TaskId): Task

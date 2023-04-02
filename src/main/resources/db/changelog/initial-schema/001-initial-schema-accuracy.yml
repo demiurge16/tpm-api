@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-initial-schema-accuracy
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: accuracy
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: accuracyPK
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false

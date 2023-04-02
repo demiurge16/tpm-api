@@ -1,10 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskValidationException
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
@@ -25,8 +22,9 @@ class Task(
     deadline: ZonedDateTime,
     budget: BigDecimal,
     currency: Currency,
-    assignee: TeamMember? = null,
     status: TaskStatus = TaskStatus.DRAFT,
+    priority: Priority,
+    assignee: TeamMember? = null,
     projectId: ProjectId
 ) {
     var title = title; private set
@@ -41,8 +39,9 @@ class Task(
     var deadline = deadline; private set
     var budget = budget; private set
     var currency = currency; private set
-    var assignee = assignee; private set
     var status = status; private set
+    var priority = priority; private set
+    var assignee = assignee; private set
     var projectId = projectId; private set
 
     init {
@@ -112,6 +111,10 @@ class Task(
     fun moveDeadline(deadline: ZonedDateTime) {
         this.deadline = deadline
         validateDates()
+    }
+
+    fun changePriority(priority: Priority) {
+        this.priority = priority
     }
 
     fun assignTeamMember(assignee: TeamMember) {

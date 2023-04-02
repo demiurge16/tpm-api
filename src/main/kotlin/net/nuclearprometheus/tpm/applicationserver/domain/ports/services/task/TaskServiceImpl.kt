@@ -20,6 +20,7 @@ class TaskServiceImpl(
     private val industryRepository: IndustryRepository,
     private val unitRepository: UnitRepository,
     private val currencyRepository: CurrencyRepository,
+    private val priorityRepository: PriorityRepository,
     private val projectRepository: ProjectRepository,
     private val teamMemberRepository: TeamMemberRepository
 ) : TaskService {
@@ -37,9 +38,11 @@ class TaskServiceImpl(
         deadline: ZonedDateTime,
         budget: BigDecimal,
         currency: CurrencyCode,
+        priorityId: PriorityId,
         projectId: ProjectId
     ): Task {
         projectRepository.get(projectId) ?: throw NotFoundException("Project not found")
+
 
         val task = Task(
             title = title,
@@ -54,6 +57,7 @@ class TaskServiceImpl(
             deadline = deadline,
             budget = budget,
             currency = currencyRepository.get(currency) ?: throw NotFoundException("Currency not found"),
+            priority = priorityRepository.get(priorityId) ?: throw NotFoundException("Priority not found"),
             projectId = projectId
         )
 
@@ -98,6 +102,11 @@ class TaskServiceImpl(
 
     override fun moveDeadline(id: TaskId, deadline: ZonedDateTime) = taskRepository.get(id)?.let { task ->
         task.moveDeadline(deadline)
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
+    override fun changePriority(id: TaskId, priorityId: PriorityId) = taskRepository.get(id)?.let { task ->
+        task.changePriority(priorityRepository.get(priorityId) ?: throw NotFoundException("Priority not found"))
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 

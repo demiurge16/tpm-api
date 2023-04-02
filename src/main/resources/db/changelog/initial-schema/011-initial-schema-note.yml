@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-initial-schema-note
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: note
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: notePK
+              - column:
+                  name: content
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: note_author_id_fk
+                    referencedTableName: team_member
+                    referencedColumnNames: id
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: note_project_id_fk
+                    referencedTableName: project
+                    referencedColumnNames: id
+

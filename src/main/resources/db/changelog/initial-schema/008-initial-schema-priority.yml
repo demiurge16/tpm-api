@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-initial-schema-priority
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: priority
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: priorityPK
+              - column:
+                  name: name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: emoji
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false

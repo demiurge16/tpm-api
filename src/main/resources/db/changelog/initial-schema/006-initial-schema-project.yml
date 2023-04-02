@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-initial-schema-project
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: project
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: projectPK
+              - column:
+                  name: amount
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: budget
+                  type: numeric(38, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expected_start
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: external_deadline
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: internal_deadline
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: source_language
+                  type: VARCHAR(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: accuracy_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: project_accuracy_id_fk
+                    referencedTableName: accuracy
+                    referencedColumnNames: id
+              - column:
+                  type: UUID
+                  name: client_id
+                  constraints:
+                    nullable: false
+                    foreignKeyName: project_client_id_fk
+                    referencedTableName: client
+                    referencedColumnNames: id
+              - column:
+                  type: UUID
+                  name: industry_id
+                  constraints:
+                    nullable: false
+                    foreignKeyName: project_industry_id_fk
+                    referencedTableName: industry
+                    referencedColumnNames: id
+              - column:
+                  name: unit_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: project_unit_id_fk
+                    referencedTableName: unit
+                    referencedColumnNames: id
+        - createTable:
+            tableName: project_target_language
+            columns:
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: project_target_language_project_id_fk
+                    referencedTableName: project
+                    referencedColumnNames: id
+              - column:
+                  name: target_language
+                  type: VARCHAR(16)
+                  constraints:
+                    nullable: false

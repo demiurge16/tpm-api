@@ -4,6 +4,7 @@ import TaskStatusDatabaseModel
 import jakarta.persistence.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionaries.entities.AccuracyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionaries.entities.IndustryDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionaries.entities.PriorityDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.teammember.entities.TeamMemberDatabaseModel
@@ -27,7 +28,8 @@ open class TaskDatabaseModel(
     @Column(nullable = false) open var deadline: ZonedDateTime,
     @Column(nullable = false) open var budget: BigDecimal,
     @Column(nullable = false) open var currency: String,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = true) open var assignee: TeamMemberDatabaseModel?,
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: TaskStatusDatabaseModel,
-    @ManyToOne @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var priority: PriorityDatabaseModel,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = true) open var assignee: TeamMemberDatabaseModel?,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
 )

@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-initial-schema-file
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: file
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: filePK
+              - column:
+                  name: location
+                  type: VARCHAR(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: size
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: upload_time
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: file_project_id_fk
+                    referencedTableName: project
+                    referencedColumnNames: id
+              - column:
+                  name: uploader_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: file_uploader_id_fk
+                    referencedTableName: team_member
+                    referencedColumnNames: id
