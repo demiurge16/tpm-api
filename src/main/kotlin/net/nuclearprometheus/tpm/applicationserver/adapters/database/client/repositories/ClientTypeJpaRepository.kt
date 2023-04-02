@@ -4,6 +4,4 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.database.client.enti
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
-interface ClientTypeJpaRepository : JpaRepository<ClientTypeDatabaseModel, UUID> {
-
-}
+interface ClientTypeJpaRepository : JpaRepository<ClientTypeDatabaseModel, UUID>

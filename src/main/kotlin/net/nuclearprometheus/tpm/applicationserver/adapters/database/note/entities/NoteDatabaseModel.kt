@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.adapters.database.note.entites
+package net.nuclearprometheus.tpm.applicationserver.adapters.database.note.entities
 
 import jakarta.persistence.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.project.entities.ProjectDatabaseModel

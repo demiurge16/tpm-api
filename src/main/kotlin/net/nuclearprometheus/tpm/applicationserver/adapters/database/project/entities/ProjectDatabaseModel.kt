@@ -8,7 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionarie
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.expense.entities.ExpenseDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.file.entities.FileDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.database.note.entites.NoteDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.database.note.entities.NoteDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.task.entities.TaskDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.teammember.entities.TeamMemberDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
