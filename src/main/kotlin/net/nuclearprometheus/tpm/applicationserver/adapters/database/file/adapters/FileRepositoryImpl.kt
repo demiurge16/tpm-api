@@ -26,6 +26,17 @@ class FileRepositoryImpl(
 
     companion object Mappers {
 
+        fun FileDatabaseModel.toDomainModel() = File(
+            id = FileId(id),
+            name = name,
+            size = size,
+            type = type,
+            uploadTime = uploadTime,
+            uploaderId = TeamMemberId(uploader.id),
+            projectId = ProjectId(projectId),
+            location = location
+        )
+
         fun File.toDatabaseModel(teamMemberRepository: TeamMemberRepository) = FileDatabaseModel(
             id = id.value,
             name = name,
@@ -35,17 +46,6 @@ class FileRepositoryImpl(
             uploader = teamMemberRepository.get(uploaderId)?.toDatabaseModel()
                 ?: throw IllegalArgumentException("Uploader with id $uploaderId does not exist"),
             projectId = projectId.value,
-            location = location
-        )
-
-        fun FileDatabaseModel.toDomainModel() = File(
-            id = FileId(id),
-            name = name,
-            size = size,
-            type = type,
-            uploadTime = uploadTime,
-            uploaderId = TeamMemberId(uploader.id),
-            projectId = ProjectId(projectId),
             location = location
         )
     }

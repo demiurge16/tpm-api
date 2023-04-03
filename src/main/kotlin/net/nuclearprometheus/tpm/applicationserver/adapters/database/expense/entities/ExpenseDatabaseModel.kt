@@ -14,5 +14,5 @@ open class ExpenseDatabaseModel(
     @Column(nullable = false) open var amount: Double,
     @Column(nullable = false) open var date: ZonedDateTime,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var teamMember: TeamMemberDatabaseModel,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
+    @Column(nullable = false) open var projectId: UUID
 )

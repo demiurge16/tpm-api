@@ -17,6 +17,7 @@ class FileConfig(
 ) {
 
     private val logger = loggerFor(FileService::class.java)
+
     @Bean
     fun fileService(): FileService = FileServiceImpl(fileRepository, teamMemberRepository, projectRepository, logger)
 

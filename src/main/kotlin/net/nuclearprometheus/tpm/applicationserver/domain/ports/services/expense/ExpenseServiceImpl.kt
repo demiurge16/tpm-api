@@ -9,12 +9,14 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.exp
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import java.time.ZonedDateTime
 
 class ExpenseServiceImpl(
     private val expenseRepository: ExpenseRepository,
     private val projectRepository: ProjectRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val logger: Logger
 ) : ExpenseService {
 
     override fun create(
