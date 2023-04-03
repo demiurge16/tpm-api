@@ -28,10 +28,16 @@ class ChatMessageImpl(
         .map { it.toDomain(teamMemberRepository, messageRepository) }
     override fun create(entity: Chat) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository))
         .toDomain(teamMemberRepository, messageRepository)
+    override fun createAll(entities: List<Chat>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) })
+        .map { it.toDomain(teamMemberRepository, messageRepository) }
     override fun update(entity: Chat) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository))
         .toDomain(teamMemberRepository, messageRepository)
-    override fun delete(id: ChatId) = jpaRepository
-        .deleteById(id.value)
+    override fun updateAll(entities: List<Chat>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) })
+        .map { it.toDomain(teamMemberRepository, messageRepository) }
+    override fun delete(id: ChatId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<ChatId>) = jpaRepository.deleteAllById(ids.map { it.value })
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value)
+        .map { it.toDomain(teamMemberRepository, messageRepository) }
 
     companion object Mappers {
         fun ChatDatabaseModel.toDomain(

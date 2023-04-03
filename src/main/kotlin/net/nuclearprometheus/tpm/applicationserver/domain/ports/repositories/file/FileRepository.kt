@@ -2,6 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.fi
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.FileId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.BaseRepository
 
-interface FileRepository : BaseRepository<File, FileId>
+interface FileRepository : BaseRepository<File, FileId> {
+
+    fun getAllByProjectId(projectId: ProjectId): List<File>
+}

@@ -17,16 +17,20 @@ class FileRepositoryImpl(
     private val teamMemberRepository: TeamMemberRepository
 ) : FileRepository {
 
-    override fun getAll() = jpaRepository.findAll().map { it.toDomainModel() }
-    override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomainModel() }.orElse(null)
-    override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomainModel() }
-    override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomainModel()
-    override fun update(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomainModel()
+    override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
+    override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
+    override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
+    override fun createAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
+    override fun update(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
+    override fun updateAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
     override fun delete(id: FileId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<FileId>) = jpaRepository.deleteAllById(ids.map { it.value })
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain() }
 
     companion object Mappers {
 
-        fun FileDatabaseModel.toDomainModel() = File(
+        fun FileDatabaseModel.toDomain() = File(
             id = FileId(id),
             name = name,
             size = size,

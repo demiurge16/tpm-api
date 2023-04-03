@@ -22,8 +22,12 @@ class TeamMemberRepositoryImpl(
     override fun get(id: TeamMemberId) = repository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
     override fun get(ids: List<TeamMemberId>) = repository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
     override fun create(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)
+    override fun createAll(entities: List<TeamMember>) = repository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
     override fun update(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)
+    override fun updateAll(entities: List<TeamMember>) = repository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
     override fun delete(id: TeamMemberId) = repository.deleteById(id.value)
+    override fun deleteAll(ids: List<TeamMemberId>) = repository.deleteAllById(ids.map { it.value })
+    override fun getAllByProjectId(projectId: ProjectId) = repository.findAllByProjectId(projectId.value).map { it.toDomain(userRepository) }
 
     companion object Mappers {
         fun TeamMemberDatabaseModel.toDomain(userRepository: UserRepository) = TeamMember(

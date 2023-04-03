@@ -33,6 +33,6 @@ open class ProjectDatabaseModel(
     @Column(nullable = false) open var externalDeadline: ZonedDateTime,
     @Column(nullable = false) open var budget: BigDecimal,
     @Column(nullable = false, length = 16) open var currency: String,
-    @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: ProjectStatus,
+    @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: ProjectStatusDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var client: ClientDatabaseModel
 )

@@ -16,8 +16,11 @@ class AccuracyRepositoryImpl(
     override fun get(id: AccuracyId): Accuracy? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<AccuracyId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun create(entity: Accuracy) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
+    override fun createAll(entities: List<Accuracy>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: Accuracy) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
+    override fun updateAll(entities: List<Accuracy>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun delete(id: AccuracyId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<AccuracyId>) = jpaRepository.deleteAllById(ids.map { it.value })
 
     companion object Mappers {
         fun AccuracyDatabaseModel.toDomain() = Accuracy(

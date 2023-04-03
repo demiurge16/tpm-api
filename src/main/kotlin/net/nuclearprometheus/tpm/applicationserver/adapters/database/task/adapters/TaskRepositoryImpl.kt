@@ -37,20 +37,22 @@ class TaskRepositoryImpl(
 
     override fun getAll() = jpaRepository.findAll()
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
-
     override fun get(id: TaskId): Task? = jpaRepository.findById(id.value)
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }.orElse(null)
-
     override fun get(ids: List<TaskId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
-
     override fun create(entity: Task) = jpaRepository.save(entity.toDatabaseModel())
         .toDomain(languageRepository, currencyRepository, userRepository)
-
+    override fun createAll(entities: List<Task>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
+        .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
     override fun update(entity: Task) = jpaRepository.save(entity.toDatabaseModel())
         .toDomain(languageRepository, currencyRepository, userRepository)
-
+    override fun updateAll(entities: List<Task>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
+        .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
     override fun delete(id: TaskId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<TaskId>) = jpaRepository.deleteAllById(ids.map { it.value })
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value)
+        .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
 
     companion object Mappers {
         fun TaskDatabaseModel.toDomain(

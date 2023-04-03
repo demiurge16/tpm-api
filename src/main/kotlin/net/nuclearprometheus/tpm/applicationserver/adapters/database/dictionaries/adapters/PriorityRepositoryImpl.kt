@@ -16,8 +16,11 @@ class PriorityRepositoryImpl(
     override fun get(id: PriorityId): Priority? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<PriorityId>): List<Priority> = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun create(entity: Priority) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
+    override fun createAll(entities: List<Priority>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: Priority) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
+    override fun updateAll(entities: List<Priority>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun delete(id: PriorityId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<PriorityId>) = jpaRepository.deleteAllById(ids.map { it.value })
 
     companion object Mappers {
         fun PriorityDatabaseModel.toDomain() = Priority(

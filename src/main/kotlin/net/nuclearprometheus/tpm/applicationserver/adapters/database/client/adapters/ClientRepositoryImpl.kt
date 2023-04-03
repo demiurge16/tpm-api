@@ -21,8 +21,11 @@ class ClientRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(countryRepository) }
     override fun get(id: ClientId): Client? = jpaRepository.findById(id.value).map { it.toDomain(countryRepository) }.orElse(null)
     override fun get(ids: List<ClientId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(countryRepository) }
-    override fun create(client: Client) = jpaRepository.save(client.toDatabaseModel()).toDomain(countryRepository)
-    override fun update(client: Client) = jpaRepository.save(client.toDatabaseModel()).toDomain(countryRepository)
+    override fun create(entity: Client) = jpaRepository.save(entity.toDatabaseModel()).toDomain(countryRepository)
+    override fun createAll(entities: List<Client>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(countryRepository) }
+    override fun update(entity: Client) = jpaRepository.save(entity.toDatabaseModel()).toDomain(countryRepository)
+    override fun updateAll(entities: List<Client>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(countryRepository) }
+    override fun deleteAll(ids: List<ClientId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun delete(id: ClientId) = jpaRepository.deleteById(id.value)
 
     companion object Mapping {
