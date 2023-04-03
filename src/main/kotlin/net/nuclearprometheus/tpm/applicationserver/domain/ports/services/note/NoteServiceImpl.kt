@@ -5,15 +5,16 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.note.Note
 import net.nuclearprometheus.tpm.applicationserver.domain.model.note.NoteId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.note.NoteRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class NoteServiceImpl(
     private val noteRepository: NoteRepository,
     private val teamMemberRepository: TeamMemberRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val logger: Logger
 ) : NoteService {
 
     override fun create(content: String, authorId: TeamMemberId, projectId: ProjectId): Note {
