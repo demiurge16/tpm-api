@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.database.file.entities
 
 import jakarta.persistence.*
-import net.nuclearprometheus.tpm.applicationserver.adapters.database.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.database.teammember.entities.TeamMemberDatabaseModel
 import java.time.ZonedDateTime
 import java.util.*
@@ -16,5 +15,5 @@ open class FileDatabaseModel(
     @Column(nullable = false) open var size: Long,
     @Column(nullable = false) open var uploadTime: ZonedDateTime,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var uploader: TeamMemberDatabaseModel,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
+    @Column(nullable = false) open var projectId: UUID
 )

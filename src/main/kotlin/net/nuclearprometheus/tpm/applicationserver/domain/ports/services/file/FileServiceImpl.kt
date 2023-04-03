@@ -9,11 +9,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class FileServiceImpl(
     private val fileRepository: FileRepository,
     private val teamMemberRepository: TeamMemberRepository,
     private val projectRepository: ProjectRepository,
+    private val logger: Logger
 ) : FileService {
 
     override fun create(
