@@ -1,11 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Priority
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.PriorityRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class PriorityServiceImpl(
-    private val priorityRepository: PriorityRepository
+    private val priorityRepository: PriorityRepository,
+    private val logger: Logger
 ) : PriorityService {
     override fun create(name: String, description: String, emoji: String, value: Int): Priority {
         val priority = Priority(name = name, description = description, emoji = emoji, value = value)
@@ -14,21 +17,21 @@ class PriorityServiceImpl(
     }
 
     override fun update(id: PriorityId, name: String, description: String, emoji: String, value: Int): Priority {
-        val priority = priorityRepository.get(id) ?: throw IllegalArgumentException("Priority with id $id does not exist")
+        val priority = priorityRepository.get(id) ?: throw NotFoundException("Priority with id $id does not exist")
         priority.update(name, description, emoji, value)
 
         return priorityRepository.update(priority)
     }
 
     override fun activate(id: PriorityId): Priority {
-        val priority = priorityRepository.get(id) ?: throw IllegalArgumentException("Priority with id $id does not exist")
+        val priority = priorityRepository.get(id) ?: throw NotFoundException("Priority with id $id does not exist")
         priority.activate()
 
         return priorityRepository.update(priority)
     }
 
     override fun deactivate(id: PriorityId): Priority {
-        val priority = priorityRepository.get(id) ?: throw IllegalArgumentException("Priority with id $id does not exist")
+        val priority = priorityRepository.get(id) ?: throw NotFoundException("Priority with id $id does not exist")
         priority.deactivate()
 
         return priorityRepository.update(priority)

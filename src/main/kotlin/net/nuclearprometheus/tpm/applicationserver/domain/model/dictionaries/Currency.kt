@@ -1,3 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
-data class Currency(val code: CurrencyCode, val name: String)
+open class Currency(open val code: CurrencyCode, val name: String)
+
+data class UnknownCurrency(override val code: CurrencyCode) : Currency(code, "Unknown")

@@ -31,5 +31,5 @@ open class TaskDatabaseModel(
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: TaskStatusDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var priority: PriorityDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = true) open var assignee: TeamMemberDatabaseModel?,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var project: ProjectDatabaseModel
+    @Column(nullable = false) open var projectId: UUID
 )

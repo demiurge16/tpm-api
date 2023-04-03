@@ -10,6 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -22,7 +23,8 @@ class TaskServiceImpl(
     private val currencyRepository: CurrencyRepository,
     private val priorityRepository: PriorityRepository,
     private val projectRepository: ProjectRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val logger: Logger
 ) : TaskService {
 
     override fun create(
