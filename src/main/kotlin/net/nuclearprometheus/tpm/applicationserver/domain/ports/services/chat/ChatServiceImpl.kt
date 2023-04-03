@@ -9,11 +9,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class ChatServiceImpl(
     private val chatRepository: ChatRepository,
     private val teamMemberRepository: TeamMemberRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val logger: Logger
 ) : ChatService {
 
     override fun create(

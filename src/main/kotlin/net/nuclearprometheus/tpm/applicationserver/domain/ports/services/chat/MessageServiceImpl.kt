@@ -6,12 +6,14 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.MessageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import org.webjars.NotFoundException
 
 class MessageServiceImpl(
     private val messageRepository: MessageRepository,
     private val chatRepository: ChatRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val logger: Logger
 ) : MessageService {
 
     override fun create(chatId: ChatId, author: TeamMemberId, content: String): Message {

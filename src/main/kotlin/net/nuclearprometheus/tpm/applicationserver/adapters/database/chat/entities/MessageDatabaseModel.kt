@@ -18,5 +18,5 @@ open class MessageDatabaseModel(
     @Column(nullable = false, length = 512) open var message: String,
     @Column(nullable = false) open var timestamp: ZonedDateTime,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var author: TeamMemberDatabaseModel,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var chat: ChatDatabaseModel
+    @Column(nullable = false) open var chatId: UUID
 )

@@ -4,4 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.database.chat.entiti
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
-interface MessageJpaRepository : JpaRepository<MessageDatabaseModel, UUID>
+interface MessageJpaRepository : JpaRepository<MessageDatabaseModel, UUID> {
+
+    fun findAllByChatId(chatId: UUID): List<MessageDatabaseModel>
+}

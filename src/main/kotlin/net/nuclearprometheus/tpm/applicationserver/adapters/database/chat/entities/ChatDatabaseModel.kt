@@ -13,12 +13,11 @@ open class ChatDatabaseModel(
     @Column(nullable = false, length = 512) open var description: String,
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: ChatStatusDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var owner: TeamMemberDatabaseModel,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var project: ProjectDatabaseModel,
+    @Column(nullable = false) open var projectId: UUID,
     @ManyToMany(fetch = FetchType.LAZY) @JoinTable(
         name = "chat_participant",
         joinColumns = [JoinColumn(name = "chat_id")],
         inverseJoinColumns = [JoinColumn(name = "team_member_id")]
     )
-    open var participants: MutableList<TeamMemberDatabaseModel>,
-    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY) open var messages: MutableList<MessageDatabaseModel>
+    open var participants: MutableList<TeamMemberDatabaseModel>
 )

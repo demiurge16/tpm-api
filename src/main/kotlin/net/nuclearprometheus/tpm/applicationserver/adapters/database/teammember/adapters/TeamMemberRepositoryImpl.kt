@@ -8,7 +8,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import org.springframework.stereotype.Repository
