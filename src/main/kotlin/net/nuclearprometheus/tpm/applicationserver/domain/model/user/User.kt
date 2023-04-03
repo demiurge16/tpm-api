@@ -7,15 +7,13 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.user
  * @param id user id
  * @param firstName user first name
  * @param lastName user last name
+ * @param username user username
  * @param email user email
  */
 class User(
     val id: UserId = UserId(),
-    firstName: String,
-    lastName: String,
-    email: String
-) {
-    var firstName = firstName; private set
-    var lastName = lastName; private set
-    var email = email; private set
-}
+    val firstName: String,
+    val lastName: String,
+    val username: String,
+    val email: String
+)

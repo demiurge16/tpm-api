@@ -76,6 +76,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.keycloak:keycloak-spring-boot-starter:21.0.2")
+    implementation("org.keycloak:keycloak-admin-client:21.0.2")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")

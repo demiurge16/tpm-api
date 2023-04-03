@@ -17,5 +17,6 @@ class ClientConfig(
 ) {
     private val logger = loggerFor(ClientService::class.java)
 
-    @Bean fun clientService(): ClientService = ClientServiceImpl(clientRepository, clientTypeRepository, countryRepository, logger)
+    @Bean
+    fun clientService(): ClientService = ClientServiceImpl(clientRepository, clientTypeRepository, countryRepository, logger)
 }

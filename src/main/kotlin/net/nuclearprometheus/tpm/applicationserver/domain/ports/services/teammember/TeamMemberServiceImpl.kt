@@ -8,11 +8,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class TeamMemberServiceImpl(
     private val teamMemberRepository: TeamMemberRepository,
     private val userRepository: UserRepository,
     private val projectRepository: ProjectRepository,
+    private val logger: Logger
 ) : TeamMemberService {
 
     override fun create(userId: UserId, role: TeamMemberRole, projectId: ProjectId): TeamMember {

@@ -36,3 +36,10 @@ app:
       access-key: admin
       secret-key: 1qaz@WSX
       bucket-name: tpm
+
+elastic:
+  apm:
+    server-url: http://apm-server:8200
+
+keycloak:
+  auth-server-url: http://auth.tpm.localhost/auth

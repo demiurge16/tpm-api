@@ -34,11 +34,5 @@ open class ProjectDatabaseModel(
     @Column(nullable = false) open var budget: BigDecimal,
     @Column(nullable = false, length = 16) open var currency: String,
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var status: ProjectStatus,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var teamMembers: MutableList<TeamMemberDatabaseModel>,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var tasks: MutableList<TaskDatabaseModel>,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var expenses: MutableList<ExpenseDatabaseModel>,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var notes: MutableList<NoteDatabaseModel>,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var files: MutableList<FileDatabaseModel>,
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) open var chats: MutableList<ChatDatabaseModel>,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var client: ClientDatabaseModel
 )
