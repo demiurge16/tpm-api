@@ -2,8 +2,13 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectUpdateRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectUpdateResponse
+import org.springframework.stereotype.Service
 import java.util.*
 
-interface ProjectUpdateRequestHandler {
-    fun updateProject(id: UUID, projectUpdate: ProjectUpdateRequest): ProjectUpdateResponse
+@Service
+class ProjectUpdateRequestHandler {
+
+    fun updateProject(id: UUID, projectUpdate: ProjectUpdateRequest): ProjectUpdateResponse {
+        TODO("Not yet implemented")
+    }
 }

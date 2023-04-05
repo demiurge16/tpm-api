@@ -1,15 +1,40 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.handlers
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectStatusUpdateResponse
+import org.springframework.stereotype.Service
 import java.util.*
 
-interface ProjectStatusUpdateRequestHandler {
-    fun finishDraft(id: UUID): ProjectStatusUpdateResponse
-    fun backToDraft(id: UUID): ProjectStatusUpdateResponse
-    fun startProgress(id: UUID): ProjectStatusUpdateResponse
-    fun finishProgress(id: UUID): ProjectStatusUpdateResponse
-    fun backToProgress(id: UUID): ProjectStatusUpdateResponse
-    fun deliver(id: UUID): ProjectStatusUpdateResponse
-    fun invoice(id: UUID): ProjectStatusUpdateResponse
-    fun pay(id: UUID): ProjectStatusUpdateResponse
+@Service class ProjectStatusUpdateRequestHandler {
+
+    fun finishDraft(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun backToDraft(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun startProgress(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun finishProgress(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun backToProgress(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun deliver(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun invoice(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun pay(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
 }

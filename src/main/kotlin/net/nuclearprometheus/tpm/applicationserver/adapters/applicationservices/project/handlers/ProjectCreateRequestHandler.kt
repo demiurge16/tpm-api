@@ -2,7 +2,11 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectCreateRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectCreateResponse
+import org.springframework.stereotype.Service
 
-interface ProjectCreateRequestHandler {
-    fun createProject(projectCreate: ProjectCreateRequest): ProjectCreateResponse
+@Service class ProjectCreateRequestHandler {
+
+    fun createProject(projectCreate: ProjectCreateRequest): ProjectCreateResponse {
+        TODO("Not yet implemented")
+    }
 }

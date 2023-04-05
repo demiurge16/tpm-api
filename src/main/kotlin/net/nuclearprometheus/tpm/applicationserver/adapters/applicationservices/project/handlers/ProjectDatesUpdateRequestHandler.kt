@@ -4,9 +4,16 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectMoveStartRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectMoveDeadlineResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectMoveStartResponse
+import org.springframework.stereotype.Service
 import java.util.*
 
-interface ProjectDatesUpdateRequestHandler {
-    fun moveProjectStart(id: UUID, newStart: ProjectMoveStartRequest): ProjectMoveStartResponse
-    fun moveProjectDeadline(id: UUID, newEnd: ProjectMoveDeadlineRequest): ProjectMoveDeadlineResponse
+@Service class ProjectDatesUpdateRequestHandler {
+
+    fun moveProjectStart(id: UUID, newStart: ProjectMoveStartRequest): ProjectMoveStartResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun moveProjectDeadline(id: UUID, newEnd: ProjectMoveDeadlineRequest): ProjectMoveDeadlineResponse {
+        TODO("Not yet implemented")
+    }
 }

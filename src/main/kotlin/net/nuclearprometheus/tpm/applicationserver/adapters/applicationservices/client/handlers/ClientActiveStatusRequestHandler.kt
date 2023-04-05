@@ -1,9 +1,33 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.handlers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientActiveStatusResponse
-import java.util.UUID
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.toActiveStatusResponse
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientService
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.stereotype.Service
+import java.util.*
 
-interface ClientActiveStatusRequestHandler {
-    fun activate(id: UUID): ClientActiveStatusResponse
-    fun deactivate(id: UUID): ClientActiveStatusResponse
+@Service
+class ClientActiveStatusRequestHandler(private val service: ClientService) {
+
+    private val logger = loggerFor(this::class.java)
+
+    @CacheEvict("clients-cache", allEntries = true)
+    fun activate(id: UUID) =
+        with(logger) {
+            info("Client active status request handler, method activate")
+            info("Id: $id")
+
+            service.activate(ClientId(id)).toActiveStatusResponse()
+        }
+
+    @CacheEvict("clients-cache", allEntries = true)
+    fun deactivate(id: UUID) =
+        with(logger) {
+            info("Client active status request handler, method deactivate")
+            info("Id: $id")
+
+            service.deactivate(ClientId(id)).toActiveStatusResponse()
+        }
 }
