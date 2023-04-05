@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
 import java.util.UUID
 
-data class PriorityId(val value: UUID = UUID.randomUUID())
+class PriorityId(value: UUID = UUID.randomUUID()): Id<UUID>(value)

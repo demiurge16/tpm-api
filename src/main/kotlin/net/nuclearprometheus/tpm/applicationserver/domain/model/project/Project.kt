@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.Pro
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
@@ -18,7 +19,7 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 class Project(
-    val id: ProjectId = ProjectId(),
+    id: ProjectId = ProjectId(),
     title: String,
     description: String,
     sourceLanguage: Language,
@@ -40,7 +41,8 @@ class Project(
     files: List<File> = mutableListOf(),
     chats: List<Chat> = mutableListOf(),
     client: Client
-) {
+) : Entity<ProjectId>(id) {
+
     var title = title; private set
     var description = description; private set
     var sourceLanguage = sourceLanguage; private set

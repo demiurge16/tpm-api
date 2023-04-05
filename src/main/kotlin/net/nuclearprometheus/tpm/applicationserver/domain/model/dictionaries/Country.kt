@@ -1,5 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
+
 open class Country(
     open val code: CountryCode,
     val name: String,
@@ -7,7 +9,7 @@ open class Country(
     val currencies: Map<CurrencyCode, String>,
     val languages: Map<LanguageCode, String>,
     val emoji: String
-)
+) : Entity<CountryCode>(code)
 
 class UnknownCountry(override val code: CountryCode) : Country(
     code,

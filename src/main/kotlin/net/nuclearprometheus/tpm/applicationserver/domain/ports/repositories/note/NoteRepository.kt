@@ -8,4 +8,5 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.Bas
 interface NoteRepository : BaseRepository<Note, NoteId> {
 
     fun getAllByProjectId(projectId: ProjectId): List<Note>
+    fun deleteAllByProjectId(projectId: ProjectId)
 }

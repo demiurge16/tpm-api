@@ -13,7 +13,7 @@ class CountryListRequest(
 
     override fun sortComparator(): Comparator<Country> {
         return when (sort) {
-            "code.value" -> Comparator<Country> { o1, o2 -> o1.code.value.compareTo(o2.code.value) }
+            "code.value" -> Comparator<Country> { o1, o2 -> o1.id.value.compareTo(o2.id.value) }
             "name" -> Comparator<Country> { o1, o2 -> o1.name.compareTo(o2.name) }
             else -> Comparator<Country> { _, _ -> 0 }
         }.let {

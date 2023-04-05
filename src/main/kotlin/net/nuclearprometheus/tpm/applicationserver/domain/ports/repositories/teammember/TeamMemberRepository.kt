@@ -7,4 +7,5 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.Bas
 
 interface TeamMemberRepository : BaseRepository<TeamMember, TeamMemberId> {
     fun getAllByProjectId(projectId: ProjectId): List<TeamMember>
+    fun deleteAllByProjectId(projectId: ProjectId)
 }

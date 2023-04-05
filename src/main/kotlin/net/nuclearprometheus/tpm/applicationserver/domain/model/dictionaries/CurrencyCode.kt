@@ -1,3 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
-data class CurrencyCode(val value: String)
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
+
+class CurrencyCode(value: String): Id<String>(value)

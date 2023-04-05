@@ -1,13 +1,15 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
+
 class Priority(
-    val id: PriorityId = PriorityId(),
+    id: PriorityId = PriorityId(),
     name: String,
     description: String,
     emoji: String,
     value: Int,
     active: Boolean = true
-) {
+) : Entity<PriorityId>(id) {
 
     var name = name; private set
     var description = description; private set

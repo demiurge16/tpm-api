@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.expense
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
 import java.util.UUID
 
-data class ExpenseId(val value: UUID = UUID.randomUUID())
+class ExpenseId(value: UUID = UUID.randomUUID()): Id<UUID>(value)

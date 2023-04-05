@@ -1,5 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
+
 open class Language(
     open val code: LanguageCode,
     val iso6392T: String?,
@@ -8,7 +10,7 @@ open class Language(
     val scope: LanguageScope,
     val type: LanguageType,
     val name: String
-)
+) : Entity<LanguageCode>(code)
 
 data class UnknownLanguage(override val code: LanguageCode) : Language(
     code = code,

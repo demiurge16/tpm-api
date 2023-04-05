@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
 import java.util.*
 
-data class ProjectId(val value: UUID = UUID.randomUUID())
+class ProjectId(value: UUID = UUID.randomUUID()): Id<UUID>(value)

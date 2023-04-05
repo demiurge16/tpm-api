@@ -4,6 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 
 fun Currency.toView() = CurrencyView(
-    code = code.value,
+    code = id.value,
     name = name
 )

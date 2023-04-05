@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.client
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.client.ClientValidationException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
 
 class Client(
-    val id: ClientId = ClientId(),
+    id: ClientId = ClientId(),
     name: String,
     email: String,
     phone: String,
@@ -17,7 +18,8 @@ class Client(
     notes: String,
     type: ClientType,
     active: Boolean = true
-) {
+): Entity<ClientId>(id) {
+
     var name: String = name; private set
     var email: String = email; private set
     var phone: String = phone; private set

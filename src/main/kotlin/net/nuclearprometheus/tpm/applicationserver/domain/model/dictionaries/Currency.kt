@@ -1,5 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
-open class Currency(open val code: CurrencyCode, val name: String)
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 
-data class UnknownCurrency(override val code: CurrencyCode) : Currency(code, "Unknown")
+open class Currency(code: CurrencyCode, val name: String) : Entity<CurrencyCode>(code)
+
+class UnknownCurrency(code: CurrencyCode) : Currency(code, "Unknown")

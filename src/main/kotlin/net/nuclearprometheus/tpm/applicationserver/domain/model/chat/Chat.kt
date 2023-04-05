@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.chat
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 
 class Chat(
-    val id: ChatId = ChatId(),
+    id: ChatId = ChatId(),
     title: String,
     description: String,
     status: ChatStatus = ChatStatus.ACTIVE,
@@ -12,7 +13,7 @@ class Chat(
     val projectId: ProjectId,
     participants: List<TeamMember> = listOf(),
     messages: List<Message> = listOf()
-) {
+): Entity<ChatId>(id) {
 
     var title = title; private set
     var description = description; private set

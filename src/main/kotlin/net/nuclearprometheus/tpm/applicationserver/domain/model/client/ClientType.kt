@@ -1,6 +1,15 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.client
 
-class ClientType(val id: ClientTypeId = ClientTypeId(), name: String, description: String, corporate: Boolean, active: Boolean = true) {
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
+
+class ClientType(
+    id: ClientTypeId = ClientTypeId(),
+    name: String,
+    description: String,
+    corporate: Boolean,
+    active: Boolean = true
+): Entity<ClientTypeId>(id) {
+
     var name: String = name; private set
     var description: String = description; private set
     var corporate: Boolean = corporate; private set

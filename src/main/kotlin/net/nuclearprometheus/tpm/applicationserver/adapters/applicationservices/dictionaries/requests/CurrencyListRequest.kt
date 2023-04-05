@@ -13,7 +13,7 @@ class CurrencyListRequest(
 
     override fun sortComparator(): Comparator<Currency> {
         return when (sort) {
-            "code.value" -> Comparator<Currency> { o1, o2 -> o1.code.value.compareTo(o2.code.value) }
+            "code.value" -> Comparator<Currency> { o1, o2 -> o1.id.value.compareTo(o2.id.value) }
             "name" -> Comparator<Currency> { o1, o2 -> o1.name.compareTo(o2.name) }
             else -> Comparator<Currency> { _, _ -> 0 }
         }.let {

@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskValidationException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -9,7 +10,7 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 class Task(
-    val id: TaskId = TaskId(),
+    id: TaskId = TaskId(),
     title: String,
     description: String,
     sourceLanguage: Language,
@@ -26,7 +27,8 @@ class Task(
     priority: Priority,
     assignee: TeamMember? = null,
     projectId: ProjectId
-) {
+) : Entity<TaskId>(id) {
+
     var title = title; private set
     var description = description; private set
     var sourceLanguage = sourceLanguage; private set

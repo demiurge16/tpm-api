@@ -1,3 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries
 
-class LanguageCode(val value: String)
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
+
+class LanguageCode(value: String): Id<String>(value)

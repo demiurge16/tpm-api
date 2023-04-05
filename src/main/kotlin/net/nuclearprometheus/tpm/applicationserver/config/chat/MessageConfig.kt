@@ -3,7 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.config.chat
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.MessageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.chat.ChatService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.chat.MessageService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.chat.MessageServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
@@ -17,9 +16,9 @@ class MessageConfig(
     private val teamMemberRepository: TeamMemberRepository,
 ) {
 
-    private val logger = loggerFor(ChatService::class.java)
+    private val logger = loggerFor(MessageService::class.java)
 
     @Bean
-    fun chatService(): MessageService = MessageServiceImpl(messageRepository, chatRepository, teamMemberRepository, logger)
+    fun messageService(): MessageService = MessageServiceImpl(messageRepository, chatRepository, teamMemberRepository, logger)
 
 }

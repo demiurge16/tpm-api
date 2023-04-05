@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.note
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
 import java.util.UUID
 
-data class NoteId(val value: UUID = UUID.randomUUID())
+class NoteId(value: UUID = UUID.randomUUID()): Id<UUID>(value)
