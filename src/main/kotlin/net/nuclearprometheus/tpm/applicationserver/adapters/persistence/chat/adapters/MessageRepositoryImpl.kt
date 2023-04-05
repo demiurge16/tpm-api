@@ -6,6 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammemb
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.ChatId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Message
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.MessageId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.MessageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
@@ -27,6 +28,8 @@ class MessageRepositoryImpl(
     override fun delete(id: MessageId) = jpaRepository.deleteById(id.value)
     override fun deleteAll(ids: List<MessageId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun getAllByChatId(chatId: ChatId) = jpaRepository.findAllByChatId(chatId.value).map { it.toDomain(teamMemberRepository) }
+    override fun deleteAllByChatId(chatId: ChatId) = jpaRepository.deleteAllByChatId(chatId.value)
+    override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
 
     companion object Mappers {
 
