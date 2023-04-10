@@ -37,4 +37,20 @@ import java.util.*
     fun pay(id: UUID): ProjectStatusUpdateResponse {
         TODO("Not yet implemented")
     }
+
+    fun putOnHold(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun resume(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun cancel(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    fun reopen(id: UUID): ProjectStatusUpdateResponse {
+        TODO("Not yet implemented")
+    }
 }

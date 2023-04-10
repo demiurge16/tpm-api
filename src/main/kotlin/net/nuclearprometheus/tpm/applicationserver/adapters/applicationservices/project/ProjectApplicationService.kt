@@ -30,4 +30,8 @@ import java.util.*
     fun deliver(id: UUID) = projectStatusUpdateRequestHandler.deliver(id)
     fun invoice(id: UUID) = projectStatusUpdateRequestHandler.invoice(id)
     fun pay(id: UUID) = projectStatusUpdateRequestHandler.pay(id)
+    fun putOnHold(id: UUID) = projectStatusUpdateRequestHandler.putOnHold(id)
+    fun resume(id: UUID) = projectStatusUpdateRequestHandler.resume(id)
+    fun cancel(id: UUID) = projectStatusUpdateRequestHandler.cancel(id)
+    fun reopen(id: UUID) = projectStatusUpdateRequestHandler.reopen(id)
 }

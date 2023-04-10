@@ -236,13 +236,12 @@ class Project(
 
     fun putOnHold() {
         if (status !in listOf(
-                ProjectStatus.DRAFT,
                 ProjectStatus.READY_TO_START,
                 ProjectStatus.ACTIVE,
                 ProjectStatus.READY_TO_DELIVER
             )
         ) {
-            throw ProjectStatusChangeException("Project must be in draft, ready to start, in progress or ready to deliver status")
+            throw ProjectStatusChangeException("Project must be in ready to start, in progress or ready to deliver status")
         }
         status = ProjectStatus.ON_HOLD
     }
@@ -259,10 +258,11 @@ class Project(
                 ProjectStatus.DRAFT,
                 ProjectStatus.READY_TO_START,
                 ProjectStatus.ACTIVE,
+                ProjectStatus.ON_HOLD,
                 ProjectStatus.READY_TO_DELIVER
             )
         ) {
-            throw ProjectStatusChangeException("Project must be in draft, ready to start, in progress or ready to deliver status")
+            throw ProjectStatusChangeException("Project must be in draft, ready to start, on hold, active or ready to deliver status")
         }
         status = ProjectStatus.CANCELLED
     }
