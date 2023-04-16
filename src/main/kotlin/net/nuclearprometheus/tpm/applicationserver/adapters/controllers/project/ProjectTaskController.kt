@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -19,16 +20,15 @@ class ProjectTaskController(
     fun getTasks(@PathVariable(name = "projectId") projectId: UUID) = with(logger) {
         info("GET /api/v1/project/$projectId/task")
 
-        service.getTasksForProject(projectId)
+        ResponseEntity.ok().body(service.getTasksForProject(projectId))
     }
 
     @PostMapping("")
     fun createTask(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: ProjectTaskRequest.Create) =
         with(logger) {
             info("POST /api/v1/project/$projectId/task")
-            info("request: $request")
 
-            service.createTask(projectId, request)
+            ResponseEntity.ok().body(service.createTask(projectId, request))
         }
 }
 

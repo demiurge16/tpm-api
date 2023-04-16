@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectFileApplicationService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -18,16 +19,15 @@ class ProjectFileController(
     fun getFiles(@PathVariable(name = "projectId") projectId: UUID) = with(logger) {
         info("GET /api/v1/project/$projectId/file")
 
-        service.getFilesForProject(projectId)
+        ResponseEntity.ok().body(service.getFilesForProject(projectId))
     }
 
     @PostMapping("")
     fun addFile(@PathVariable(name = "projectId") projectId: UUID, @RequestParam(name = "file") request: MultipartFile) =
         with(logger) {
             info("POST /api/v1/project/$projectId/file")
-            info("request: $request")
 
-            service.addFile(projectId, request)
+            ResponseEntity.ok().body(service.addFile(projectId, request))
         }
 }
 

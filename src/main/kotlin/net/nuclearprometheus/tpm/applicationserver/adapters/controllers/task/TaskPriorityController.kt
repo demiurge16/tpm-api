@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskPriorityApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskPriorityRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -19,7 +20,7 @@ class TaskPriorityController(private val service: TaskPriorityApplicationService
     ) = with(logger) {
         info("PATCH /api/v1/task/$taskId/change-priority")
 
-        service.changePriority(taskId, request)
+        ResponseEntity.ok().body(service.changePriority(taskId, request))
     }
 }
 

@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.UnitApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -16,42 +17,41 @@ class UnitController(private val service: UnitApplicationService) {
     fun getAll() = with(logger) {
         info("GET /api/v1/unit")
 
-        service.getUnits()
+        ResponseEntity.ok().body(service.getUnits())
     }
 
     @GetMapping("/{id}")
     fun get(@PathVariable(name = "id") id: UUID) = with(logger) {
         info("GET /api/v1/unit/$id")
 
-        service.getUnit(id)
+        ResponseEntity.ok().body(service.getUnit(id))
     }
 
     @PostMapping("")
     fun create(@RequestBody request: UnitRequest.Create) = with(logger) {
         info("POST /api/v1/unit")
 
-        service.createUnit(request)
+        ResponseEntity.ok().body(service.createUnit(request))
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable(name = "id") id: UUID, @RequestBody request: UnitRequest.Update) = with(logger) {
         info("PUT /api/v1/unit/$id")
 
-        service.updateUnit(id, request)
+        ResponseEntity.ok().body(service.updateUnit(id, request))
     }
 
     @PatchMapping("/{id}/activate")
     fun activate(@PathVariable(name = "id") id: UUID) = with(logger) {
         info("PATCH /api/v1/unit/$id/activate")
 
-        service.activateUnit(id)
+        ResponseEntity.ok().body(service.activateUnit(id))
     }
 
     @PatchMapping("/{id}/deactivate")
     fun deactivate(@PathVariable(name = "id") id: UUID) = with(logger) {
         info("PATCH /api/v1/unit/$id/deactivate")
 
-        service.deactivateUnit(id)
+        ResponseEntity.ok().body(service.deactivateUnit(id))
     }
 }
-

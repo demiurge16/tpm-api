@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.CurrencyApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CurrencyRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,20 +20,23 @@ class CurrencyController(private val service: CurrencyApplicationService) {
     fun getAll(query: CurrencyRequest.List) =
         with(logger) {
             info("GET /api/v1/currency")
-            service.getCurrencies(query)
+
+            ResponseEntity.ok().body(service.getCurrencies(query))
         }
 
     @GetMapping("/{code}")
     fun getByCode(@PathVariable(name = "code") code: String) =
         with(logger) {
             info("GET /api/v1/currency/$code")
-            service.getCurrencyByCode(code)
+
+            ResponseEntity.ok().body(service.getCurrencyByCode(code))
         }
 
     @GetMapping("/{code}/exchange/{amount}")
     fun getExchangeRates(@PathVariable(name = "code") code: String, @PathVariable(name = "amount") amount: BigDecimal) =
         with(logger) {
             info("GET /api/v1/currency/$code/exchange/$amount")
-            service.getExchangeRates(code, amount)
+
+            ResponseEntity.ok().body(service.getExchangeRates(code, amount))
         }
 }

@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -17,14 +18,14 @@ class TaskController(private val service: TaskApplicationService) {
     fun getTasks() = with(logger) {
         info("GET /api/v1/task")
 
-        service.getTasks()
+        ResponseEntity.ok().body(service.getTasks())
     }
 
     @GetMapping("/{taskId}")
     fun getTask(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
         info("GET /api/v1/task/$taskId")
 
-        service.getTask(taskId)
+        ResponseEntity.ok().body(service.getTask(taskId))
     }
 
     @PutMapping("/{taskId}")
@@ -32,7 +33,7 @@ class TaskController(private val service: TaskApplicationService) {
         with(logger) {
             info("PUT /api/v1/task/$taskId")
 
-            service.updateTask(taskId, request)
+            ResponseEntity.ok().body(service.updateTask(taskId, request))
         }
 
     @PatchMapping("/{taskId}/move-start")
@@ -40,7 +41,7 @@ class TaskController(private val service: TaskApplicationService) {
         with(logger) {
             info("PATCH /api/v1/task/$taskId/move-start")
 
-            service.moveStart(taskId, request)
+            ResponseEntity.ok().body(service.moveStart(taskId, request))
         }
 
     @PatchMapping("/{taskId}/move-deadline")
@@ -48,7 +49,7 @@ class TaskController(private val service: TaskApplicationService) {
         with(logger) {
             info("PATCH /api/v1/task/$taskId/move-deadline")
 
-            service.moveDeadline(taskId, request)
+            ResponseEntity.ok().body(service.moveDeadline(taskId, request))
         }
 }
 

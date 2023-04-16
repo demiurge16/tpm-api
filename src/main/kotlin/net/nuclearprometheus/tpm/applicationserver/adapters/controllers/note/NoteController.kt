@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.note
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.note.NoteApplicationService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -15,14 +16,14 @@ class NoteController(private val service: NoteApplicationService) {
     fun getNotes() = with(logger) {
         info("GET /api/v1/note")
 
-        service.getNotes()
+        ResponseEntity.ok().body(service.getNotes())
     }
 
     @GetMapping("/{noteId}")
     fun getNote(@PathVariable(name = "noteId") noteId: UUID) = with(logger) {
         info("GET /api/v1/note/$noteId")
 
-        service.getNote(noteId)
+        ResponseEntity.ok().body(service.getNote(noteId))
     }
 
     @DeleteMapping("/{noteId}")
@@ -30,5 +31,6 @@ class NoteController(private val service: NoteApplicationService) {
         info("DELETE /api/v1/note/$noteId")
 
         service.deleteNote(noteId)
+        ResponseEntity.noContent().build<Void>()
     }
 }

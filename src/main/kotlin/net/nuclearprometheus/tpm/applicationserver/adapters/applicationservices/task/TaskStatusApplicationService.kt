@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task.TaskStatusMapper.toTaskStatusResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskStatusMapper.toTaskStatusResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor

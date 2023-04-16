@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
+package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskStatusResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task

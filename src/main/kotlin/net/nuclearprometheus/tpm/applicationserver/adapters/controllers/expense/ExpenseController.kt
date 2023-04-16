@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.expense
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.ExpenseApplicationService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -15,21 +16,21 @@ class ExpenseController(private val service: ExpenseApplicationService) {
     fun getExpenses() = with(logger) {
         info("GET /api/v1/expense")
 
-        service.getExpenses()
+        ResponseEntity.ok().body(service.getExpenses())
     }
 
     @GetMapping("/{expenseId}")
     fun getExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
         info("GET /api/v1/expense/$expenseId")
 
-        service.getExpense(expenseId)
+        ResponseEntity.ok().body(service.getExpense(expenseId))
     }
 
     @DeleteMapping("/{expenseId}")
     fun deleteExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
         info("DELETE /api/v1/expense/$expenseId")
 
-        service.deleteExpense(expenseId)
+        ResponseEntity.ok().body(service.deleteExpense(expenseId))
     }
 }
 

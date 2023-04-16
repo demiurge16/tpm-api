@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.CountryApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CountryRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -19,7 +20,8 @@ class CountryController(private val service: CountryApplicationService) {
     fun getCountries(query: CountryRequest.List) =
         with(logger) {
             info("GET /api/v1/country")
-            service.getCountries(query)
+
+            ResponseEntity.ok().body(service.getCountries(query))
         }
 
     @GetMapping("/{code}")
@@ -27,7 +29,8 @@ class CountryController(private val service: CountryApplicationService) {
     fun getCountryByCode(@PathVariable(name = "code") code: String) =
         with(logger) {
             info("GET /api/v1/country/$code")
-            service.getCountry(code)
+
+            ResponseEntity.ok().body(service.getCountry(code))
         }
 
     @GetMapping("/name/{name}")
@@ -35,7 +38,7 @@ class CountryController(private val service: CountryApplicationService) {
     fun getCountriesByNameLike(@PathVariable(name = "name") name: String) =
         with(logger) {
             info("GET /api/v1/country/name/$name")
-            service.getCountriesByNameLike(name)
-        }
 
+            ResponseEntity.ok().body(service.getCountriesByNameLike(name))
+        }
 }

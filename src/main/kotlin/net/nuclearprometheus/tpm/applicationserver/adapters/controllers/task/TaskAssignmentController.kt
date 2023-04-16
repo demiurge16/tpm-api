@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskAssignmentApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignmentRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -19,14 +20,18 @@ class TaskAssignmentController(private val taskAssignmentApplicationService: Tas
     ) = with(logger) {
         info("PATCH /api/v1/task/$taskId/assign-team-member")
 
-        taskAssignmentApplicationService.assignTeamMember(taskId, request)
+        ResponseEntity.ok().body(
+            taskAssignmentApplicationService.assignTeamMember(taskId, request)
+        )
     }
 
     @PatchMapping("/unassign-team-member")
     fun unassignTeamMember(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
         info("PATCH /api/v1/task/$taskId/unassign-team-member")
 
-        taskAssignmentApplicationService.unassignTeamMember(taskId)
+        ResponseEntity.ok().body(
+            taskAssignmentApplicationService.unassignTeamMember(taskId)
+        )
     }
 }
 
