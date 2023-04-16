@@ -18,12 +18,13 @@ class NoteServiceImpl(
 ) : NoteService {
 
     override fun create(content: String, authorId: TeamMemberId, projectId: ProjectId): Note {
-        teamMemberRepository.get(authorId) ?: throw NotFoundException("Author does not exist")
         projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
+
+        val author = teamMemberRepository.get(authorId) ?: throw NotFoundException("Author does not exist")
 
         val note = Note(
             content = content,
-            authorId = authorId,
+            author = author,
             projectId = projectId
         )
 

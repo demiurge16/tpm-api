@@ -2,9 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.common.requests
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Page
 import net.nuclearprometheus.tpm.applicationserver.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.queries.createQuery
 import net.nuclearprometheus.tpm.applicationserver.queries.emptyQuery
-import net.nuclearprometheus.tpm.applicationserver.queries.parseQuery
 
+// TODO: make this an interface
 abstract class FilteredRequest<TEntity : Any>(
     val page: Int?,
     val size: Int?,
@@ -17,7 +18,7 @@ abstract class FilteredRequest<TEntity : Any>(
 
     fun offset() = if (paged) (page!!) * size!! else 0
     fun limit() = if (paged) size!! else Int.MAX_VALUE
-    fun searchQuery(): Query<TEntity> = search?.let { parseQuery(it) } ?: emptyQuery()
+    fun searchQuery(): Query<TEntity> = search?.let { createQuery(it) } ?: emptyQuery()
     abstract fun sortComparator(): Comparator<TEntity>
 }
 

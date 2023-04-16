@@ -14,6 +14,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -24,7 +25,8 @@ class ProjectServiceImpl(
     private val industryRepository: IndustryRepository,
     private val unitRepository: UnitRepository,
     private val currencyRepository: CurrencyRepository,
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val logger: Logger
 ) : ProjectService {
 
     override fun create(

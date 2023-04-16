@@ -27,17 +27,20 @@ databaseChangeLog:
       file: initial-schema/009-initial-schema-task.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/010-initial-schema-expense.yml
+      file: initial-schema/010-initial-schema-expense-category.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/011-initial-schema-note.yml
+      file: initial-schema/011-initial-schema-expense.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/012-initial-schema-file.yml
+      file: initial-schema/012-initial-schema-note.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/013-initial-schema-chat.yml
+      file: initial-schema/013-initial-schema-file.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/014-initial-schema-message.yml
+      file: initial-schema/014-initial-schema-chat.yml
+      relativeToChangelogFile: true
+  - include:
+      file: initial-schema/015-initial-schema-message.yml
       relativeToChangelogFile: true

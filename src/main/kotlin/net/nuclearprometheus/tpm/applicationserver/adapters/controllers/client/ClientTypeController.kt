@@ -13,7 +13,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getClientTypes(query: ClientTypeListRequest) =
+    fun getClientTypes(query: ClientTypeRequest.List) =
         with(logger) {
             info("GET /api/v1/client-type")
             service.getClientTypes(query)
@@ -27,14 +27,14 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
         }
 
     @PostMapping("")
-    fun createClientType(@RequestBody request: ClientTypeCreateRequest) =
+    fun createClientType(@RequestBody request: ClientTypeRequest.Create) =
         with(logger) {
             info("POST /api/v1/client-type")
             service.createClientType(request)
         }
 
     @PutMapping("/{id}")
-    fun updateClientType(@PathVariable(name = "id") id: UUID, @RequestBody request: ClientTypeUpdateRequest) =
+    fun updateClientType(@PathVariable(name = "id") id: UUID, @RequestBody request: ClientTypeRequest.Update) =
         with(logger) {
             info("PUT /api/v1/client-type/$id")
             service.updateClientType(id, request)
@@ -44,14 +44,14 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
     fun activate(@PathVariable(name = "id") id: UUID) =
         with(logger) {
             info("PATCH /api/v1/client-type/$id/activate")
-            service.activate(id)
+            service.activateClientType(id)
         }
 
     @PatchMapping("/{id}/deactivate")
     fun deactivate(@PathVariable(name = "id") id: UUID) =
         with(logger) {
             info("PATCH /api/v1/client-type/$id/deactivate")
-            service.deactivate(id)
+            service.deactivateClientType(id)
         }
 
 }

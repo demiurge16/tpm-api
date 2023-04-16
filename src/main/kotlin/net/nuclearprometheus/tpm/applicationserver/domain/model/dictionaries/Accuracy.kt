@@ -7,7 +7,7 @@ class Accuracy(
     name: String,
     description: String,
     active: Boolean = true
-): Entity<AccuracyId>(id) {
+) : Entity<AccuracyId>(id) {
 
     var name = name; private set
     var description = description; private set

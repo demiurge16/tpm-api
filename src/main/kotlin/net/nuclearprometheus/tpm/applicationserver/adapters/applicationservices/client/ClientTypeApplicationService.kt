@@ -1,57 +1,75 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.handlers.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toActivityStatus
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTypeId
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ClientTypeApplicationService(
-    private val clientTypeViewRequestHandler: ClientTypeViewRequestHandler,
-    private val clientTypeCreateRequestHandler: ClientTypeCreateRequestHandler,
-    private val clientTypeUpdateRequestHandler: ClientTypeUpdateRequestHandler,
-    private val clientTypeActiveStatusRequestHandler: ClientTypeActiveStatusRequestHandler
+    private val service: ClientTypeService,
+    private val repository: ClientTypeRepository
 ) {
 
     private val logger = loggerFor(this::class.java)
 
+    @Cacheable("client-types-cache")
     fun getClientTypes(query: FilteredRequest<ClientType>) =
         with(logger) {
-            info("ClientType application service, method getClientTypes")
-            clientTypeViewRequestHandler.getClientTypes(query)
+            info("getClientTypes($query)")
+
+            repository.getAll().applyQuery(query).map { it.toView() }
         }
 
+    @Cacheable("client-types-cache")
     fun getClientType(id: UUID) =
         with(logger) {
-            info("ClientType application service, method getClientType")
-            clientTypeViewRequestHandler.getClientType(id)
+            info("getClientType($id)")
+
+            repository.get(ClientTypeId(id))?.toView() ?: throw NotFoundException("Client type with id $id not found")
         }
 
-    fun createClientType(request: ClientTypeCreateRequest) =
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
+    fun createClientType(request: ClientTypeRequest.Create) =
         with(logger) {
-            info("ClientType application service, method createClientType")
-            clientTypeCreateRequestHandler.createClientType(request)
+            info("createClientType($request)")
+
+            service.create(request.name, request.description, request.corporate).toView()
         }
 
-    fun updateClientType(id: UUID, request: ClientTypeUpdateRequest) =
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
+    fun updateClientType(id: UUID, request: ClientTypeRequest.Update) =
         with(logger) {
-            info("ClientType application service, method updateClientType")
-            clientTypeUpdateRequestHandler.updateClientType(id, request)
+            info("updateClientType($id, $request)")
+
+            service.update(ClientTypeId(id), request.name, request.description, request.corporate).toView()
         }
 
-    fun activate(id: UUID): ClientTypeActiveStatusResponse =
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
+    fun activateClientType(id: UUID) =
         with(logger) {
-            info("ClientType application service, method activate")
-            clientTypeActiveStatusRequestHandler.activate(id)
+            info("activateClientType($id)")
+
+            service.activate(ClientTypeId(id)).toActivityStatus()
         }
 
-    fun deactivate(id: UUID): ClientTypeActiveStatusResponse =
+    @CacheEvict(value = ["client-types-cache"], allEntries = true)
+    fun deactivateClientType(id: UUID) =
         with(logger) {
-            info("ClientType application service, method deactivate")
-            clientTypeActiveStatusRequestHandler.deactivate(id)
+            info("deactivateClientType($id)")
+
+            service.deactivate(ClientTypeId(id)).toActivityStatus()
         }
 }

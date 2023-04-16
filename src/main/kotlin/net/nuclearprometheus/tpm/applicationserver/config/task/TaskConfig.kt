@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.tea
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
@@ -24,6 +25,7 @@ class TaskConfig(
 
     private val logger = loggerFor(TaskService::class.java)
 
+    @Bean
     fun taskService(): TaskService =
         TaskServiceImpl(
             taskRepository,

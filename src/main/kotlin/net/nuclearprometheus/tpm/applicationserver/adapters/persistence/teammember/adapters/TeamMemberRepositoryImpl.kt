@@ -29,18 +29,20 @@ class TeamMemberRepositoryImpl(
     override fun deleteAll(ids: List<TeamMemberId>) = repository.deleteAllById(ids.map { it.value })
     override fun getAllByProjectId(projectId: ProjectId) = repository.findAllByProjectId(projectId.value).map { it.toDomain(userRepository) }
     override fun deleteAllByProjectId(projectId: ProjectId) = repository.deleteAllByProjectId(projectId.value)
+    override fun getByUserIdAndProjectId(userId: UserId, projectId: ProjectId): TeamMember? =
+        repository.findByUserIdAndProjectId(userId.value, projectId.value)?.toDomain(userRepository)
 
     companion object Mappers {
         fun TeamMemberDatabaseModel.toDomain(userRepository: UserRepository) = TeamMember(
             id = TeamMemberId(id),
-            user = userRepository.get(UserId(user)) ?: throw IllegalStateException("User with id $user not found"),
+            user = userRepository.get(UserId(userId)) ?: throw IllegalStateException("User with id $userId not found"),
             role = role.toDomain(),
             projectId = ProjectId(projectId)
         )
 
         fun TeamMember.toDatabaseModel() = TeamMemberDatabaseModel(
             id = id.value,
-            user = user.id.value,
+            userId = user.id.value,
             role = role.toDatabaseModel(),
             projectId = projectId.value
         )

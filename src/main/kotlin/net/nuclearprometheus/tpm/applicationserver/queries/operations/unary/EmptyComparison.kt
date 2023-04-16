@@ -8,4 +8,17 @@ class EmptyComparison<TEntity : Any>(override val field: String) : UnaryComparis
             is Collection<*> -> fieldValue.isEmpty()
             else -> throw IllegalArgumentException("Operation <contains> is not supported for field type: ${fieldValue!!::class}")
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as EmptyComparison<*>
+
+        if (field != other.field) return false
+
+        return true
+    }
+
+    override fun hashCode() = field.hashCode()
 }

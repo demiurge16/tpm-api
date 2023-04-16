@@ -1,5 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.queries
 
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.Operation
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.OperationType
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.binary.*
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.logical.AndOperation
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.logical.NotOperation
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.logical.OrOperation
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.unary.EmptyComparison
+import net.nuclearprometheus.tpm.applicationserver.queries.operations.unary.NullComparison
+
 /**
  * This function parses a query string into a [Query] object.
  *
@@ -47,7 +56,7 @@ package net.nuclearprometheus.tpm.applicationserver.queries
  * @param query The query string to parse
  * @return The parsed query object
  */
-fun <TEntity : Any> parseQuery(query: String): Query<TEntity> {
+fun <TEntity : Any> createQuery(query: String): Query<TEntity> {
     val tokens = query.sanitize().tokenize()
 
     val priorities = mapOf(
@@ -85,8 +94,44 @@ fun <TEntity : Any> parseQuery(query: String): Query<TEntity> {
         output.add(stack.removeLast())
     }
 
-    return Query(output.toList())
+    val resultStack = output.map {
+        when (it.type) {
+            TokenType.COMPARISON -> it.toOperator<TEntity>()
+            TokenType.NOT -> NotOperation()
+            TokenType.AND -> AndOperation()
+            TokenType.OR -> OrOperation()
+            else -> throw IllegalArgumentException("Invalid token type: ${it.type}")
+        }
+    }
+
+    return Query(resultStack)
 }
+
+private fun <TEntity : Any> Token.toOperator(): Operation<TEntity> {
+    val tokens = this.value.split(":")
+
+    val field = tokens.get(0)
+    val operator = tokens.get(1)
+    val value = tokens.getOrNull(2)
+
+    return when (operator.toOperationType()) {
+        OperationType.EQUALS -> EqualsComparison<TEntity>(field, value!!)
+        OperationType.CONTAINS -> ContainsComparison<TEntity>(field, value!!)
+        OperationType.GREATER_THAN -> GreaterThanComparison<TEntity>(field, value!!)
+        OperationType.LESS_THAN -> LessThanComparison<TEntity>(field, value!!)
+        OperationType.GREATER_THAN_OR_EQUAL -> GreaterThanOrEqualComparison<TEntity>(field, value!!)
+        OperationType.LESS_THAN_OR_EQUAL -> LessThanOrEqualComparison<TEntity>(field, value!!)
+        OperationType.ANY -> AnyComparison<TEntity>(field, value!!.toList())
+        OperationType.ALL -> AllComparison<TEntity>(field, value!!.toList())
+        OperationType.IS_NULL -> NullComparison<TEntity>(field)
+        OperationType.IS_EMPTY -> EmptyComparison<TEntity>(field)
+    }
+}
+
+private fun String.toOperationType() = OperationType.values().find { it.symbol == this }
+    ?: throw IllegalArgumentException("Unknown operation type: $this")
+
+private fun String.toList() = this.split(",").map { it.trim() }
 
 private fun String.sanitize() = this.replace(" ", "")
     .replace("\t", "")

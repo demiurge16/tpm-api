@@ -1,11 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.chat
 
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/chat")
-class ChatController {
+class ChatController() {
+
+    private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
     fun getChats() {

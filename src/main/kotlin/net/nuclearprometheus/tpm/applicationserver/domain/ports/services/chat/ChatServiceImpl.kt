@@ -19,7 +19,7 @@ class ChatServiceImpl(
 ) : ChatService {
 
     override fun create(
-        name: String,
+        title: String,
         description: String,
         projectId: ProjectId,
         owner: TeamMemberId,
@@ -28,7 +28,7 @@ class ChatServiceImpl(
         projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
 
         val chat = Chat(
-            title = name,
+            title = title,
             description = description,
             projectId = projectId,
             owner = teamMemberRepository.get(owner) ?: throw NotFoundException("Owner does not exist"),
@@ -38,9 +38,9 @@ class ChatServiceImpl(
         return chatRepository.create(chat)
     }
 
-    override fun update(id: ChatId, name: String, description: String): Chat {
+    override fun update(id: ChatId, title: String, description: String): Chat {
         val chat = chatRepository.get(id) ?: throw NotFoundException("Chat does not exist")
-        chat.update(name, description)
+        chat.update(title, description)
 
         return chatRepository.update(chat)
     }

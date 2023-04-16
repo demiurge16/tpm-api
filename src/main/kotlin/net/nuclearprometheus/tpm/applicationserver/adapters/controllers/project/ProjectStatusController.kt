@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectApplicationService
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectStatusApplicationService
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,42 +11,93 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1/project/{id}")
 class ProjectStatusController(
-    private val service: ProjectApplicationService
+    private val service: ProjectStatusApplicationService
 ) {
 
+    private val logger = loggerFor(ProjectStatusController::class.java)
+
     @PatchMapping("/finish-draft")
-    fun finishDraft(@PathVariable(name = "id") id: UUID) = service.finishDraft(id)
+    fun finishDraft(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/finish-draft")
+
+        service.finishDraft(id)
+    }
 
     @PatchMapping("/back-to-draft")
-    fun backToDraft(@PathVariable(name = "id") id: UUID) = service.backToDraft(id)
+    fun backToDraft(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/back-to-draft")
+
+        service.backToDraft(id)
+    }
 
     @PatchMapping("/start-progress")
-    fun startProgress(@PathVariable(name = "id") id: UUID) = service.startProgress(id)
+    fun startProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/start-progress")
+
+        service.startProgress(id)
+    }
 
     @PatchMapping("/finish-progress")
-    fun finishProgress(@PathVariable(name = "id") id: UUID) = service.finishProgress(id)
+    fun finishProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/finish-progress")
+
+        service.finishProgress(id)
+    }
 
     @PatchMapping("/back-to-progress")
-    fun backToProgress(@PathVariable(name = "id") id: UUID) = service.backToProgress(id)
+    fun backToProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/back-to-progress")
+
+        service.backToProgress(id)
+    }
 
     @PatchMapping("/deliver")
-    fun deliver(@PathVariable(name = "id") id: UUID) = service.deliver(id)
+    fun deliver(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/deliver")
+
+        service.deliver(id)
+    }
 
     @PatchMapping("/invoice")
-    fun invoice(@PathVariable(name = "id") id: UUID) = service.invoice(id)
+    fun invoice(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/invoice")
+
+        service.invoice(id)
+    }
 
     @PatchMapping("/pay")
-    fun pay(@PathVariable(name = "id") id: UUID) = service.pay(id)
+    fun pay(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/pay")
+
+        service.pay(id)
+    }
 
     @PatchMapping("/put-on-hold")
-    fun putOnHold(@PathVariable(name = "id") id: UUID) = service.putOnHold(id)
+    fun putOnHold(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/put-on-hold")
+
+        service.putOnHold(id)
+    }
 
     @PatchMapping("/resume")
-    fun resume(@PathVariable(name = "id") id: UUID) = service.resume(id)
+    fun resume(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/resume")
+
+        service.resume(id)
+    }
 
     @PatchMapping("/cancel")
-    fun cancel(@PathVariable(name = "id") id: UUID) = service.cancel(id)
+    fun cancel(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/cancel")
+
+        service.cancel(id)
+    }
 
     @PatchMapping("/reopen")
-    fun reopen(@PathVariable(name = "id") id: UUID) = service.reopen(id)
+    fun reopen(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/reopen")
+
+        service.reopen(id)
+    }
 }
+

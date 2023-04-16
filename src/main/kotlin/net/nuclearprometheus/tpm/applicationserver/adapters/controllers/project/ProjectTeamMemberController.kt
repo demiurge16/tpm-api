@@ -1,24 +1,45 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectTeamMemberApplicationService
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTeamMemberRequest
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/project/{projectId}/team-member")
-class ProjectTeamMemberController {
+class ProjectTeamMemberController(
+    private val service: ProjectTeamMemberApplicationService
+) {
+
+    private val logger = loggerFor(ProjectTeamMemberController::class.java)
 
     @GetMapping("")
-    fun getTeamMembers(@PathVariable(name = "projectId") projectId: UUID) {
-        TODO()
+    fun getTeamMembers(@PathVariable(name = "projectId") projectId: UUID) = with(logger) {
+        info("GET /api/v1/project/$projectId/team-member")
+
+        service.getTeamMembers(projectId)
     }
 
     @PostMapping("")
-    fun addTeamMember(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: Any) {
-        TODO()
+    fun addTeamMember(
+        @PathVariable(name = "projectId") projectId: UUID,
+        @RequestBody request: ProjectTeamMemberRequest.Create
+    ) = with(logger) {
+        info("POST /api/v1/project/$projectId/team-member")
+        info("request: $request")
+
+        service.addTeamMember(projectId, request)
     }
 
-    @DeleteMapping("/{userId}")
-    fun removeTeamMember(@PathVariable(name = "projectId") projectId: UUID, @PathVariable(name = "userId") userId: UUID) {
-        TODO()
+    @DeleteMapping("/{teamMemberId}")
+    fun removeTeamMember(
+        @PathVariable(name = "projectId") projectId: UUID,
+        @PathVariable(name = "teamMemberId") teamMemberId: UUID
+    ) = with(logger) {
+        info("DELETE /api/v1/project/$projectId/team-member/$teamMemberId")
+
+        service.removeTeamMember(projectId, teamMemberId)
     }
 }
+

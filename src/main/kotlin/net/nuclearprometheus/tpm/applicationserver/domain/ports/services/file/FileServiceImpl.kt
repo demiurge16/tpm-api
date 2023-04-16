@@ -26,14 +26,16 @@ class FileServiceImpl(
         projectId: ProjectId,
         location: String
     ): File {
-        teamMemberRepository.get(uploaderId) ?: throw NotFoundException("Team member with id $uploaderId does not exist")
         projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId does not exist")
+
+        val teamMember = teamMemberRepository.get(uploaderId)
+            ?: throw NotFoundException("Team member with id $uploaderId does not exist")
 
         val file = File(
             name = name,
             size = size,
             type = type,
-            uploaderId = uploaderId,
+            uploader = teamMember,
             projectId = projectId,
             location = location
         )

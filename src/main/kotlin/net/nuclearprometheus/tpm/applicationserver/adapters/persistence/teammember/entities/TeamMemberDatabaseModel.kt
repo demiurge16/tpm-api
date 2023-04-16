@@ -8,6 +8,6 @@ import java.util.*
 open class TeamMemberDatabaseModel(
     @Id() open var id: UUID,
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var role: TeamMemberRoleDatabaseModel,
-    @Column(nullable = false) open var user: UUID,
+    @Column(nullable = false) open var userId: UUID,
     @Column(nullable = false) open var projectId: UUID
 )

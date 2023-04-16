@@ -8,7 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 
 interface ChatService {
     fun create(
-        name: String,
+        title: String,
         description: String,
         projectId: ProjectId,
         owner: TeamMemberId,
@@ -17,7 +17,7 @@ interface ChatService {
 
     fun update(
         id: ChatId,
-        name: String,
+        title: String,
         description: String
     ): Chat
 

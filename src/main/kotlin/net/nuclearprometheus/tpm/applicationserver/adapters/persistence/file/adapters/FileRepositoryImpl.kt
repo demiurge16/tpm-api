@@ -17,27 +17,29 @@ class FileRepositoryImpl(
     private val teamMemberRepository: TeamMemberRepository
 ) : FileRepository {
 
-    override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
-    override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
-    override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
-    override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
-    override fun createAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
-    override fun update(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
-    override fun updateAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
+    override fun getAll() = jpaRepository.findAll().map { it.toDomain(teamMemberRepository) }
+    override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomain(teamMemberRepository) }.orElse(null)
+    override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(teamMemberRepository) }
+    override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain(teamMemberRepository)
+    override fun createAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain(teamMemberRepository) }
+    override fun update(entity: File) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain(teamMemberRepository)
+    override fun updateAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain(teamMemberRepository) }
     override fun delete(id: FileId) = jpaRepository.deleteById(id.value)
     override fun deleteAll(ids: List<FileId>) = jpaRepository.deleteAllById(ids.map { it.value })
-    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain() }
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(teamMemberRepository) }
     override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
 
     companion object Mappers {
 
-        fun FileDatabaseModel.toDomain() = File(
+        fun FileDatabaseModel.toDomain(teamMemberRepository: TeamMemberRepository) = File(
             id = FileId(id),
             name = name,
             size = size,
             type = type,
             uploadTime = uploadTime,
-            uploaderId = TeamMemberId(uploader.id),
+            uploader = TeamMemberId(uploader.id).let {
+                teamMemberRepository.get(it) ?: throw IllegalArgumentException("Uploader with id $it does not exist")
+            },
             projectId = ProjectId(projectId),
             location = location
         )
@@ -48,8 +50,8 @@ class FileRepositoryImpl(
             size = size,
             type = type,
             uploadTime = uploadTime,
-            uploader = teamMemberRepository.get(uploaderId)?.toDatabaseModel()
-                ?: throw IllegalArgumentException("Uploader with id $uploaderId does not exist"),
+            uploader = teamMemberRepository.get(uploader.id)?.toDatabaseModel()
+                ?: throw IllegalArgumentException("Uploader with id ${uploader.id} does not exist"),
             projectId = projectId.value,
             location = location
         )

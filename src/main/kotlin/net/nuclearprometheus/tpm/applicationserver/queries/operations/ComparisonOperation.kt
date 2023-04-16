@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.queries.operations
 
-interface ComparisonOperation<TEntity : Any> : Operation {
+interface ComparisonOperation<TEntity : Any> : Operation<TEntity> {
     val field: String
 
     fun evaluate(entity: TEntity): Boolean

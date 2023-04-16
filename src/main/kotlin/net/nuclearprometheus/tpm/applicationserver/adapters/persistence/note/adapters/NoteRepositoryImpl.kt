@@ -17,23 +17,25 @@ class NoteRepositoryImpl(
     private val teamMemberRepository: TeamMemberRepository
 ) : NoteRepository {
 
-    override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
-    override fun get(id: NoteId): Note? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
-    override fun get(ids: List<NoteId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
-    override fun create(entity: Note) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
-    override fun createAll(entities: List<Note>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
-    override fun update(entity: Note) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain()
-    override fun updateAll(entities: List<Note>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain() }
+    override fun getAll() = jpaRepository.findAll().map { it.toDomain(teamMemberRepository) }
+    override fun get(id: NoteId): Note? = jpaRepository.findById(id.value).map { it.toDomain(teamMemberRepository) }.orElse(null)
+    override fun get(ids: List<NoteId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(teamMemberRepository) }
+    override fun create(entity: Note) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain(teamMemberRepository)
+    override fun createAll(entities: List<Note>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain(teamMemberRepository) }
+    override fun update(entity: Note) = jpaRepository.save(entity.toDatabaseModel(teamMemberRepository)).toDomain(teamMemberRepository)
+    override fun updateAll(entities: List<Note>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel(teamMemberRepository) }).map { it.toDomain(teamMemberRepository) }
     override fun delete(id: NoteId) = jpaRepository.deleteById(id.value)
-    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain() }
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(teamMemberRepository) }
     override fun deleteAll(ids: List<NoteId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
 
     companion object Mappers {
-        fun NoteDatabaseModel.toDomain() = Note(
+        fun NoteDatabaseModel.toDomain(teamMemberRepository: TeamMemberRepository) = Note(
             id = NoteId(id),
             content = content,
-            authorId = TeamMemberId(author.id),
+            author = TeamMemberId(author.id).let {
+                teamMemberRepository.get(it) ?: throw IllegalArgumentException("Author not found")
+            },
             createdAt = createdAt,
             projectId = ProjectId(projectId)
         )
@@ -41,7 +43,7 @@ class NoteRepositoryImpl(
         fun Note.toDatabaseModel(teamMemberRepository: TeamMemberRepository) = NoteDatabaseModel(
             id = id.value,
             content = content,
-            author = teamMemberRepository.get(authorId)?.toDatabaseModel() ?: throw IllegalArgumentException("Author not found"),
+            author = teamMemberRepository.get(author.id)?.toDatabaseModel() ?: throw IllegalArgumentException("Author not found"),
             createdAt = createdAt,
             projectId = projectId.value
         )
