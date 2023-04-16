@@ -1,28 +1,34 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.note
 
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.note.NoteApplicationService
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/note")
-class NoteController {
+class NoteController(private val service: NoteApplicationService) {
+
+    private val logger = loggerFor(NoteController::class.java)
 
     @GetMapping("")
-    fun getNotes() {
-        TODO()
+    fun getNotes() = with(logger) {
+        info("GET /api/v1/note")
+
+        service.getNotes()
     }
 
     @GetMapping("/{noteId}")
-    fun getNote(@PathVariable(name = "noteId") noteId: UUID) {
-        TODO()
+    fun getNote(@PathVariable(name = "noteId") noteId: UUID) = with(logger) {
+        info("GET /api/v1/note/$noteId")
+
+        service.getNote(noteId)
     }
 
     @DeleteMapping("/{noteId}")
-    fun deleteNote(@PathVariable(name = "noteId") noteId: UUID) {
-        TODO()
+    fun deleteNote(@PathVariable(name = "noteId") noteId: UUID) = with(logger) {
+        info("DELETE /api/v1/note/$noteId")
+
+        service.deleteNote(noteId)
     }
 }

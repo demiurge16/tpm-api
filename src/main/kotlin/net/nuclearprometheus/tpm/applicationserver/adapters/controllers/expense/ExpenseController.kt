@@ -1,28 +1,35 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.expense
 
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.ExpenseApplicationService
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/expense")
-class ExpenseController {
+class ExpenseController(private val service: ExpenseApplicationService) {
+
+    private val logger = loggerFor(ExpenseController::class.java)
 
     @GetMapping("")
-    fun getExpenses() {
-        TODO()
+    fun getExpenses() = with(logger) {
+        info("GET /api/v1/expense")
+
+        service.getExpenses()
     }
 
     @GetMapping("/{expenseId}")
-    fun getExpense(@PathVariable(name = "expenseId") expenseId: UUID) {
-        TODO()
+    fun getExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
+        info("GET /api/v1/expense/$expenseId")
+
+        service.getExpense(expenseId)
     }
 
     @DeleteMapping("/{expenseId}")
-    fun deleteExpense(@PathVariable(name = "expenseId") expenseId: UUID) {
-        TODO()
+    fun deleteExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
+        info("DELETE /api/v1/expense/$expenseId")
+
+        service.deleteExpense(expenseId)
     }
 }
+
