@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.CorsConfiguration
 
 
 @Configuration
@@ -17,7 +18,23 @@ class SecurityConfiguration(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
-        http.cors().and().csrf().disable()
+        http.cors()
+            .configurationSource {
+                CorsConfiguration().apply {
+                    allowedOrigins = listOf(
+                        "http://localhost:3000",
+                        "http://localhost:8080",
+                        "http://localhost:8081",
+                        "http://auth.tpm.localhost",
+                        "http://api.tpm.localhost",
+                        "http://ui.tpm.localhost",
+                    )
+                    allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                    allowedHeaders = listOf("*")
+                    allowCredentials = true
+                }
+            }
+            .and().csrf().disable()
             .authorizeHttpRequests { it.anyRequest().authenticated() }
             .oauth2Login()
             .and()

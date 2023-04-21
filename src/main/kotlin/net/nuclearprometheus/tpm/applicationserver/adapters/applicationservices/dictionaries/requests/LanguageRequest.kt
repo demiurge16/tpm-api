@@ -15,7 +15,7 @@ sealed class LanguageRequest {
 
         override fun sortComparator(): Comparator<Language> {
             return when (sort) {
-                "code.value" -> Comparator<Language> { o1, o2 -> compareValues(o1.id.value, o2.id.value) }
+                "id.value" -> Comparator<Language> { o1, o2 -> compareValues(o1.id.value, o2.id.value) }
                 "name" -> Comparator<Language> { o1, o2 -> compareValues(o1.name, o2.name) }
                 "iso6392T" -> Comparator<Language> { o1, o2 -> compareValues(o1.iso6392T, o2.iso6392T) }
                 "iso6392B" -> Comparator<Language> { o1, o2 -> compareValues(o1.iso6392B, o2.iso6392B) }

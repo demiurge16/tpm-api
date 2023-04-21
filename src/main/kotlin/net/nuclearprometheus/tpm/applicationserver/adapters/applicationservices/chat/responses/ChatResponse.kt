@@ -1,10 +1,21 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses
 
+import io.swagger.v3.oas.annotations.media.Schema
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.PageableImpl
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.ChatStatus
 import java.util.*
 
 sealed class ChatResponse {
 
+    @Schema(name = "ChatResponse.Page")
+    data class Page(
+        override val items: List<View>,
+        override val totalPages: Int,
+        override val totalElements: Int,
+    ) : ChatResponse(), Pageable<View> by PageableImpl(items, totalPages, totalElements)
+
+    @Schema(name = "ChatResponse.View")
     data class View(
         val id: UUID,
         val title: String,
@@ -15,12 +26,14 @@ sealed class ChatResponse {
         val projectId: UUID
     ) : ChatResponse() {
 
+        @Schema(name = "ChatResponse.View.ChatStatusView")
         data class ChatStatusView(
             val status: ChatStatus,
             val name: String,
             val description: String,
         )
 
+        @Schema(name = "ChatResponse.View.ChatMember")
         data class ChatMember(
             val teamMemberId: UUID,
             val userId: UUID,
@@ -30,6 +43,7 @@ sealed class ChatResponse {
         )
     }
 
+    @Schema(name = "ChatResponse.ChatStatusView")
     data class ChatStatusView(
         val id: UUID,
         val status: ChatStatus,
@@ -37,6 +51,7 @@ sealed class ChatResponse {
         val description: String,
     ) : ChatResponse()
 
+    @Schema(name = "ChatResponse.ChatMember")
     data class ChatMember(
         val id: UUID,
         val teamMemberId: UUID,

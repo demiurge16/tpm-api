@@ -36,6 +36,10 @@ class QueryBuilder<TEntity : Any> {
         operationStack.add(EqualsComparison(field, value))
     }
 
+    fun contains(field: String, value: String) {
+        operationStack.add(ContainsComparison(field, value))
+    }
+
     fun greaterThan(field: String, value: String) {
         operationStack.add(GreaterThanComparison(field, value))
     }

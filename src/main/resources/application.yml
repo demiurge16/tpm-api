@@ -31,7 +31,7 @@ app:
 keycloak:
   realm: tpm
   auth-server-url: http://localhost:8081/auth
-  resource: application
+  resource: tpm-backend
   credentials:
     secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
 
@@ -81,7 +81,7 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: application
+            client-id: tpm-backend
             client-secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
             authorization-grant-type: authorization_code
             scope: openid,profile,email

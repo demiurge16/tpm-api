@@ -36,7 +36,7 @@ val kotlinCsvVersion: String by extra {
 }
 
 val springdocVersion: String by extra {
-    "2.0.4"
+    "2.1.0"
 }
 
 val logstashLogbackEncoderVersion: String by extra {

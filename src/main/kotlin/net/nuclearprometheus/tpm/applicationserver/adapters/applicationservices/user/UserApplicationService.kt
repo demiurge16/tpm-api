@@ -25,7 +25,7 @@ class UserApplicationService(
     }
 
     fun getUser(userId: UUID) = with(logger) {
-        info("getUser(userId=$userId)")
+        info("getUser($userId)")
 
         userRepository.get(UserId(userId))?.toView() ?: throw NotFoundException("User with id $userId not found")
     }

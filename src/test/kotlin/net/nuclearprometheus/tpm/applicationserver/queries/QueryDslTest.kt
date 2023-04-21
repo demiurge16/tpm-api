@@ -72,7 +72,7 @@ class QueryDslTest {
     @Test
     fun `must match entity`() {
         // Given
-        val dslQuery = query<Person> {
+        val dslQuery = query<BusinessPerson> {
             not {
                 or {
                     equals("name", "tom")
@@ -100,19 +100,44 @@ class QueryDslTest {
             and {
                 any("favouriteNumbers", listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
             }
+            and {
+                equals("businessName", "ACME Inc.")
+            }
+            and {
+                equals("businessCard.email", "tom.smith@acme.com")
+            }
+            and {
+                or {
+                    equals("businessCard.phone", "+1 123 456 789")
+                    equals("businessCard.phone", "+3 1234 56789")
+                }
+            }
+            and {
+                equals("businessCard.fax", "+1 987 654 321")
+            }
+            and {
+                contains("businessCard.website", "acme.com")
+            }
         }
 
-        val person = Person(
+        val businessPerson = BusinessPerson(
             name = "tom",
             lastname = "smith",
             age = 20,
             occupations = listOf("programmer", "developer"),
             countries = listOf("USA", "UK"),
-            favouriteNumbers = listOf(7, 16, 42)
+            favouriteNumbers = listOf(7, 16, 42),
+            businessName = "ACME Inc.",
+            businessCard = FancyBusinessCard(
+                email = "tom.smith@acme.com",
+                phone = "+1 123 456 789",
+                fax = "+1 987 654 321",
+                website = "acme.com"
+            )
         )
 
         // When
-        val result = dslQuery.evaluate(person)
+        val result = dslQuery.evaluate(businessPerson)
 
         // Then
         assert(result)

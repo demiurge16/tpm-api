@@ -48,6 +48,6 @@ class ProjectFileApplicationService(
             uploaderId = uploader.id,
             projectId = ProjectId(projectId),
             location = fileStorageLocation
-        )
+        ).toView()
     }
 }

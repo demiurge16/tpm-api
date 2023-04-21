@@ -24,6 +24,16 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: volume
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: measurement
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
                   name: active
                   type: BOOLEAN
                   constraints:

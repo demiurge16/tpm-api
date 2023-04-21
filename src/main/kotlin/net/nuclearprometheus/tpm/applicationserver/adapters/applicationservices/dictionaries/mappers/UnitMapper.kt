@@ -9,6 +9,12 @@ object UnitMapper {
         id = id.value,
         name = name,
         description = description,
+        volume = volume,
+        measurement = UnitResponse.View.MeasurementView(
+            measurement = measurement,
+            name = measurement.name,
+            description = measurement.description
+        ),
         active = active
     )
 

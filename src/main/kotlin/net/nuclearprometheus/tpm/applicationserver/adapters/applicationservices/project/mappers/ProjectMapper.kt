@@ -8,6 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse.View.CurrencyView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse.View.ProjectStatusView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse.View.ClientView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse.View.ClientView.CountryView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse.View.ClientTypeView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 
@@ -64,7 +65,24 @@ object ProjectMapper {
             address = client.address,
             city = client.city,
             state = client.state,
-            country = client.country,
+            country = CountryView(
+                code = client.country.id.value,
+                name = client.country.name,
+                nativeNames = client.country.nativeNames,
+                currencies = client.country.currencies.map {
+                    CountryView.CurrencyView(
+                        code = it.key.value,
+                        name = it.value,
+                    )
+                },
+                languages = client.country.languages.map {
+                    CountryView.LanguageView(
+                        code = it.key.value,
+                        name = it.value,
+                    )
+                },
+                emoji = client.country.emoji,
+            ),
             zip = client.zip,
             vat = client.vat,
             notes = client.notes,

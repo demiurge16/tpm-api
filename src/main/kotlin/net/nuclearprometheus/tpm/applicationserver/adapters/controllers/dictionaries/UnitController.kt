@@ -54,4 +54,11 @@ class UnitController(private val service: UnitApplicationService) {
 
         ResponseEntity.ok().body(service.deactivateUnit(id))
     }
+
+    @GetMapping("/refdata/measurement")
+    fun getMeasurementRefData() = with(logger) {
+        info("GET /api/v1/unit/refdata/measurement")
+
+        ResponseEntity.ok().body(service.getMeasurements())
+    }
 }

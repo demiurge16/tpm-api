@@ -14,7 +14,7 @@ class ClientController(private val service: ClientApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getClient(query: ClientRequest.List) =
+    fun getClients(query: ClientRequest.List) =
         with(logger) {
             info("GET /api/v1/client")
 

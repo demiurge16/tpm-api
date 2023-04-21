@@ -26,10 +26,11 @@
   "otpSupportedApplications": ["totpAppFreeOTPName"],
   "clients": [
     {
-      "clientId": "application",
+      "clientId": "tpm-backend",
       "name": "TPM",
       "description": "TPM",
       "enabled": true,
+      "directAccessGrantsEnabled": true,
       "surrogateAuthRequired": false,
       "secret": "euRH66K7xvH2xkVtYE91GBAUG7J0KFfc",
       "redirectUris": [
@@ -38,6 +39,23 @@
       ],
       "webOrigins": [
         "http://localhost:8080"
+      ]
+    },
+    {
+      "clientId": "tpm-frontend",
+      "name": "TPM",
+      "description": "TPM",
+      "enabled": true,
+      "directAccessGrantsEnabled": true,
+      "surrogateAuthRequired": false,
+      "secret": "fSAHK4YuuqHYXwnfaY0VHI1hZ31mGp7G",
+      "redirectUris": [
+        "http://ui.tpm.localhost/*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://ui.tpm.localhost",
+        "http://localhost:3000"
       ]
     }
   ],

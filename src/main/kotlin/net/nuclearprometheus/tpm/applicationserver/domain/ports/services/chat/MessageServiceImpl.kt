@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.chat
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.ChatId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Message
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
@@ -7,7 +8,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.cha
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.MessageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
-import org.webjars.NotFoundException
 
 class MessageServiceImpl(
     private val messageRepository: MessageRepository,

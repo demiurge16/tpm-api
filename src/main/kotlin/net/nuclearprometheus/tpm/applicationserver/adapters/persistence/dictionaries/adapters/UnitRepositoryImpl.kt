@@ -1,7 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.MeasurementDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.UnitJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
@@ -27,14 +29,30 @@ class UnitRepositoryImpl(
             id = UnitId(id),
             name = name,
             description = description,
+            volume = volume,
+            measurement = measurement.toDomain(),
             active = active
         )
+
+        fun MeasurementDatabaseModel.toDomain() = when (this) {
+            MeasurementDatabaseModel.CHARACTERS -> Measurement.CHARACTERS
+            MeasurementDatabaseModel.POINTS -> Measurement.POINTS
+            MeasurementDatabaseModel.HOURS -> Measurement.HOURS
+        }
 
         fun Unit.toDatabaseModel() = UnitDatabaseModel(
             id = id.value,
             name = name,
             description = description,
+            volume = volume,
+            measurement = measurement.toDatabaseModel(),
             active = active
         )
+
+        fun Measurement.toDatabaseModel() = when (this) {
+            Measurement.CHARACTERS -> MeasurementDatabaseModel.CHARACTERS
+            Measurement.POINTS -> MeasurementDatabaseModel.POINTS
+            Measurement.HOURS -> MeasurementDatabaseModel.HOURS
+        }
     }
 }

@@ -4,7 +4,9 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.sin
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.UnitService
@@ -35,13 +37,13 @@ class UnitApplicationService(
     fun createUnit(request: UnitRequest.Create) = with(logger) {
         info("createUnit($request)")
 
-        service.create(request.name, request.description).toView()
+        service.create(request.name, request.description, request.volume, request.measurement).toView()
     }
 
     fun updateUnit(id: UUID, request: UnitRequest.Update) = with(logger) {
         info("updateUnit($id, $request)")
 
-        service.update(UnitId(id), request.name, request.description).toView()
+        service.update(UnitId(id), request.name, request.description, request.volume, request.measurement).toView()
     }
 
     fun activateUnit(id: UUID) = with(logger) {
@@ -54,5 +56,13 @@ class UnitApplicationService(
         info("deactivateUnit($id)")
 
         service.deactivate(UnitId(id)).toActivityStatus()
+    }
+
+    fun getMeasurements() = with(logger) {
+        info("getMeasurementRefData()")
+
+        Measurement.values().map {
+            UnitResponse.MeasurementView(it, it.name, it.description)
+        }
     }
 }

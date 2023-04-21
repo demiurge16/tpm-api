@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.common.requests
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Page
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.PageableImpl
 import net.nuclearprometheus.tpm.applicationserver.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.queries.createQuery
 import net.nuclearprometheus.tpm.applicationserver.queries.emptyQuery
@@ -22,7 +23,7 @@ abstract class FilteredRequest<TEntity : Any>(
     abstract fun sortComparator(): Comparator<TEntity>
 }
 
-fun <TEntity : Any> List<TEntity>.applyQuery(query: FilteredRequest<TEntity>): Page<TEntity> {
+fun <TEntity : Any> List<TEntity>.applyQuery(query: FilteredRequest<TEntity>): Pageable<TEntity> {
     val items = this.asSequence()
         .filter { query.searchQuery().evaluate(it) }
         .sortedWith(query.sortComparator())
@@ -32,5 +33,5 @@ fun <TEntity : Any> List<TEntity>.applyQuery(query: FilteredRequest<TEntity>): P
     val totalElements = this.size
     val totalPages = if (query.paged) (totalElements / query.size!!) + 1 else 1
 
-    return Page(items = items, totalPages = totalPages, totalElements = totalElements)
+    return PageableImpl(items = items, totalPages = totalPages, totalElements = totalElements)
 }

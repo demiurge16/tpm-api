@@ -14,7 +14,6 @@ services:
 
   application:
     container_name: application
-    hostname: api.tpm.localhost
     build:
       context: .
       dockerfile: ./Dockerfile

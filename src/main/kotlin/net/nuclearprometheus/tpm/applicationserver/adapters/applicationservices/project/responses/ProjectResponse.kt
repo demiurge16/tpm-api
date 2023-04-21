@@ -1,6 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CountryCode
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -70,11 +73,31 @@ sealed class ProjectResponse {
             val city: String,
             val state: String,
             val zip: String,
-            val country: Country,
+            val country: CountryView,
             val vat: String,
             val notes: String,
             val type: ClientTypeView,
-        )
+        ) {
+
+            data class CountryView(
+                val code: String,
+                val name: String,
+                val nativeNames: List<String>,
+                val currencies: List<CurrencyView>,
+                val languages: List<LanguageView>,
+                val emoji: String
+            ) {
+                data class LanguageView(
+                    val code: String,
+                    val name: String
+                )
+
+                data class CurrencyView(
+                    val code: String,
+                    val name: String
+                )
+            }
+        }
 
         data class ClientTypeView(
             val id: UUID,
