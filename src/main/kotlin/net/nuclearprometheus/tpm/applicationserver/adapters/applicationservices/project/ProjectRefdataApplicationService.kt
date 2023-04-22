@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ProjectRefdataMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectRefdataMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service

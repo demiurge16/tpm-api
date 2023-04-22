@@ -3,14 +3,14 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 sealed class AccuracyResponse {
-    data class View(
+    data class Accuracy(
         val id: UUID,
         val name: String,
         val description: String,
         val active: Boolean
     ) : AccuracyResponse()
 
-    data class ActivityStatus(
+    data class Status(
         val id: UUID,
         val active: Boolean
     ) : AccuracyResponse()

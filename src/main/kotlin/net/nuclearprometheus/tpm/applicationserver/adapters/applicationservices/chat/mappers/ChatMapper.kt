@@ -1,20 +1,22 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.mappers
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.ChatResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.Member
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.Status
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
 
 object ChatMapper {
 
-    fun Chat.toView() = ChatResponse.View(
+    fun Chat.toView() = ChatResponse.Chat(
         id = id.value,
         title = title,
         description = description,
-        status = ChatResponse.View.ChatStatusView(
+        status = Status(
             status = status,
             name = status.name,
             description = status.description,
         ),
-        owner = ChatResponse.View.ChatMember(
+        owner = Member(
             teamMemberId = owner.id.value,
             userId = owner.user.id.value,
             firstName = owner.user.firstName,
@@ -22,7 +24,7 @@ object ChatMapper {
             email = owner.user.email,
         ),
         participants = participants.map { participant ->
-            ChatResponse.View.ChatMember(
+            Member(
                 teamMemberId = participant.id.value,
                 userId = participant.user.id.value,
                 firstName = participant.user.firstName,
@@ -33,30 +35,36 @@ object ChatMapper {
         projectId = projectId.value,
     )
 
-    fun Chat.toChatStatus() = ChatResponse.ChatStatusView(
+    fun Chat.toChatStatus() = ChatResponse.ChatStatus(
         id = id.value,
-        status = status,
-        name = status.name,
-        description = status.description,
+        status = Status(
+            status = status,
+            name = status.name,
+            description = status.description,
+        )
     )
 
     fun Chat.toNewParticipant() = participants.last().let {
         ChatResponse.ChatMember(
             id = id.value,
-            teamMemberId = it.id.value,
-            userId = it.user.id.value,
-            firstName = it.user.firstName,
-            lastName = it.user.lastName,
-            email = it.user.email
+            member = Member(
+                teamMemberId = it.id.value,
+                userId = it.user.id.value,
+                firstName = it.user.firstName,
+                lastName = it.user.lastName,
+                email = it.user.email
+            )
         )
     }
 
     fun Chat.toNewOwner() = ChatResponse.ChatMember(
         id = id.value,
-        teamMemberId = owner.id.value,
-        userId = owner.user.id.value,
-        firstName = owner.user.firstName,
-        lastName = owner.user.lastName,
-        email = owner.user.email
+        member = Member(
+            teamMemberId = owner.id.value,
+            userId = owner.user.id.value,
+            firstName = owner.user.firstName,
+            lastName = owner.user.lastName,
+            email = owner.user.email
+        )
     )
 }

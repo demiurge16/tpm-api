@@ -5,14 +5,14 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Ind
 
 object IndustryMapper {
 
-    fun Industry.toView() = IndustryResponse.View(
+    fun Industry.toView() = IndustryResponse.Industry(
         id = id.value,
         name = name,
         description = description,
         active = active,
     )
 
-    fun Industry.toActivityStatus() = IndustryResponse.ActivityStatus(
+    fun Industry.toActivityStatus() = IndustryResponse.Status(
         id = id.value,
         active = active,
     )

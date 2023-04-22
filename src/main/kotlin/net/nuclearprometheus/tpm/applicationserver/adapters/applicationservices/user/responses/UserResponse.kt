@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 sealed class UserResponse {
-    data class View(
+    data class User(
         val id: UUID,
         val firstName: String,
         val lastName: String,

@@ -1,32 +1,33 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 
 object TaskMapper {
-    fun Task.toView() = TaskResponse.View(
+    fun Task.toView() = TaskResponse.Task(
         id = id.value,
         title = title,
         description = description,
-        sourceLanguage = TaskResponse.View.LanguageView(
+        sourceLanguage = Language(
             code = sourceLanguage.id.value,
             name = sourceLanguage.name
         ),
-        targetLanguage = TaskResponse.View.LanguageView(
+        targetLanguage = Language(
             code = targetLanguage.id.value,
             name = targetLanguage.name
         ),
-        accuracy = TaskResponse.View.AccuracyView(
+        accuracy = Accuracy(
             id = accuracy.id.value,
             name = accuracy.name,
             description = accuracy.description
         ),
-        industry = TaskResponse.View.IndustryView(
+        industry = Industry(
             id = industry.id.value,
             name = industry.name,
             description = industry.description
         ),
-        unit = TaskResponse.View.UnitView(
+        unit = Unit(
             id = unit.id.value,
             name = unit.name,
             description = unit.description
@@ -35,16 +36,16 @@ object TaskMapper {
         expectedStart = expectedStart,
         deadline = deadline,
         budget = budget,
-        currency = TaskResponse.View.CurrencyView(
+        currency = Currency(
             code = currency.id.value,
             name = currency.name
         ),
-        status = TaskResponse.View.TaskStatusView(
+        status = Status(
             status = status,
             name = status.name,
             description = status.description
         ),
-        priority = TaskResponse.View.PriorityView(
+        priority = Priority(
             id = priority.id.value,
             name = priority.name,
             description = priority.description,
@@ -52,7 +53,7 @@ object TaskMapper {
             value = priority.value
         ),
         assignee = assignee?.let {
-            TaskResponse.View.AssigneeView(
+            Assignee(
                 teamMemberId = it.id.value,
                 userId = it.user.id.value,
                 firstName = it.user.firstName,

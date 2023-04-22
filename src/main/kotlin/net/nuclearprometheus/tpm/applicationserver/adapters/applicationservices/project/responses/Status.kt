@@ -2,11 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
 
-sealed class ProjectRefdataResponse {
-
-    data class StatusView(
-        val status: ProjectStatus,
-        val name: String,
-        val description: String,
-    )
-}
+data class Status(
+    val status: ProjectStatus,
+    val name: String,
+    val description: String,
+)

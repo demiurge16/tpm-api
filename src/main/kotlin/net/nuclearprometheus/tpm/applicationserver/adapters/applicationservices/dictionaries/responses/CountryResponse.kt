@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses
 
 sealed class CountryResponse {
-    data class View(
+    data class Country(
         val code: String,
         val name: String,
         val nativeNames: List<String>,

@@ -1,20 +1,22 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectChatResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.ChatResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.Member
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.Status
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
 
 object ProjectChatMapper {
 
-    fun Chat.toView() = ProjectChatResponse.View(
+    fun Chat.toView() = ChatResponse.Chat(
         id = id.value,
         title = title,
         description = description,
-        status = ProjectChatResponse.View.ChatStatusView(
+        status = Status(
             status = status,
             name = status.name,
             description = status.description,
         ),
-        owner = ProjectChatResponse.View.ChatMember(
+        owner = Member(
             teamMemberId = owner.id.value,
             userId = owner.user.id.value,
             firstName = owner.user.firstName,
@@ -22,7 +24,7 @@ object ProjectChatMapper {
             email = owner.user.email,
         ),
         participants = participants.map { participant ->
-            ProjectChatResponse.View.ChatMember(
+            Member(
                 teamMemberId = participant.id.value,
                 userId = participant.user.id.value,
                 firstName = participant.user.firstName,

@@ -20,5 +20,5 @@ class CurrencyClientAdapter(private val client: CurrencyClient) : CurrencyReposi
         .map { Currency(CurrencyCode(it.key), it.value.description) }
         .firstOrNull()
 
-    override fun getExchangeRates(code: CurrencyCode, amount: BigDecimal) = client.getLatest(code.value, amount).toDomain()
+    override fun getExchangeRates(code: CurrencyCode, amount: BigDecimal) = client.getLatest(code.value, amount).toDomain(amount)
 }

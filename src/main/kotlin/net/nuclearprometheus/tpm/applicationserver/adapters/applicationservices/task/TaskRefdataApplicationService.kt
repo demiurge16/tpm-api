@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 class TaskRefdataApplicationService {
 
     private val logger = loggerFor(TaskRefdataApplicationService::class.java)
+
     fun getStatuses() = with(logger) {
         info("getStatuses()")
 

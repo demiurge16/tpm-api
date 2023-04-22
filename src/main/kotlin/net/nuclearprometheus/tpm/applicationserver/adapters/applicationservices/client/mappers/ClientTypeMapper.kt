@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTyp
 
 object ClientTypeMapper {
 
-    fun ClientType.toView() = ClientTypeResponse.View(
+    fun ClientType.toView() = ClientTypeResponse.ClientType(
         id = id.value,
         name = name,
         description = description,
@@ -13,7 +13,7 @@ object ClientTypeMapper {
         active = active
     )
 
-    fun ClientType.toActivityStatus() = ClientTypeResponse.ActivityStatus(
+    fun ClientType.toActivityStatus() = ClientTypeResponse.Status(
         id = id.value,
         active = active
     )

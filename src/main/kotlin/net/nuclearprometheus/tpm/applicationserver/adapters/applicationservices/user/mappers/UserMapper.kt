@@ -4,8 +4,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 
 object UserMapper {
-    fun User.toView(): UserResponse.View {
-        return UserResponse.View(
+    fun User.toView(): UserResponse.User {
+        return UserResponse.User(
             id = id.value,
             firstName = firstName,
             lastName = lastName,

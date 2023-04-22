@@ -12,7 +12,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.chat.responses.ChatResponse
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -50,7 +49,7 @@ class ChatController(private val service: ChatApplicationService) {
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatResponse.View::class)
+                    schema = Schema(implementation = ChatResponse.Chat::class)
                 )
             ]
         )
@@ -73,7 +72,7 @@ class ChatController(private val service: ChatApplicationService) {
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatResponse.View::class)
+                    schema = Schema(implementation = ChatResponse.Chat::class)
                 )
             ]
         )
@@ -99,7 +98,7 @@ class ChatController(private val service: ChatApplicationService) {
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatResponse.ChatStatusView::class)
+                    schema = Schema(implementation = ChatResponse.ChatStatus::class)
                 )
             ]
         )
@@ -122,7 +121,7 @@ class ChatController(private val service: ChatApplicationService) {
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatResponse.ChatStatusView::class)
+                    schema = Schema(implementation = ChatResponse.ChatStatus::class)
                 )
             ]
         )
@@ -145,7 +144,7 @@ class ChatController(private val service: ChatApplicationService) {
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatResponse.ChatStatusView::class)
+                    schema = Schema(implementation = ChatResponse.ChatStatus::class)
                 )
             ]
         )

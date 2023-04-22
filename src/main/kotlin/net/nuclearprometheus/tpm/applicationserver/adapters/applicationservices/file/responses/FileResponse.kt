@@ -6,22 +6,13 @@ import java.util.*
 
 sealed class FileResponse {
 
-    data class View(
+    data class File(
         val id: UUID,
         val name: String,
         val uploadTime: ZonedDateTime,
-        val uploader: UploaderView,
+        val uploader: Uploader,
         val projectId: UUID
-    ) : FileResponse() {
-
-        data class UploaderView(
-            val teamMemberId: UUID,
-            val userId: UUID,
-            val firstName: String,
-            val lastName: String,
-            val email: String,
-        )
-    }
+    ) : FileResponse()
 
     data class Download(
         val name: String,

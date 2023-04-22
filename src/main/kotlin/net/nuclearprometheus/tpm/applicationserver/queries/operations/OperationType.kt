@@ -9,6 +9,7 @@ enum class OperationType(val symbol: String) {
     LESS_THAN_OR_EQUAL("lte"),
     ANY("any"),
     ALL("all"),
+    NONE("none"),
     IS_NULL("null"),
     IS_EMPTY("empty");
 }

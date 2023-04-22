@@ -3,8 +3,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.externalsources.dic
 import net.nuclearprometheus.tpm.applicationserver.adapters.externalsources.dictionaries.models.CurrencyExchangeRatesExternalModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyExchangeRates
+import java.math.BigDecimal
 
-fun CurrencyExchangeRatesExternalModel.toDomain() = CurrencyExchangeRates(
+fun CurrencyExchangeRatesExternalModel.toDomain(amount: BigDecimal) = CurrencyExchangeRates(
     baseCurrencyCode = CurrencyCode(base),
+    amount = amount,
     rates = rates.map { CurrencyCode(it.key) to it.value }.toMap()
 )

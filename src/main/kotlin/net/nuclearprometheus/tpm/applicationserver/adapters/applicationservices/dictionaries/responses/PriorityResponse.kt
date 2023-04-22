@@ -4,7 +4,7 @@ import java.util.*
 
 sealed class PriorityResponse {
 
-    data class View(
+    data class Priority(
         val id: UUID,
         val name: String,
         val description: String,
@@ -13,7 +13,7 @@ sealed class PriorityResponse {
         val active: Boolean
     ) : PriorityResponse()
 
-    data class ActivityStatus(
+    data class Status(
         val id: UUID,
         val active: Boolean
     ) : PriorityResponse()

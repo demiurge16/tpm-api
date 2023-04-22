@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.sin
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitMeasurement
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
@@ -59,10 +60,8 @@ class UnitApplicationService(
     }
 
     fun getMeasurements() = with(logger) {
-        info("getMeasurementRefData()")
+        info("getMeasurements()")
 
-        Measurement.values().map {
-            UnitResponse.MeasurementView(it, it.name, it.description)
-        }
+        Measurement.values().map { UnitMeasurement(it, it.name, it.description) }
     }
 }

@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 
 object LanguageMapper {
 
-    fun Language.toView() = LanguageResponse.View(
+    fun Language.toView() = LanguageResponse.Language(
         code = code.value,
         iso6392T = iso6392T,
         iso6392B = iso6392B,
@@ -17,12 +17,12 @@ object LanguageMapper {
         name = name
     )
 
-    fun LanguageScope.toView() = LanguageResponse.LanguageScopeView(
+    fun LanguageScope.toView() = LanguageResponse.Scope(
         code = this,
         name = title
     )
 
-    fun LanguageType.toView() = LanguageResponse.LanguageTypeView(
+    fun LanguageType.toView() = LanguageResponse.Type(
         code = this,
         name = title
     )

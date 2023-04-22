@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.LanguageMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
@@ -39,7 +40,7 @@ class LanguageApplicationService(private val repository: LanguageRepository) {
         with(logger) {
             info("getLanguageByNameLike($name)")
 
-            repository.getByNameLike(name).map { it.toView() }
+            singlePage(repository.getByNameLike(name)).map { it.toView() }
         }
 
     fun getLanguageScopes() =

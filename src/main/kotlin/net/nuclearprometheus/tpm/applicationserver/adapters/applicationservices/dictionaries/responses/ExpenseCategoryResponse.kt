@@ -3,12 +3,13 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 sealed class ExpenseCategoryResponse {
-    data class View(
+
+    data class ExpenseCategory(
         val id: UUID,
         val name: String,
         val description: String,
-        val activityStatus: ActivityStatus
+        val active: Boolean
     ) : ExpenseCategoryResponse()
 
-    data class ActivityStatus(val id: UUID, val active: Boolean) : ExpenseCategoryResponse()
+    data class Status(val id: UUID, val active: Boolean) : ExpenseCategoryResponse()
 }

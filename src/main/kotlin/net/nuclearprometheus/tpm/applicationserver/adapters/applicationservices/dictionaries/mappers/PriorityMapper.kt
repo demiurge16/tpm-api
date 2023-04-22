@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Pri
 
 object PriorityMapper {
 
-    fun Priority.toView() = PriorityResponse.View(
+    fun Priority.toView() = PriorityResponse.Priority(
         id = id.value,
         name = name,
         description = description,
@@ -14,7 +14,7 @@ object PriorityMapper {
         active = active
     )
 
-    fun Priority.toActivityStatus() = PriorityResponse.ActivityStatus(
+    fun Priority.toActivityStatus() = PriorityResponse.Status(
         id = id.value,
         active = active
     )

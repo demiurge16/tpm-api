@@ -7,8 +7,7 @@ class AnyComparison<TEntity : Any>(override val field: String, override val valu
         getFieldValue(entity)?.let { fieldValue ->
             when {
                 fieldValue is String -> fieldValue in value
-                fieldValue::class.java.isEnum -> value.map { it.removeSurrounding("\"") }.toSet()
-                    .contains(fieldValue.toString())
+                fieldValue::class.java.isEnum -> fieldValue.toString() in value.map { it.removeSurrounding("\"") }.toSet()
                 fieldValue is Collection<*> -> fieldValue.map { it.toString() }
                     .intersect(value.map { it.removeSurrounding("\"") }.toSet())
                     .isNotEmpty()

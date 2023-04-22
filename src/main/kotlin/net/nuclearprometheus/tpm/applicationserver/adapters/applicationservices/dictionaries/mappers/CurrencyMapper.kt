@@ -8,10 +8,11 @@ object CurrencyMapper {
 
     fun CurrencyExchangeRates.toView() = CurrencyResponse.ExchangeRatesView(
         baseCurrencyCode = baseCurrencyCode.value,
+        amount = amount,
         rates = rates.map { it.key.value to it.value }.toMap()
     )
 
-    fun Currency.toView() = CurrencyResponse.View(
+    fun Currency.toView() = CurrencyResponse.Currency(
         code = id.value,
         name = name
     )

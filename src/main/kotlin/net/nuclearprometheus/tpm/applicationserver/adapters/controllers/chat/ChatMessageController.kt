@@ -52,7 +52,7 @@ class ChatMessageController(private val service: ChatMessageApplicationService) 
             content = [
                 Content(
                     mediaType = "application/json",
-                    schema = Schema(implementation = ChatMessageResponse.View::class)
+                    schema = Schema(implementation = ChatMessageResponse.Message::class)
                 )
             ]
         )

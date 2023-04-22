@@ -39,18 +39,18 @@ class LanguageController(private val service: LanguageApplicationService) {
             ResponseEntity.ok().body(service.getLanguageByNameLike(name))
         }
 
-    @GetMapping("/refdata/scopes")
+    @GetMapping("/refdata/scope")
     fun getScopes() =
         with(logger) {
-            info("GET /api/v1/language/refdata/scopes")
+            info("GET /api/v1/language/refdata/scope")
 
             ResponseEntity.ok().body(service.getLanguageScopes())
         }
 
-    @GetMapping("/refdata/types")
+    @GetMapping("/refdata/type")
     fun getTypes() =
         with(logger) {
-            info("GET /api/v1/language/refdata/types")
+            info("GET /api/v1/language/refdata/type")
 
             ResponseEntity.ok().body(service.getLanguageTypes())
         }

@@ -6,26 +6,14 @@ import java.util.*
 
 sealed class ExpenseResponse {
 
-    data class View(
+    data class Expense(
         val id: UUID,
         val description: String,
-        val category: ExpenseCategoryView,
+        val category: ExpenseCategory,
         val amount: BigDecimal,
-        val currency: CurrencyView,
+        val currency: Currency,
         val date: ZonedDateTime,
         val teamMemberId: UUID,
         val projectId: UUID
-    ) : ExpenseResponse() {
-
-        data class ExpenseCategoryView(
-            val id: UUID,
-            val name: String,
-            val description: String
-        )
-
-        data class CurrencyView(
-            val code: String,
-            val name: String
-        )
-    }
+    ) : ExpenseResponse()
 }

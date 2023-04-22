@@ -9,13 +9,13 @@ sealed class ClientTypeResponse {
 
     @Schema(name = "ClientTypeResponse.Page")
     data class Page(
-        override val items: List<View>,
+        override val items: List<ClientType>,
         override val totalPages: Int,
         override val totalElements: Int,
-    ) : ClientTypeResponse(), Pageable<View> by PageableImpl(items, totalPages, totalElements)
+    ) : ClientTypeResponse(), Pageable<ClientType> by PageableImpl(items, totalPages, totalElements)
 
-    @Schema(name = "ClientTypeResponse.View")
-    data class View(
+    @Schema(name = "ClientTypeResponse.ClientType")
+    data class ClientType(
         val id: UUID,
         val name: String,
         val description: String,
@@ -23,8 +23,8 @@ sealed class ClientTypeResponse {
         val active: Boolean
     )
 
-    @Schema(name = "ClientTypeResponse.ActivityStatus")
-    data class ActivityStatus(
+    @Schema(name = "ClientTypeResponse.Status")
+    data class Status(
         val id: UUID,
         val active: Boolean
     )

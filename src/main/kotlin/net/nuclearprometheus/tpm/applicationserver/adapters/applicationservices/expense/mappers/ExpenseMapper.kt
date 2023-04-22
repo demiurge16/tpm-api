@@ -1,20 +1,22 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.mappers
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.Currency
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.ExpenseResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 
 object ExpenseMapper {
 
-    fun Expense.toView() = ExpenseResponse.View(
+    fun Expense.toView() = ExpenseResponse.Expense(
         id = id.value,
         description = description,
-        category = ExpenseResponse.View.ExpenseCategoryView(
+        category = ExpenseCategory(
             id = category.id.value,
             name = category.name,
             description = category.description
         ),
         amount = amount,
-        currency = ExpenseResponse.View.CurrencyView(
+        currency = Currency(
             code = currency.id.value,
             name = currency.name
         ),

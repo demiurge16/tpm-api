@@ -4,12 +4,12 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 
 object ExpenseCategoryResponseMapper {
-    fun ExpenseCategory.toView() = ExpenseCategoryResponse.View(
+    fun ExpenseCategory.toView() = ExpenseCategoryResponse.ExpenseCategory(
         id = id.value,
         name = name,
         description = description,
-        activityStatus = toActivityStatus()
+        active = active
     )
 
-    fun ExpenseCategory.toActivityStatus() = ExpenseCategoryResponse.ActivityStatus(id = id.value, active = active)
+    fun ExpenseCategory.toActivityStatus() = ExpenseCategoryResponse.Status(id = id.value, active = active)
 }

@@ -47,6 +47,7 @@
       "description": "TPM",
       "enabled": true,
       "directAccessGrantsEnabled": true,
+      "publicClient": true,
       "surrogateAuthRequired": false,
       "secret": "fSAHK4YuuqHYXwnfaY0VHI1hZ31mGp7G",
       "redirectUris": [

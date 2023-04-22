@@ -13,12 +13,12 @@ abstract class FilteredRequest<TEntity : Any>(
     val size: Int?,
     val sort: String?,
     val search: String?,
-    protected val sorters: Map<String, Comparator<TEntity>>
+    private val sorters: Map<String, Comparator<TEntity>>
 ) {
     private val logger = loggerFor(this::class.java)
 
     val paged: Boolean
-        get() = page != null && size != null
+        get() = page != null && size != null && size > 0
 
     fun offset() = if (paged) (page!!) * size!! else 0
     fun limit() = if (paged) size!! else Int.MAX_VALUE

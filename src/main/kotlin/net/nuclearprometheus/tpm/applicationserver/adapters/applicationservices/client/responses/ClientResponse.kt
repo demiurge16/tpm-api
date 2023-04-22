@@ -9,45 +9,30 @@ sealed class ClientResponse {
 
     @Schema(name = "ClientResponse.Page")
     data class Page(
-        override val items: List<View>,
+        override val items: List<Client>,
         override val totalPages: Int,
         override val totalElements: Int,
-    ) : ClientResponse(), Pageable<View> by PageableImpl(items, totalPages, totalElements)
+    ) : ClientResponse(), Pageable<Client> by PageableImpl(items, totalPages, totalElements)
 
-    @Schema(name = "ClientResponse.View")
-    data class View(
+    @Schema(name = "ClientResponse.Client")
+    data class Client(
         val id: UUID,
-        var name: String,
-        var email: String,
-        var phone: String,
-        var address: String,
-        var city: String,
-        var state: String,
-        var zip: String,
-        var country: CountryView,
-        var vat: String,
-        var notes: String,
-        var type: ClientTypeView,
-        var active: Boolean,
-    ) {
+        val name: String,
+        val email: String,
+        val phone: String,
+        val address: String,
+        val city: String,
+        val state: String,
+        val zip: String,
+        val country: Country,
+        val vat: String,
+        val notes: String,
+        val type: ClientType,
+        val active: Boolean,
+    )
 
-        @Schema(name = "ClientResponse.View.CountryView")
-        data class CountryView(
-            val code: String,
-            val name: String,
-        )
-
-        @Schema(name = "ClientResponse.View.ClientTypeView")
-        data class ClientTypeView(
-            val id: UUID,
-            val name: String,
-            val description: String,
-            val corporate: Boolean,
-        )
-    }
-
-    @Schema(name = "ClientResponse.ActivityStatus")
-    data class ActivityStatus(
+    @Schema(name = "ClientResponse.Status")
+    data class Status(
         val id: UUID,
         val active: Boolean
     )

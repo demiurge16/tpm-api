@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cou
 
 object CountryMapper {
 
-    fun Country.toView() = CountryResponse.View(
+    fun Country.toView() = CountryResponse.Country(
         code = code.value,
         name = name,
         nativeNames = nativeNames,

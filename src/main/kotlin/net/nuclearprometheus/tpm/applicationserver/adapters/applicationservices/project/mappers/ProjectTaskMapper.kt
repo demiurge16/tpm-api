@@ -1,33 +1,34 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectTaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 
 object ProjectTaskMapper {
 
-    fun Task.toAssignee() = ProjectTaskResponse.View(
+    fun Task.toAssignee() = TaskResponse.Task(
         id = id.value,
         title = title,
         description = description,
-        sourceLanguage = ProjectTaskResponse.View.LanguageView(
+        sourceLanguage = Language(
             code = sourceLanguage.id.value,
             name = sourceLanguage.name
         ),
-        targetLanguage = ProjectTaskResponse.View.LanguageView(
+        targetLanguage = Language(
             code = targetLanguage.id.value,
             name = targetLanguage.name
         ),
-        accuracy = ProjectTaskResponse.View.AccuracyView(
+        accuracy = Accuracy(
             id = accuracy.id.value,
             name = accuracy.name,
             description = accuracy.description
         ),
-        industry = ProjectTaskResponse.View.IndustryView(
+        industry = Industry(
             id = industry.id.value,
             name = industry.name,
             description = industry.description
         ),
-        unit = ProjectTaskResponse.View.UnitView(
+        unit = Unit(
             id = unit.id.value,
             name = unit.name,
             description = unit.description
@@ -36,17 +37,31 @@ object ProjectTaskMapper {
         expectedStart = expectedStart,
         deadline = deadline,
         budget = budget,
-        currency = ProjectTaskResponse.View.CurrencyView(
+        currency = Currency(
             code = currency.id.value,
             name = currency.name
         ),
-        priority = ProjectTaskResponse.View.PriorityView(
+        priority = Priority(
             id = priority.id.value,
             name = priority.name,
             description = priority.description,
             emoji = priority.emoji,
             value = priority.value
         ),
+        status = Status(
+            status = status,
+            name = status.name,
+            description = status.description,
+        ),
+        assignee = assignee?.let {
+            Assignee(
+                teamMemberId = it.id.value,
+                userId = it.user.id.value,
+                firstName = it.user.firstName,
+                lastName = it.user.lastName,
+                email = it.user.email
+            )
+        },
         projectId = projectId.value
     )
 }

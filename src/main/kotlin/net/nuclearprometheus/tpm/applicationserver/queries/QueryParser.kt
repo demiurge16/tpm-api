@@ -25,12 +25,14 @@ import net.nuclearprometheus.tpm.applicationserver.queries.operations.unary.Null
  * Where fieldname is the name of the field to compare
  * comparison is one of the following:
  * eq - equals
- * like - contains
+ * contains - contains
  * gt - greater than
  * lt - less than
  * gte - greater than or equal
  * lte - less than or equal
- * in - in
+ * any - any
+ * all - all
+ * none - none
  * null - is null
  * empty - is empty
  *
@@ -123,6 +125,7 @@ private fun <TEntity : Any> Token.toOperator(): Operation<TEntity> {
         OperationType.LESS_THAN_OR_EQUAL -> LessThanOrEqualComparison<TEntity>(field, value!!)
         OperationType.ANY -> AnyComparison<TEntity>(field, value!!.toList())
         OperationType.ALL -> AllComparison<TEntity>(field, value!!.toList())
+        OperationType.NONE -> NoneComparison<TEntity>(field, value!!.toList())
         OperationType.IS_NULL -> NullComparison<TEntity>(field)
         OperationType.IS_EMPTY -> EmptyComparison<TEntity>(field)
     }

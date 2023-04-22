@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 
 sealed class LanguageResponse {
 
-    data class View(
+    data class Language(
         val code: String,
         val iso6392T: String?,
         val iso6392B: String?,
@@ -15,12 +15,12 @@ sealed class LanguageResponse {
         val name: String
     )
 
-    data class LanguageScopeView(
+    data class Scope(
         val code: LanguageScope,
         val name: String
     )
 
-    data class LanguageTypeView(
+    data class Type(
         val code: LanguageType,
         val name: String
     )
