@@ -9,22 +9,20 @@ sealed class ClientTypeRequest {
         page: Int?,
         size: Int?,
         sort: String?,
-        direction: String?,
         search: String?
-    ) : FilteredRequest<ClientType>(page, size, sort, direction, search) {
-
-        override fun sortComparator(): Comparator<ClientType> {
-            return when (sort) {
-                "id.value" -> Comparator<ClientType> { o1, o2 -> compareValues(o1.id.value, o2.id.value) }
-                "name" -> Comparator<ClientType> { o1, o2 -> compareValues(o1.name, o2.name) }
-                else -> Comparator<ClientType> { _, _ -> 0 }
-            }.let {
-                if (direction == "DESC") it.reversed() else it
-            }
-        }
+    ) : FilteredRequest<ClientType>(
+        page,
+        size,
+        sort,
+        search,
+        mapOf(
+            "id" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
+            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) }
+        )
+    ) {
 
         override fun toString(): String {
-            return "ClientTypeRequest.List(page=$page, size=$size, sort=$sort, direction=$direction, search=$search)"
+            return "ClientTypeRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
         }
     }
 

@@ -9,25 +9,23 @@ sealed class LanguageRequest {
         page: Int?,
         size: Int?,
         sort: String?,
-        direction: String?,
         search: String?
-    ) : FilteredRequest<Language>(page, size, sort, direction, search) {
-
-        override fun sortComparator(): Comparator<Language> {
-            return when (sort) {
-                "id.value" -> Comparator<Language> { o1, o2 -> compareValues(o1.id.value, o2.id.value) }
-                "name" -> Comparator<Language> { o1, o2 -> compareValues(o1.name, o2.name) }
-                "iso6392T" -> Comparator<Language> { o1, o2 -> compareValues(o1.iso6392T, o2.iso6392T) }
-                "iso6392B" -> Comparator<Language> { o1, o2 -> compareValues(o1.iso6392B, o2.iso6392B) }
-                "iso6391" -> Comparator<Language> { o1, o2 -> compareValues(o1.iso6391, o2.iso6391) }
-                else -> Comparator<Language> { _, _ -> 0 }
-            }.let {
-                if (direction == "DESC") it.reversed() else it
-            }
-        }
+    ) : FilteredRequest<Language>(
+        page,
+        size,
+        sort,
+        search,
+        mapOf(
+            "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
+            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) },
+            "iso6392t" to Comparator { o1, o2 -> compareValues(o1.iso6392T, o2.iso6392T) },
+            "iso6392b" to Comparator { o1, o2 -> compareValues(o1.iso6392B, o2.iso6392B) },
+            "iso6391" to Comparator { o1, o2 -> compareValues(o1.iso6391, o2.iso6391) }
+        )
+    ) {
 
         override fun toString(): String {
-            return "LanguageRequest.List(page=$page, size=$size, sort=$sort, direction=$direction, search=$search)"
+            return "LanguageRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
         }
     }
 }

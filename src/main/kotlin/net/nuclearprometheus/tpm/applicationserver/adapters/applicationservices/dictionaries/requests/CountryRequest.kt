@@ -9,22 +9,20 @@ sealed class CountryRequest {
         page: Int?,
         size: Int?,
         sort: String?,
-        direction: String?,
         search: String?
-    ) : FilteredRequest<Country>(page, size, sort, direction, search) {
-
-        override fun sortComparator(): Comparator<Country> {
-            return when (sort) {
-                "id.value" -> Comparator<Country> { o1, o2 -> o1.id.value.compareTo(o2.id.value) }
-                "name" -> Comparator<Country> { o1, o2 -> o1.name.compareTo(o2.name) }
-                else -> Comparator<Country> { _, _ -> 0 }
-            }.let {
-                if (direction == "DESC") it.reversed() else it
-            }
-        }
+    ) : FilteredRequest<Country>(
+        page,
+        size,
+        sort,
+        search,
+        mapOf(
+            "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
+            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) }
+        )
+    ) {
 
         override fun toString(): String {
-            return "CountryRequest.List(page=$page, size=$size, sort=$sort, direction=$direction, search=$search)"
+            return "CountryRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
         }
     }
 }

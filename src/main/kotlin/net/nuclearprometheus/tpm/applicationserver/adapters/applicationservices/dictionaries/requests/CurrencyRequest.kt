@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
 
 sealed class CurrencyRequest {
 
@@ -9,22 +10,20 @@ sealed class CurrencyRequest {
         page: Int?,
         size: Int?,
         sort: String?,
-        direction: String?,
         search: String?
-    ) : FilteredRequest<Currency>(page, size, sort, direction, search) {
-
-        override fun sortComparator(): Comparator<Currency> {
-            return when (sort) {
-                "id.value" -> Comparator<Currency> { o1, o2 -> o1.id.value.compareTo(o2.id.value) }
-                "name" -> Comparator<Currency> { o1, o2 -> o1.name.compareTo(o2.name) }
-                else -> Comparator<Currency> { _, _ -> 0 }
-            }.let {
-                if (direction == "DESC") it.reversed() else it
-            }
-        }
+    ) : FilteredRequest<Currency>(
+        page,
+        size,
+        sort,
+        search,
+        mapOf(
+            "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
+            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) }
+        )
+    ) {
 
         override fun toString(): String {
-            return "CurrencyRequest.List(page=$page, size=$size, sort=$sort, direction=$direction, search=$search)"
+            return "CurrencyRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
         }
     }
 }
