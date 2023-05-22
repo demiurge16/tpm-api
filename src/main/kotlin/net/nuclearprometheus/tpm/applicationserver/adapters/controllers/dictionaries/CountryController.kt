@@ -16,7 +16,6 @@ class CountryController(private val service: CountryApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountries(query: CountryRequest.List) =
         with(logger) {
             info("GET /api/v1/country")
@@ -25,7 +24,6 @@ class CountryController(private val service: CountryApplicationService) {
         }
 
     @GetMapping("/{code}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountryByCode(@PathVariable(name = "code") code: String) =
         with(logger) {
             info("GET /api/v1/country/$code")
@@ -34,7 +32,6 @@ class CountryController(private val service: CountryApplicationService) {
         }
 
     @GetMapping("/name/{name}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCountriesByNameLike(@PathVariable(name = "name") name: String) =
         with(logger) {
             info("GET /api/v1/country/name/$name")

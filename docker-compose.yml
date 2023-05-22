@@ -19,6 +19,9 @@ services:
       dockerfile: ./Dockerfile
       args:
         SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "5005:5005"
+      - "8080:8080"
     expose:
       - "8080"
     networks:

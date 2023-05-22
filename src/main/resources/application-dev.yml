@@ -42,4 +42,4 @@ elastic:
     server-url: http://apm-server:8200
 
 keycloak:
-  auth-server-url: http://auth.tpm.localhost/auth
+  auth-server-url: http://auth.tpm.localhost

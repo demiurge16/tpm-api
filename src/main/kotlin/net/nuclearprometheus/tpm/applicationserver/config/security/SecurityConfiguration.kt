@@ -8,13 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfiguration(
-    private val keycloakLogoutHandler: KeycloakLogoutHandler
-) {
+class SecurityConfiguration {
+
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
@@ -36,12 +34,6 @@ class SecurityConfiguration(
             }
             .and().csrf().disable()
             .authorizeHttpRequests { it.anyRequest().authenticated() }
-            .oauth2Login()
-            .and()
-            .logout()
-            .addLogoutHandler(keycloakLogoutHandler)
-            .logoutSuccessUrl("/")
-            .and()
             .oauth2ResourceServer { it.jwt() }
 
         return http.build()
