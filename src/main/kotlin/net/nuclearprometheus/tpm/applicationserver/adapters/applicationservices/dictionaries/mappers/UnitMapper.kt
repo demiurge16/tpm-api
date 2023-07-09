@@ -12,8 +12,8 @@ object UnitMapper {
         description = description,
         volume = volume,
         measurement = UnitMeasurement(
-            measurement = measurement,
-            name = measurement.name,
+            code = measurement,
+            name = measurement.title,
             description = measurement.description
         ),
         active = active

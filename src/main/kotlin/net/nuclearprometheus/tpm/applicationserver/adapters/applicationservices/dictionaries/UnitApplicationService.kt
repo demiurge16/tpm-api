@@ -62,6 +62,6 @@ class UnitApplicationService(
     fun getMeasurements() = with(logger) {
         info("getMeasurements()")
 
-        Measurement.values().map { UnitMeasurement(it, it.name, it.description) }
+        Measurement.values().map { UnitMeasurement(it, it.title, it.description) }
     }
 }
