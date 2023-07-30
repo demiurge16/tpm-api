@@ -33,16 +33,16 @@ class ProjectTaskApplicationService(
             description = request.description,
             sourceLanguage = LanguageCode(request.sourceLanguage),
             targetLanguage = LanguageCode(request.targetLanguage),
-            accuracy = AccuracyId(request.accuracy),
-            industry = IndustryId(request.industry),
-            unit = UnitId(request.unit),
+            accuracy = AccuracyId(request.accuracyId),
+            industry = IndustryId(request.industryId),
+            unit = UnitId(request.unitId),
             amount = request.amount,
             expectedStart = request.expectedStart,
             deadline = request.deadline,
             budget = request.budget,
-            currency = CurrencyCode(request.currency),
+            currency = CurrencyCode(request.currencyCode),
             priorityId = PriorityId(request.priorityId),
-            projectId = ProjectId(request.projectId)
+            projectId = ProjectId(projectId)
         ).toAssignee()
     }
 }

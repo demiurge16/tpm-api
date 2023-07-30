@@ -10,15 +10,14 @@ sealed class ProjectTaskRequest {
         val description: String,
         val sourceLanguage: String,
         val targetLanguage: String,
-        val accuracy: UUID,
-        val industry: UUID,
-        val unit: UUID,
+        val accuracyId: UUID,
+        val industryId: UUID,
+        val unitId: UUID,
         val amount: Int,
         val expectedStart: ZonedDateTime,
         val deadline: ZonedDateTime,
         val budget: BigDecimal,
-        val currency: String,
-        val priorityId: UUID,
-        val projectId: UUID
+        val currencyCode: String,
+        val priorityId: UUID
     ) : ProjectTaskRequest()
 }

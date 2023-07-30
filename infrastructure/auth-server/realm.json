@@ -280,6 +280,7 @@
   ],
   "users": [
     {
+      "id": "4dbd86bd-f1aa-4171-baf8-ab2eb9b23806",
       "username": "admin",
       "enabled": true,
       "createdTimestamp": 1589350000000,
@@ -287,6 +288,106 @@
       "firstName": "Nuclear",
       "lastName": "Prometheus",
       "email": "admin@tpm.nuclear-prometheus.net",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1qaz@WSX"
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "user"
+      ]
+    },
+    {
+      "id": "353fff8e-833a-4c3d-bbd3-c4c5eebbc32c",
+      "createdTimestamp": 1689539592369,
+      "username": "dzhukovazahurska@tpm.nuclear-prometheus.net",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Diana",
+      "lastName": "Zhukova-Zahurska",
+      "email": "dzhukovazahurska@tpm.nuclear-prometheus.net",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1qaz@WSX"
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "user"
+      ]
+    },
+    {
+      "id": "bdc5aa69-4acd-409d-96ba-5a2c72371764",
+      "createdTimestamp": 1689539603856,
+      "username": "oshatskyi@tpm.nuclear-prometheus.net",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Oleh",
+      "lastName": "Shatskyi",
+      "email": "oshatskyi@tpm.nuclear-prometheus.net",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1qaz@WSX"
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "user"
+      ]
+    },
+    {
+      "id": "3549ffb3-d49f-427c-8730-2f97944a1ff7",
+      "createdTimestamp": 1689539550159,
+      "username": "vbesida@tpm.nuclear-prometheus.net",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Viktor",
+      "lastName": "Besida",
+      "email": "vbesida@tpm.nuclear-prometheus.net",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1qaz@WSX"
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "user"
+      ]
+    },
+    {
+      "id": "a4594b1f-043f-4286-ac19-027bd6bf9ba5",
+      "createdTimestamp": 1689539527119,
+      "username": "vkhabulia@tpm.nuclear-prometheus.net",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Vadym",
+      "lastName": "Khabulia",
+      "email": "vkhabulia@tpm.nuclear-prometheus.net",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "1qaz@WSX"
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "user"
+      ]
+    },
+    {
+      "id": "e18394ff-5fde-4d20-ba52-4cf4d73742a3",
+      "createdTimestamp": 1689539566251,
+      "username": "vshatskyi@tpm.nuclear-prometheus.net",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Valentyn",
+      "lastName": "Shatskyi",
+      "email": "vshatskyi@tpm.nuclear-prometheus.net",
       "credentials": [
         {
           "type": "password",

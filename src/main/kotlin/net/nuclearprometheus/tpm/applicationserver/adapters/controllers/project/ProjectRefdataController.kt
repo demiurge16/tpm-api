@@ -19,4 +19,11 @@ class ProjectRefdataController(private val service: ProjectRefdataApplicationSer
 
         ResponseEntity.ok().body(service.getStatuses())
     }
+
+    @GetMapping("/team-member/role")
+    fun getTeamMemberRoles() = with(logger) {
+        info("GET /api/v1/project/refdata/team-member/role")
+
+        ResponseEntity.ok().body(service.getTeamMemberRoles())
+    }
 }

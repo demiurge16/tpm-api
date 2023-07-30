@@ -8,6 +8,7 @@ import org.keycloak.KeycloakPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import java.util.*
 
 @Configuration
@@ -30,9 +31,18 @@ class UserContextProviderConfig {
                         username = principal.keycloakSecurityContext.token.preferredUsername,
                     )
                 }
+                is Jwt -> {
+                    return User(
+                        id = UserId(UUID.fromString(principal.subject)),
+                        firstName = principal.claims["given_name"] as String,
+                        lastName = principal.claims["family_name"] as String,
+                        email = principal.claims["email"] as String,
+                        username = principal.claims["preferred_username"] as String,
+                    )
+                }
                 else -> {
-                    logger.info(principal::class.java.canonicalName)
-                    throw RuntimeException("User not found")
+                    logger.error("Unknown principal type: ${principal.javaClass}")
+                    throw IllegalStateException("Unknown principal type: ${principal.javaClass}")
                 }
             }
         }

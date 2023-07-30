@@ -2,7 +2,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense
 
 import jakarta.persistence.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -18,5 +17,5 @@ open class ExpenseDatabaseModel(
     @Column(nullable = false) open var date: ZonedDateTime,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var teamMember: TeamMemberDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var category: ExpenseCategoryDatabaseModel,
-    @Column(nullable = false) open var projectId: UUID
+    @Column(nullable = false, columnDefinition = "uuid") open var projectId: UUID
 )

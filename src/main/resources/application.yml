@@ -73,6 +73,7 @@ spring:
     properties:
       hibernate:
         default_schema: application
+        show_sql: true
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
     default-schema: application

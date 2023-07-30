@@ -50,7 +50,7 @@ object ProjectTaskMapper {
         ),
         status = Status(
             status = status,
-            name = status.name,
+            name = status.title,
             description = status.description,
         ),
         assignee = assignee?.let {

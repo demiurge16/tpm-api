@@ -17,10 +17,25 @@ sealed class LanguageRequest {
         search,
         mapOf(
             "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) },
-            "iso6392t" to Comparator { o1, o2 -> compareValues(o1.iso6392T, o2.iso6392T) },
-            "iso6392b" to Comparator { o1, o2 -> compareValues(o1.iso6392B, o2.iso6392B) },
-            "iso6391" to Comparator { o1, o2 -> compareValues(o1.iso6391, o2.iso6391) }
+            "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) },
+            "iso6392t" to Comparator { o1, o2 ->
+                compareValues(
+                    o1.iso6392T.orEmpty().lowercase(),
+                    o2.iso6392T.orEmpty().lowercase()
+                )
+            },
+            "iso6392b" to Comparator { o1, o2 ->
+                compareValues(
+                    o1.iso6392B.orEmpty().lowercase(),
+                    o2.iso6392B.orEmpty().lowercase()
+                )
+            },
+            "iso6391" to Comparator { o1, o2 ->
+                compareValues(
+                    o1.iso6391.orEmpty().lowercase(),
+                    o2.iso6391.orEmpty().lowercase()
+                )
+            }
         )
     ) {
 

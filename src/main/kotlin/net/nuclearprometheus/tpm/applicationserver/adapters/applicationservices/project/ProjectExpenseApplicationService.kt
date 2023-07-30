@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectExpenseMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectExpenseRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -23,7 +24,7 @@ class ProjectExpenseApplicationService(
     fun getExpensesForProject(projectId: UUID) = with(logger) {
         info("getExpensesForProject($projectId)")
 
-        expenseRepository.getAllByProjectId(ProjectId(projectId)).map { it.toView() }
+        singlePage(expenseRepository.getAllByProjectId(ProjectId(projectId)).map { it.toView() })
     }
 
     fun createExpense(projectId: UUID, request: ProjectExpenseRequest.Create) = with(logger) {
