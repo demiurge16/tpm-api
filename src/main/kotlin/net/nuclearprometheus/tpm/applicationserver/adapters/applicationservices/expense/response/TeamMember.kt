@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses
+package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response
 
 import java.util.*
 
@@ -8,6 +8,5 @@ data class TeamMember(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val role: Role,
-    val project: ProjectShortView
+    val role: Role
 )

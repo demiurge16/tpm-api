@@ -9,6 +9,6 @@ sealed class NoteResponse {
         val content: String,
         val author: Author,
         val createdAt: ZonedDateTime,
-        val projectId: UUID
+        val project: ProjectShortView
     ) : NoteResponse()
 }

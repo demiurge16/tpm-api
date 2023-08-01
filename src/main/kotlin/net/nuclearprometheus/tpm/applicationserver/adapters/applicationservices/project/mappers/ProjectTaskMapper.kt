@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 
 object ProjectTaskMapper {
 
-    fun Task.toAssignee() = TaskResponse.Task(
+    fun Task.toView() = TaskResponse.Task(
         id = id.value,
         title = title,
         description = description,

@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectStatusChangeException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAddedException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
@@ -140,42 +141,6 @@ class Project(
         this.externalDeadline = externalDeadline
 
         validateDates()
-    }
-
-    fun addTeamMember(teamMember: TeamMember) {
-        teamMembers = teamMembers.plus(teamMember)
-    }
-
-    fun removeTeamMember(teamMember: TeamMember) {
-        teamMembers = teamMembers.minus(teamMember)
-    }
-
-    fun addTask(task: Task) {
-        tasks = tasks.plus(task)
-    }
-
-    fun removeTask(task: Task) {
-        tasks = tasks.minus(task)
-    }
-
-    fun addExpense(expense: Expense) {
-        expenses = expenses.plus(expense)
-    }
-
-    fun removeExpense(expense: Expense) {
-        expenses = expenses.minus(expense)
-    }
-
-    fun addNote(note: Note) {
-        notes = notes.plus(note)
-    }
-
-    fun addFile(file: File) {
-        files = files.plus(file)
-    }
-
-    fun addChat(chat: Chat) {
-        chats = chats.plus(chat)
     }
 
     fun finishDraft() {

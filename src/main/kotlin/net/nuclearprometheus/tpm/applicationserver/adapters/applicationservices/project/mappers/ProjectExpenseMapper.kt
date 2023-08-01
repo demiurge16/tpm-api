@@ -1,13 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.Currency
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.ExpenseCategory
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.TeamMember as TeamMemberResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 
 object ProjectExpenseMapper {
 
-    fun Expense.toView() = ExpenseResponse.Expense(
+    fun Expense.toView(teamMember: TeamMember, project: Project) = ExpenseResponse.Expense(
         id = id.value,
         description = description,
         category = ExpenseCategory(
@@ -21,7 +22,26 @@ object ProjectExpenseMapper {
             name = currency.name
         ),
         date = date,
-        teamMemberId = teamMemberId.value,
-        projectId = projectId.value
+        teamMember = TeamMemberResponse(
+            id = teamMember.id.value,
+            userId = teamMember.user.id.value,
+            firstName = teamMember.user.firstName,
+            lastName = teamMember.user.lastName,
+            email = teamMember.user.email,
+            role = Role(
+                role = teamMember.role,
+                title = teamMember.role.title,
+                description = teamMember.role.description
+            )
+        ),
+        project = ProjectShortView(
+            id = project.id.value,
+            title = project.title,
+            status = ProjectStatus(
+                status = project.status,
+                title = project.status.title,
+                description = project.status.shortDescription
+            )
+        )
     )
 }

@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectTaskMapper.toAssignee
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectTaskMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -22,7 +22,7 @@ class ProjectTaskApplicationService(
     fun getTasksForProject(projectId: UUID) = with(logger) {
         info("getTasksForProject($projectId)")
 
-        singlePage(taskRepository.getAllByProjectId(ProjectId(projectId))).map { it.toAssignee() }
+        singlePage(taskRepository.getAllByProjectId(ProjectId(projectId))).map { it.toView() }
     }
 
     fun createTask(projectId: UUID, request: ProjectTaskRequest.Create) = with(logger) {
@@ -43,6 +43,6 @@ class ProjectTaskApplicationService(
             currency = CurrencyCode(request.currencyCode),
             priorityId = PriorityId(request.priorityId),
             projectId = ProjectId(projectId)
-        ).toAssignee()
+        ).toView()
     }
 }

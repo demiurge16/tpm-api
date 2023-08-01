@@ -13,7 +13,7 @@ sealed class ExpenseResponse {
         val amount: BigDecimal,
         val currency: Currency,
         val date: ZonedDateTime,
-        val teamMemberId: UUID,
-        val projectId: UUID
+        val teamMember: TeamMember,
+        val project: ProjectShortView
     ) : ExpenseResponse()
 }

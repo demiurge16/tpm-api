@@ -23,3 +23,4 @@ class PageableImpl<TEntity>(
 }
 
 fun <TEntity : Any> singlePage(items: List<TEntity>): Pageable<TEntity> = PageableImpl(items, 1, items.size)
+fun <TEntity : Any> emptyPage(): Pageable<TEntity> = PageableImpl(listOf(), 0, 0)

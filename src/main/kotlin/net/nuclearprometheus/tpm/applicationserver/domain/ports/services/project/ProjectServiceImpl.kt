@@ -111,51 +111,6 @@ class ProjectServiceImpl(
             projectRepository.update(project)
         } ?: throw NotFoundException("Project not found")
 
-    override fun addTeamMember(id: ProjectId, teamMember: TeamMember) = projectRepository.get(id)?.let { project ->
-        project.addTeamMember(teamMember)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun removeTeamMember(id: ProjectId, teamMember: TeamMember) = projectRepository.get(id)?.let { project ->
-        project.removeTeamMember(teamMember)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun addTask(id: ProjectId, task: Task) = projectRepository.get(id)?.let { project ->
-        project.addTask(task)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun removeTask(id: ProjectId, task: Task) = projectRepository.get(id)?.let { project ->
-        project.removeTask(task)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun addExpense(id: ProjectId, expense: Expense) = projectRepository.get(id)?.let { project ->
-        project.addExpense(expense)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun removeExpense(id: ProjectId, expense: Expense) = projectRepository.get(id)?.let { project ->
-        project.removeExpense(expense)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun addNote(id: ProjectId, note: Note) = projectRepository.get(id)?.let { project ->
-        project.addNote(note)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun addFile(id: ProjectId, file: File) = projectRepository.get(id)?.let { project ->
-        project.addFile(file)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
-    override fun addChat(id: ProjectId, chat: Chat) = projectRepository.get(id)?.let { project ->
-        project.addChat(chat)
-        projectRepository.update(project)
-    } ?: throw NotFoundException("Project not found")
-
     override fun finishDraft(id: ProjectId) = projectRepository.get(id)?.let { project ->
         project.finishDraft()
         projectRepository.update(project)

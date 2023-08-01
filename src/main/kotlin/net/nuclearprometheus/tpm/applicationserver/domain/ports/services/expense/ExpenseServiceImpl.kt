@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
@@ -35,11 +36,11 @@ class ExpenseServiceImpl(
         teamMemberId: TeamMemberId,
         projectId: ProjectId
     ): Expense {
-        projectRepository.get(projectId) ?: throw IllegalArgumentException("Project with id $projectId does not exist")
-        teamMemberRepository.get(teamMemberId) ?: throw IllegalArgumentException("Team member with id $teamMemberId does not exist")
+        projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId does not exist")
+        teamMemberRepository.get(teamMemberId) ?: throw NotFoundException("Team member with id $teamMemberId does not exist")
 
-        val expenseCategory = expenseCategoryRepository.get(category) ?: throw IllegalArgumentException("Expense category with id $category does not exist")
-        val currency = currencyRepository.get(currencyCode) ?: throw IllegalArgumentException("Currency with code $currencyCode does not exist")
+        val expenseCategory = expenseCategoryRepository.get(category) ?: throw NotFoundException("Expense category with id $category does not exist")
+        val currency = currencyRepository.get(currencyCode) ?: throw NotFoundException("Currency with code $currencyCode does not exist")
 
         val expense = Expense(
             projectId = projectId,

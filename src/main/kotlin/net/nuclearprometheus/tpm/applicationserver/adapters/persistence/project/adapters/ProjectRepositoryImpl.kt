@@ -137,56 +137,6 @@ class ProjectRepositoryImpl(
     override fun update(entity: Project): Project {
         val project = projectJpaRepository.save(entity.toDatabaseModel())
 
-        fun <T : Entity<TId>, TId : Id<*>> updateAll(
-            previousState: List<T>,
-            newState: List<T>,
-            repository: BaseRepository<T, TId>
-        ): List<T> {
-            val toDelete = previousState.filter { it !in newState }
-            val toCreate = newState.filter { it !in previousState }
-            val toUpdate = newState.filter { it in previousState }
-
-            repository.deleteAll(toDelete.map { it.id })
-
-            return repository.createAll(toCreate) + repository.updateAll(toUpdate)
-        }
-
-        val teamMembers = updateAll(
-            previousState = teamMemberRepository.getAllByProjectId(entity.id),
-            newState = entity.teamMembers,
-            repository = teamMemberRepository
-        )
-
-        val tasks = updateAll(
-            previousState = taskRepository.getAllByProjectId(entity.id),
-            newState = entity.tasks,
-            repository = taskRepository
-        )
-
-        val expenses = updateAll(
-            previousState = expenseRepository.getAllByProjectId(entity.id),
-            newState = entity.expenses,
-            repository = expenseRepository
-        )
-
-        val notes = updateAll(
-            previousState = noteRepository.getAllByProjectId(entity.id),
-            newState = entity.notes,
-            repository = noteRepository
-        )
-
-        val files = updateAll(
-            previousState = fileRepository.getAllByProjectId(entity.id),
-            newState = entity.files,
-            repository = fileRepository
-        )
-
-        val chats = updateAll(
-            previousState = chatRepository.getAllByProjectId(entity.id),
-            newState = entity.chats,
-            repository = chatRepository
-        )
-
         return Project(
             id = ProjectId(project.id),
             title = project.title,
@@ -207,12 +157,12 @@ class ProjectRepositoryImpl(
             currency = CurrencyCode(project.currency)
                 .let { currencyRepository.get(it) ?: UnknownCurrency(it) },
             status = project.status.toDomain(),
-            teamMembers = teamMembers,
-            tasks = tasks,
-            expenses = expenses,
-            notes = notes,
-            files = files,
-            chats = chats,
+            teamMembers = teamMemberRepository.getAllByProjectId(ProjectId(project.id)),
+            tasks = taskRepository.getAllByProjectId(ProjectId(project.id)),
+            expenses = expenseRepository.getAllByProjectId(ProjectId(project.id)),
+            notes = noteRepository.getAllByProjectId(ProjectId(project.id)),
+            files = fileRepository.getAllByProjectId(ProjectId(project.id)),
+            chats = chatRepository.getAllByProjectId(ProjectId(project.id)),
             client = project.client.toDomain(countryRepository)
         )
     }

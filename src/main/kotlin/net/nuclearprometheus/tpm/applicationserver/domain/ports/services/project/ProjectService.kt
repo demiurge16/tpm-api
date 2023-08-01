@@ -49,15 +49,6 @@ interface ProjectService {
 
     fun moveStart(id: ProjectId, expectedStart: ZonedDateTime): Project
     fun moveDeadlines(id: ProjectId, internalDeadline: ZonedDateTime, externalDeadline: ZonedDateTime): Project
-    fun addTeamMember(id: ProjectId, teamMember: TeamMember): Project
-    fun removeTeamMember(id: ProjectId, teamMember: TeamMember): Project
-    fun addTask(id: ProjectId, task: Task): Project
-    fun removeTask(id: ProjectId, task: Task): Project
-    fun addExpense(id: ProjectId, expense: Expense): Project
-    fun removeExpense(id: ProjectId, expense: Expense): Project
-    fun addNote(id: ProjectId, note: Note): Project
-    fun addFile(id: ProjectId, file: File): Project
-    fun addChat(id: ProjectId, chat: Chat): Project
     fun finishDraft(id: ProjectId): Project
     fun backToDraft(id: ProjectId): Project
     fun startProgress(id: ProjectId): Project

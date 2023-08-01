@@ -47,7 +47,7 @@ object ProjectMapper {
         ),
         status = Status(
             status = status,
-            name = status.title,
+            title = status.title,
             description = status.shortDescription
         ),
         client = client.toView(),

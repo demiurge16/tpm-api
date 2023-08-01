@@ -1,5 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAddedException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAssignedRoleException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
@@ -18,10 +21,16 @@ class TeamMemberServiceImpl(
 ) : TeamMemberService {
 
     override fun create(userId: UserId, role: TeamMemberRole, projectId: ProjectId): TeamMember {
-        projectRepository.get(projectId) ?: throw IllegalArgumentException("Project does not exist")
+        logger.info("Creating team member for user $userId with role $role for project $projectId")
+
+        val project = projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
+
+        if (project.teamMembers.any { it.user.id == userId && it.role == role }) {
+            throw ProjectTeamMemberAlreadyAddedException("User is already a team member of this project")
+        }
 
         val teamMember = TeamMember(
-            user = userRepository.get(userId) ?: throw IllegalArgumentException("User does not exist"),
+            user = userRepository.get(userId) ?: throw NotFoundException("User does not exist"),
             role = role,
             projectId = projectId
         )
@@ -34,6 +43,14 @@ class TeamMemberServiceImpl(
     }
 
     override fun changeRole(id: TeamMemberId, role: TeamMemberRole) {
-        teamMemberRepository.get(id)?.changeRole(role)
+        val teamMember = teamMemberRepository.get(id) ?: throw NotFoundException("Team member does not exist")
+        val project = projectRepository.get(teamMember.projectId) ?: throw NotFoundException("Project does not exist")
+
+        if (project.teamMembers.any { it.user.id == teamMember.user.id && it.role == role }) {
+            throw ProjectTeamMemberAlreadyAssignedRoleException("Team member already has this role")
+        }
+
+        teamMember.changeRole(role)
+        teamMemberRepository.update(teamMember)
     }
 }

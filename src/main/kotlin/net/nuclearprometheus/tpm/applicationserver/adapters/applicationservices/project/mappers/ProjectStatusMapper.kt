@@ -10,7 +10,7 @@ object ProjectStatusMapper {
         projectId = id.value,
         status = Status(
             status = status,
-            name = status.name,
+            title = status.name,
             description = status.shortDescription
         )
     )
