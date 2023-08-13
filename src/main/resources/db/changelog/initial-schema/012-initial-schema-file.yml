@@ -51,6 +51,3 @@ databaseChangeLog:
                   type: UUID
                   constraints:
                     nullable: false
-                    foreignKeyName: file_uploader_id_fk
-                    referencedTableName: team_member
-                    referencedColumnNames: id

@@ -42,13 +42,10 @@ databaseChangeLog:
                     referencedTableName: project
                     referencedColumnNames: id
               - column:
-                  name: team_member_id
+                  name: spender_id
                   type: UUID
                   constraints:
                     nullable: false
-                    foreignKeyName: expense_team_member_id_fk
-                    referencedTableName: team_member
-                    referencedColumnNames: id
               - column:
                     name: category_id
                     type: UUID

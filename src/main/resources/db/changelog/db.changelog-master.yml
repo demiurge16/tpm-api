@@ -33,5 +33,8 @@ databaseChangeLog:
       file: initial-schema/011-initial-schema-expense.yml
       relativeToChangelogFile: true
   - include:
-      file: initial-schema/013-initial-schema-file.yml
+      file: initial-schema/012-initial-schema-file.yml
+      relativeToChangelogFile: true
+  - include:
+      file: initial-schema/013-initial-schema-threads.yml
       relativeToChangelogFile: true

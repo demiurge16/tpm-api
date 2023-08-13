@@ -100,9 +100,6 @@ databaseChangeLog:
                   type: UUID
                   constraints:
                     nullable: true
-                    foreignKeyName: task_assignee_id_fk
-                    referencedTableName: team_member
-                    referencedColumnNames: id
               - column:
                   name: project_id
                   type: UUID

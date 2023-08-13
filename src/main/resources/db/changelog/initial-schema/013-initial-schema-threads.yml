@@ -1,0 +1,224 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013-initial-schema-threads
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: thread
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: threadPK
+              - column:
+                  name: title
+                  type: VARCHAR(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: thread_project_id_fk
+                    referencedTableName: project
+                    referencedColumnNames: id
+              - column:
+                  name: creation_time
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: reply
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: replyPK
+              - column:
+                  name: content
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_reply_id
+                  type: UUID
+                  constraints:
+                    nullable: true
+                    foreignKeyName: reply_parent_reply_id_fk
+                    referencedTableName: reply
+                    referencedColumnNames: id
+              - column:
+                  name: thread_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: reply_thread_id_fk
+                    referencedTableName: thread
+                    referencedColumnNames: id
+        - createTable:
+            tableName: tag
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thread_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: tag_thread_id_fk
+                    referencedTableName: thread
+                    referencedColumnNames: id
+        - createTable:
+            tableName: reply_like
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reply_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: reply_like_reply_id_fk
+                    referencedTableName: reply
+                    referencedColumnNames: id
+        - createTable:
+            tableName: reply_dislike
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reply_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: reply_dislike_reply_id_fk
+                    referencedTableName: reply
+                    referencedColumnNames: id
+        - createTable:
+            tableName: thread_like
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thread_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: thread_like_thread_id_fk
+                    referencedTableName: thread
+                    referencedColumnNames: id
+        - createTable:
+            tableName: thread_dislike
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thread_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: thread_dislike_thread_id_fk
+                    referencedTableName: thread
+                    referencedColumnNames: id
