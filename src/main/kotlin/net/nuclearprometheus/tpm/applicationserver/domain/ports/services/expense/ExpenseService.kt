@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Exp
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.ExpenseId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -17,7 +17,7 @@ interface ExpenseService {
         amount: BigDecimal,
         currencyCode: CurrencyCode,
         date: ZonedDateTime,
-        teamMemberId: TeamMemberId,
+        spenderId: UserId,
         projectId: ProjectId
     ): Expense
 

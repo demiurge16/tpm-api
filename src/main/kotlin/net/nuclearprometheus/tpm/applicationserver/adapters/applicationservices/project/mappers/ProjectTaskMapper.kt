@@ -55,11 +55,10 @@ object ProjectTaskMapper {
         ),
         assignee = assignee?.let {
             Assignee(
-                teamMemberId = it.id.value,
-                userId = it.user.id.value,
-                firstName = it.user.firstName,
-                lastName = it.user.lastName,
-                email = it.user.email
+                userId = it.id.value,
+                firstName = it.firstName,
+                lastName = it.lastName,
+                email = it.email
             )
         },
         projectId = projectId.value

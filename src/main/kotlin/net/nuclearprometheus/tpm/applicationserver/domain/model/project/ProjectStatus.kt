@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
-enum class ProjectStatus(val title: String, val shortDescription: String) {
+enum class ProjectStatus(val title: String, val description: String) {
     DRAFT("Draft", "The project has been created but not yet ready to start."),
     READY_TO_START("Ready to Start", "The project has been approved and ready to start."),
     ACTIVE("Active", "The project is currently in progress."),

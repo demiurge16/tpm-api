@@ -23,9 +23,9 @@ class SecurityConfiguration {
                         "http://localhost:3000",
                         "http://localhost:8080",
                         "http://localhost:8081",
-                        "http://auth.tpm.localhost",
-                        "http://api.tpm.localhost",
-                        "http://ui.tpm.localhost",
+                        "http://26.44.49.6:3000",
+                        "http://26.44.49.6:8080",
+                        "http://26.44.49.6:8081"
                     )
                     allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                     allowedHeaders = listOf("*")

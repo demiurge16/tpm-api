@@ -12,8 +12,6 @@ class AccuracyConfig(
     private val accuracyRepository: AccuracyRepository
 ) {
 
-    private val logger = loggerFor(AccuracyService::class.java)
-
     @Bean
-    fun accuracyService(): AccuracyService = AccuracyServiceImpl(accuracyRepository, logger)
+    fun accuracyService(): AccuracyService = AccuracyServiceImpl(accuracyRepository, loggerFor(AccuracyService::class.java))
 }

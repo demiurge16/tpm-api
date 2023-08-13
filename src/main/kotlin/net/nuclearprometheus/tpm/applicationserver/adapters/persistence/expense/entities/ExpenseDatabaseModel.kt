@@ -15,7 +15,7 @@ open class ExpenseDatabaseModel(
     @Column(nullable = false) open var amount: BigDecimal,
     @Column(nullable = false, length = 16) open var currency: String,
     @Column(nullable = false) open var date: ZonedDateTime,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var teamMember: TeamMemberDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var category: ExpenseCategoryDatabaseModel,
+    @Column(nullable = false, columnDefinition = "uuid")  open var spenderId: UUID,
     @Column(nullable = false, columnDefinition = "uuid") open var projectId: UUID
 )

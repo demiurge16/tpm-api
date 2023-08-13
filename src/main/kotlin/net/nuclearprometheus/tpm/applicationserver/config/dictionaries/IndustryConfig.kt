@@ -12,8 +12,6 @@ class IndustryConfig(
     private val industryRepository: IndustryRepository
 ) {
 
-    private val logger = loggerFor(IndustryService::class.java)
-
     @Bean
-    fun industryService(): IndustryService = IndustryServiceImpl(industryRepository, logger)
+    fun industryService(): IndustryService = IndustryServiceImpl(industryRepository, loggerFor(IndustryService::class.java))
 }

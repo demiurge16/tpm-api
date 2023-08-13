@@ -11,7 +11,7 @@ object ProjectStatusMapper {
         status = Status(
             status = status,
             title = status.name,
-            description = status.shortDescription
+            description = status.description
         )
     )
 }

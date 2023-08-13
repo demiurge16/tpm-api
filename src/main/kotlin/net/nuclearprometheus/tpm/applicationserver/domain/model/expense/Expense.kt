@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -15,7 +15,7 @@ class Expense(
     amount: BigDecimal,
     currency: Currency,
     date: ZonedDateTime,
-    teamMemberId: TeamMemberId,
+    spender: User,
     projectId: ProjectId
 ) : Entity<ExpenseId>(id) {
 
@@ -24,6 +24,6 @@ class Expense(
     var amount = amount; private set
     var currency = currency; private set
     var date = date; private set
-    var teamMemberId = teamMemberId; private set
+    var spender = spender; private set
     var projectId = projectId; private set
 }

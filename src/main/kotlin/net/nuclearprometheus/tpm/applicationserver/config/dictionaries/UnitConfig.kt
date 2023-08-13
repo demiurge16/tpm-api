@@ -12,8 +12,6 @@ class UnitConfig(
     private val unitRepository: UnitRepository
 ) {
 
-    private val logger = loggerFor(UnitService::class.java)
-
     @Bean
-    fun unitService(): UnitService = UnitServiceImpl(unitRepository, logger)
+    fun unitService(): UnitService = UnitServiceImpl(unitRepository, loggerFor(UnitService::class.java))
 }

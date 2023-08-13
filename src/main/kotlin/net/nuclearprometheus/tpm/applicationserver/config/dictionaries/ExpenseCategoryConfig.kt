@@ -12,8 +12,6 @@ class ExpenseCategoryConfig(
     private val expenseCategoryRepository: ExpenseCategoryRepository
 ) {
 
-    private val logger = loggerFor(ExpenseCategoryService::class.java)
-
     @Bean
-    fun expenseCategoryService(): ExpenseCategoryService = ExpenseCategoryServiceImpl(expenseCategoryRepository, logger)
+    fun expenseCategoryService(): ExpenseCategoryService = ExpenseCategoryServiceImpl(expenseCategoryRepository, loggerFor(ExpenseCategoryService::class.java))
 }

@@ -6,7 +6,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Exp
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.ExpenseId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
@@ -21,6 +20,7 @@ import java.time.ZonedDateTime
 class ExpenseServiceImpl(
     private val expenseRepository: ExpenseRepository,
     private val projectRepository: ProjectRepository,
+    private val userRepository: UserRepository,
     private val teamMemberRepository: TeamMemberRepository,
     private val expenseCategoryRepository: ExpenseCategoryRepository,
     private val currencyRepository: CurrencyRepository,
@@ -33,18 +33,22 @@ class ExpenseServiceImpl(
         amount: BigDecimal,
         currencyCode: CurrencyCode,
         date: ZonedDateTime,
-        teamMemberId: TeamMemberId,
+        spenderId: UserId,
         projectId: ProjectId
     ): Expense {
         projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId does not exist")
-        teamMemberRepository.get(teamMemberId) ?: throw NotFoundException("Team member with id $teamMemberId does not exist")
+        val spender = userRepository.get(spenderId) ?: throw NotFoundException("User with id $spenderId does not exist")
+        teamMemberRepository.getByUserIdAndProjectId(spenderId, projectId)
+            ?: throw NotFoundException("User with id $spenderId is not a member of project with id $projectId")
 
-        val expenseCategory = expenseCategoryRepository.get(category) ?: throw NotFoundException("Expense category with id $category does not exist")
-        val currency = currencyRepository.get(currencyCode) ?: throw NotFoundException("Currency with code $currencyCode does not exist")
+        val expenseCategory = expenseCategoryRepository.get(category)
+            ?: throw NotFoundException("Expense category with id $category does not exist")
+        val currency = currencyRepository.get(currencyCode)
+            ?: throw NotFoundException("Currency with code $currencyCode does not exist")
 
         val expense = Expense(
             projectId = projectId,
-            teamMemberId = teamMemberId,
+            spender = spender,
             description = description,
             amount = amount,
             date = date,

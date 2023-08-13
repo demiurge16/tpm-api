@@ -1,9 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectStatusChangeException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAddedException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
-import net.nuclearprometheus.tpm.applicationserver.domain.model.chat.Chat
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
@@ -13,9 +11,9 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
-import net.nuclearprometheus.tpm.applicationserver.domain.model.note.Note
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -38,9 +36,8 @@ class Project(
     teamMembers: List<TeamMember> = mutableListOf(),
     tasks: List<Task> = mutableListOf(),
     expenses: List<Expense> = mutableListOf(),
-    notes: List<Note> = mutableListOf(),
     files: List<File> = mutableListOf(),
-    chats: List<Chat> = mutableListOf(),
+    threads: List<Thread> = mutableListOf(),
     client: Client
 ) : Entity<ProjectId>(id) {
 
@@ -61,9 +58,8 @@ class Project(
     var teamMembers = teamMembers; private set
     var tasks = tasks; private set
     var expenses = expenses; private set
-    var notes = notes; private set
     var files = files; private set
-    var chats = chats; private set
+    var threads = threads; private set
     var client = client; private set
 
     init {

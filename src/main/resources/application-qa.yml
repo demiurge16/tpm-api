@@ -1,0 +1,31 @@
+app:
+  file-storage:
+    minio:
+      endpoint: http://26.44.49.6:9000
+
+keycloak:
+  auth-server-url: http://26.44.49.6:8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/tpm
+  data:
+    redis:
+      host: cache
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://26.44.49.6:8081/realms/tpm
+            user-info-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/certs
+            authorization-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/auth
+            token-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/token
+      resourceserver:
+        jwt:
+          issuer-uri: http://26.44.49.6:8081/realms/tpm
+          jwk-set-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/certs
+
+server:
+  address: 0.0.0.0

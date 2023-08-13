@@ -17,7 +17,7 @@ sealed class CountryRequest {
         search,
         mapOf(
             "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) }
+            "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
         )
     ) {
 

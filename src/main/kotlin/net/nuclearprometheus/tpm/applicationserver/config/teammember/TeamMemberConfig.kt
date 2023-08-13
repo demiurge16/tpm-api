@@ -17,8 +17,11 @@ class TeamMemberConfig(
     private val projectRepository: ProjectRepository
 ) {
 
-    private val logger = loggerFor(TeamMemberService::class.java)
-
     @Bean
-    fun teamMemberService(): TeamMemberService = TeamMemberServiceImpl(teamMemberRepository, userRepository, projectRepository, logger)
+    fun teamMemberService(): TeamMemberService = TeamMemberServiceImpl(
+        teamMemberRepository,
+        userRepository,
+        projectRepository,
+        loggerFor(TeamMemberService::class.java)
+    )
 }

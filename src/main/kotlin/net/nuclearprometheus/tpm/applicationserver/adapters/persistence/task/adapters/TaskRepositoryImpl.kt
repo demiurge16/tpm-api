@@ -11,8 +11,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.repositories.TaskJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.adapters.TeamMemberRepositoryImpl.Mappers.toDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.adapters.TeamMemberRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
@@ -21,6 +19,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskStatus
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
@@ -82,7 +81,9 @@ class TaskRepositoryImpl(
             },
             status = status.toDomain(),
             priority = priority.toDomain(),
-            assignee = assignee?.toDomain(userRepository),
+            assignee = with(assigneeId) {
+                if (this != null) userRepository.get(UserId(this)) else null
+            },
             projectId = ProjectId(projectId)
         )
 
@@ -102,7 +103,7 @@ class TaskRepositoryImpl(
             currency = currency.id.value,
             status = status.toDatabaseModel(),
             priority = priority.toDatabaseModel(),
-            assignee = assignee?.toDatabaseModel(),
+            assigneeId = assignee?.id?.value,
             projectId = projectId.value
         )
 

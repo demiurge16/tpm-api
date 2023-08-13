@@ -10,11 +10,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cur
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import java.lang.IllegalStateException
 import java.util.*
 
 @Service
@@ -38,10 +40,12 @@ class ProjectExpenseApplicationService(
 
         return singlePage(
             expenseRepository.getAllByProjectId(ProjectId(projectId)).map {
-                val teamMember = project.teamMembers.find { teamMember -> teamMember.id == it.teamMemberId }
-                    ?: throw IllegalStateException("Team member with id ${it.teamMemberId} not found in project ${project.id}")
+                val user = project.teamMembers.map { it.user }
+                    .distinctBy { it.id }
+                    .find { user -> user.id == it.spender.id }
+                    ?: throw java.lang.IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
 
-                it.toView(teamMember, project)
+                it.toView(user, project)
             }
         )
     }
@@ -55,14 +59,17 @@ class ProjectExpenseApplicationService(
             amount = request.amount,
             currencyCode = CurrencyCode(request.currency),
             date = request.date,
-            teamMemberId = TeamMemberId(request.teamMemberId),
+            spenderId = UserId(request.spenderId),
             projectId = ProjectId(projectId)
         ).let {
             val project = projectRepository.get(ProjectId(projectId))
-            val teamMember = project?.teamMembers?.find { teamMember -> teamMember.id == it.teamMemberId }
-                ?: throw IllegalStateException("Team member with id ${it.teamMemberId} not found in project ${project?.id}")
+                ?: throw IllegalStateException("Project with id $projectId not found")
+            val user = project.teamMembers.map { it.user }
+                .distinctBy { it.id }
+                .find { user -> user.id == it.spender.id }
+                ?: throw IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
 
-            it.toView(teamMember, project)
+            it.toView(user, project)
         }
     }
 }

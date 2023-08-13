@@ -38,11 +38,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "euRH66K7xvH2xkVtYE91GBAUG7J0KFfc",
       "redirectUris": [
-        "http://auth.tpm.localhost/*",
-        "http://api.tpm.localhost/*"
+        "http://localhost:8080/*",
+        "http://26.44.49.6:8080/*"
       ],
       "webOrigins": [
-        "http://localhost:8080"
+        "http://localhost:8080",
+        "http://26.44.49.6:8080"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -236,10 +237,10 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://localhost:3000/*",
-        "http://ui.tpm.localhost/*"
+        "http://26.44.49.6:3000/*"
       ],
       "webOrigins": [
-        "http://ui.tpm.localhost",
+        "http://26.44.49.6:3000",
         "http://localhost:3000"
       ],
       "notBefore": 0,

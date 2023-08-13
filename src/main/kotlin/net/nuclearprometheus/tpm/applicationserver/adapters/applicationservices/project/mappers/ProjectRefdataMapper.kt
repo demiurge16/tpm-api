@@ -7,6 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 
 object ProjectRefdataMapper {
 
-    fun ProjectStatus.toView() = Status(this, title, shortDescription)
+    fun ProjectStatus.toView() = Status(this, title, description)
     fun TeamMemberRole.toView() = Role(this, title, description)
 }

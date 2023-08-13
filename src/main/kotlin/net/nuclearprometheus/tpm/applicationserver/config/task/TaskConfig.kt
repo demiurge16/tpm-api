@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
@@ -20,10 +21,9 @@ class TaskConfig(
     private val currencyRepository: CurrencyRepository,
     private val priorityRepository: PriorityRepository,
     private val projectRepository: ProjectRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val userRepository: UserRepository
 ) {
-
-    private val logger = loggerFor(TaskService::class.java)
 
     @Bean
     fun taskService(): TaskService =
@@ -37,6 +37,7 @@ class TaskConfig(
             priorityRepository,
             projectRepository,
             teamMemberRepository,
-            logger
+            userRepository,
+            loggerFor(TaskService::class.java)
         )
 }

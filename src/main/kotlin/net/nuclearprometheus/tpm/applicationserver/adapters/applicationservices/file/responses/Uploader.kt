@@ -3,7 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 data class Uploader(
-    val teamMemberId: UUID,
     val userId: UUID,
     val firstName: String,
     val lastName: String,

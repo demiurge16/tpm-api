@@ -43,10 +43,6 @@ val logstashLogbackEncoderVersion: String by extra {
     "7.3"
 }
 
-val elasticApmAgentVersion: String by extra {
-    "1.36.0"
-}
-
 val minioVersion: String by extra {
     "8.5.2"
 }
@@ -84,7 +80,6 @@ dependencies {
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:$kotlinCsvVersion")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
-    implementation("co.elastic.apm:apm-agent-attach:$elasticApmAgentVersion")
     implementation("io.minio:minio:$minioVersion")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     runtimeOnly("org.postgresql:postgresql")

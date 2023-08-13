@@ -11,8 +11,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.repositories.ProjectJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
-import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Id
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
@@ -20,17 +18,15 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unk
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.BaseRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.chat.ChatRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CountryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.note.NoteRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -42,9 +38,8 @@ class ProjectRepositoryImpl(
     private val teamMemberRepository: TeamMemberRepository,
     private val taskRepository: TaskRepository,
     private val expenseRepository: ExpenseRepository,
-    private val noteRepository: NoteRepository,
     private val fileRepository: FileRepository,
-    private val chatRepository: ChatRepository
+    private val threadRepository: ThreadRepository
 ) : ProjectRepository {
 
     override fun getAll() = projectJpaRepository.findAll()
@@ -56,9 +51,7 @@ class ProjectRepositoryImpl(
                 teamMemberRepository,
                 taskRepository,
                 expenseRepository,
-                noteRepository,
-                fileRepository,
-                chatRepository
+                fileRepository
             )
         }
 
@@ -71,9 +64,7 @@ class ProjectRepositoryImpl(
                 teamMemberRepository,
                 taskRepository,
                 expenseRepository,
-                noteRepository,
                 fileRepository,
-                chatRepository
             )
         }
         .orElse(null)
@@ -87,9 +78,7 @@ class ProjectRepositoryImpl(
                 teamMemberRepository,
                 taskRepository,
                 expenseRepository,
-                noteRepository,
                 fileRepository,
-                chatRepository
             )
         }
 
@@ -98,9 +87,8 @@ class ProjectRepositoryImpl(
         val teamMembers = teamMemberRepository.createAll(entity.teamMembers)
         val tasks = taskRepository.createAll(entity.tasks)
         val expenses = expenseRepository.createAll(entity.expenses)
-        val notes = noteRepository.createAll(entity.notes)
         val files = fileRepository.createAll(entity.files)
-        val chats = chatRepository.createAll(entity.chats)
+        val threads = threadRepository.createAll(entity.threads)
 
         return Project(
             id = ProjectId(project.id),
@@ -125,9 +113,8 @@ class ProjectRepositoryImpl(
             teamMembers = teamMembers,
             tasks = tasks,
             expenses = expenses,
-            notes = notes,
             files = files,
-            chats = chats,
+            threads = threads,
             client = project.client.toDomain(countryRepository)
         )
     }
@@ -160,9 +147,8 @@ class ProjectRepositoryImpl(
             teamMembers = teamMemberRepository.getAllByProjectId(ProjectId(project.id)),
             tasks = taskRepository.getAllByProjectId(ProjectId(project.id)),
             expenses = expenseRepository.getAllByProjectId(ProjectId(project.id)),
-            notes = noteRepository.getAllByProjectId(ProjectId(project.id)),
             files = fileRepository.getAllByProjectId(ProjectId(project.id)),
-            chats = chatRepository.getAllByProjectId(ProjectId(project.id)),
+            threads = threadRepository.getAllByProjectId(ProjectId(project.id)),
             client = project.client.toDomain(countryRepository)
         )
     }
@@ -170,9 +156,7 @@ class ProjectRepositoryImpl(
     override fun updateAll(entities: List<Project>) = entities.map { update(it) }
 
     override fun delete(id: ProjectId) {
-        chatRepository.deleteAllByProjectId(id)
         fileRepository.deleteAllByProjectId(id)
-        noteRepository.deleteAllByProjectId(id)
         expenseRepository.deleteAllByProjectId(id)
         taskRepository.deleteAllByProjectId(id)
         teamMemberRepository.deleteAllByProjectId(id)
@@ -191,9 +175,7 @@ class ProjectRepositoryImpl(
             teamMemberRepository: TeamMemberRepository,
             taskRepository: TaskRepository,
             expenseRepository: ExpenseRepository,
-            noteRepository: NoteRepository,
             fileRepository: FileRepository,
-            chatRepository: ChatRepository
         ) = Project(
             id = ProjectId(id),
             title = title,
@@ -217,9 +199,7 @@ class ProjectRepositoryImpl(
             teamMembers = teamMemberRepository.getAllByProjectId(ProjectId(id)),
             tasks = taskRepository.getAllByProjectId(ProjectId(id)),
             expenses = expenseRepository.getAllByProjectId(ProjectId(id)),
-            notes = noteRepository.getAllByProjectId(ProjectId(id)),
             files = fileRepository.getAllByProjectId(ProjectId(id)),
-            chats = chatRepository.getAllByProjectId(ProjectId(id)),
             client = client.toDomain(countryRepository)
         )
 

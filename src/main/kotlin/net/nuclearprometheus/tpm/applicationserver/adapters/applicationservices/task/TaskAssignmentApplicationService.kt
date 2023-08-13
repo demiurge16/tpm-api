@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignmentRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
@@ -17,14 +18,14 @@ class TaskAssignmentApplicationService(private val taskService: TaskService) {
     fun assignTeamMember(taskId: UUID, request: TaskAssignmentRequest.Assign) = with(logger) {
         info("assignTeamMember($taskId, $request)")
 
-        taskService.assignTeamMember(TaskId(taskId), TeamMemberId(request.teamMemberId)).toAssignee()
+        taskService.assign(TaskId(taskId), UserId(request.userId)).toAssignee()
     }
 
     fun unassignTeamMember(taskId: UUID) {
         with(logger) {
             info("unassignTeamMember($taskId)")
 
-            taskService.unassignTeamMember(TaskId(taskId)).toAssignee()
+            taskService.unassign(TaskId(taskId)).toAssignee()
         }
     }
 }

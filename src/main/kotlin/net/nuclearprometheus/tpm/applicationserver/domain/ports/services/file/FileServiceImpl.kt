@@ -9,11 +9,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 
 class FileServiceImpl(
     private val fileRepository: FileRepository,
     private val teamMemberRepository: TeamMemberRepository,
+    private val userRepository: UserRepository,
     private val projectRepository: ProjectRepository,
     private val logger: Logger
 ) : FileService {
@@ -22,20 +24,22 @@ class FileServiceImpl(
         name: String,
         size: Long,
         type: String,
-        uploaderId: TeamMemberId,
+        uploaderId: UserId,
         projectId: ProjectId,
         location: String
     ): File {
         projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId does not exist")
 
-        val teamMember = teamMemberRepository.get(uploaderId)
-            ?: throw NotFoundException("Team member with id $uploaderId does not exist")
+        val uploader = userRepository.get(uploaderId)
+            ?: throw NotFoundException("User with id $uploaderId does not exist")
+        teamMemberRepository.getByUserIdAndProjectId(uploaderId, projectId)
+            ?: throw NotFoundException("User with id $uploaderId is not a member of project with id $projectId")
 
         val file = File(
             name = name,
             size = size,
             type = type,
-            uploader = teamMember,
+            uploader = uploader,
             projectId = projectId,
             location = location
         )

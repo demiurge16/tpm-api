@@ -14,6 +14,6 @@ open class FileDatabaseModel(
     @Column(nullable = false, length = 256) open var location: String,
     @Column(nullable = false) open var size: Long,
     @Column(nullable = false) open var uploadTime: ZonedDateTime,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var uploader: TeamMemberDatabaseModel,
-    @Column(nullable = false) open var projectId: UUID
+    @Column(nullable = false, columnDefinition = "uuid") open var uploaderId: UUID,
+    @Column(nullable = false, columnDefinition = "uuid") open var projectId: UUID
 )

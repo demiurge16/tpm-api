@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -44,8 +44,8 @@ interface TaskService {
     fun moveStart(id: TaskId, expectedStart: ZonedDateTime): Task
     fun moveDeadline(id: TaskId, deadline: ZonedDateTime): Task
     fun changePriority(id: TaskId, priorityId: PriorityId): Task
-    fun assignTeamMember(id: TaskId, teamMemberId: TeamMemberId): Task
-    fun unassignTeamMember(id: TaskId): Task
+    fun assign(id: TaskId, assigneeId: UserId): Task
+    fun unassign(id: TaskId): Task
     fun start(id: TaskId): Task
     fun complete(id: TaskId): Task
     fun requestRevisions(id: TaskId): Task

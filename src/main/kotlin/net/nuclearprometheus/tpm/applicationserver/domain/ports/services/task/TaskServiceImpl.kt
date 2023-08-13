@@ -5,11 +5,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -24,6 +25,7 @@ class TaskServiceImpl(
     private val priorityRepository: PriorityRepository,
     private val projectRepository: ProjectRepository,
     private val teamMemberRepository: TeamMemberRepository,
+    private val userRepository: UserRepository,
     private val logger: Logger
 ) : TaskService {
 
@@ -112,15 +114,17 @@ class TaskServiceImpl(
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 
-    override fun assignTeamMember(id: TaskId, teamMemberId: TeamMemberId) = taskRepository.get(id)?.let { task ->
-        val teamMember = teamMemberRepository.get(teamMemberId) ?: throw NotFoundException("Team member not found")
+    override fun assign(id: TaskId, assigneeId: UserId) = taskRepository.get(id)?.let { task ->
+        val user = userRepository.get(assigneeId) ?: throw NotFoundException("User with id $assigneeId not found")
+        teamMemberRepository.getByUserIdAndProjectId(user.id, task.projectId)
+            ?: throw NotFoundException("User with id $assigneeId is not a member of project with id ${task.projectId}")
 
-        task.assignTeamMember(teamMember)
+        task.assign(user)
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 
-    override fun unassignTeamMember(id: TaskId) = taskRepository.get(id)?.let { task ->
-        task.unassignTeamMember()
+    override fun unassign(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.unassign()
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 

@@ -12,8 +12,6 @@ class PriorityConfig(
     private val priorityRepository: PriorityRepository
 ) {
 
-    private val logger = loggerFor(PriorityService::class.java)
-
     @Bean
-    fun priorityService(): PriorityService = PriorityServiceImpl(priorityRepository, logger)
+    fun priorityService(): PriorityService = PriorityServiceImpl(priorityRepository, loggerFor(PriorityService::class.java))
 }

@@ -11,11 +11,10 @@ object FileMapper {
         name = name,
         uploadTime = uploadTime,
         uploader = Uploader(
-            teamMemberId = uploader.id.value,
-            userId = uploader.user.id.value,
-            firstName = uploader.user.firstName,
-            lastName = uploader.user.lastName,
-            email = uploader.user.email
+            userId = uploader.id.value,
+            firstName = uploader.firstName,
+            lastName = uploader.lastName,
+            email = uploader.email
         ),
         projectId = projectId.value
     )

@@ -1,33 +1,18 @@
 version: "3.8"
 
 services:
-  reverse-proxy:
-    container_name: reverse-proxy
-    build:
-      context: ./infrastructure/reverse-proxy
-      dockerfile: ./reverse-proxy.Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - tpm-network
-
   application:
     container_name: application
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
-        SPRING_PROFILES_ACTIVE: dev
+        SPRING_PROFILES_ACTIVE: qa
     ports:
       - "5005:5005"
       - "8080:8080"
-    expose:
-      - "8080"
     networks:
       - tpm-network
-    volumes:
-      - application-data:/application
     depends_on:
       - db
       - cache
@@ -35,13 +20,12 @@ services:
 
   auth-server:
     container_name: auth-server
-    hostname: auth.tpm.localhost
     build:
       context: ./infrastructure/auth-server
       dockerfile: ./keycloak.Dockerfile
-    expose:
-      - "80"
-      - "443"
+    ports:
+      - "8081:80"
+      - "8082:443"
     networks:
       - tpm-network
     depends_on:
@@ -50,79 +34,46 @@ services:
       - logstash
 
   db:
-    image: "postgres:alpine"
     container_name: db
+    build:
+      context: ./infrastructure/db
+      dockerfile: ./db.Dockerfile
     ports:
       - "5432:5432"
-    expose:
-      - "5432"
     networks:
       - tpm-network
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 1qaz@WSX
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./infrastructure/postgres/init.sql:/init.sql
 
   cache:
-    image: "redis/redis-stack"
     container_name: cache
-    expose:
-      - "6379"
-      - "8001"
+    build:
+      context: ./infrastructure/cache
+      dockerfile: ./cache.Dockerfile
+    ports:
+      - "6379:6379"
     networks:
       - tpm-network
     volumes:
       - cache-data:/data
 
   file-storage:
-    image: "quay.io/minio/minio:RELEASE.2023-03-24T21-41-23Z"
     container_name: file-storage
-    hostname: minio.tpm.localhost
+    build:
+      context: ./infrastructure/file-storage
+      dockerfile: ./file-storage.Dockerfile
     ports:
       - "9000:9000"
       - "9001:9001"
-    expose:
-      - "9000"
-      - "9001"
     networks:
       - tpm-network
-    environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: 1qaz@WSX
-    command:
-      - server
-      - --console-address
-      - ":9001"
-      - /data
     volumes:
+      - ./infrastructure/file-storage/entrypoint.sh:/entrypoint.sh:ro,Z
       - file-storage-data:/data
-
-  pgadmin:
-    image: "dpage/pgadmin4"
-    container_name: pgadmin
-    ports:
-      - "8085:80"
-    expose:
-      - "80"
-    networks:
-      - tpm-network
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@tpm.nuclear-prometheus.net"
-      PGADMIN_DEFAULT_PASSWORD: "1qaz@WSX"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
 
   # Logging and monitoring services
 
-  # The 'setup' service runs a one-off script which initializes users inside
-  # Elasticsearch — such as 'logstash_internal' and 'kibana_system' — with the
-  # values of the passwords defined in the '.env' file.
-  #
-  # This task is only performed during the *initial* startup of the stack. On all
-  # subsequent runs, the service simply returns immediately, without performing
-  # any modification to existing users.
   monitoring-setup:
     container_name: monitoring-setup
     build:
@@ -139,11 +90,6 @@ services:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
-      METRICBEAT_INTERNAL_PASSWORD: ${METRICBEAT_INTERNAL_PASSWORD:-}
-      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
-      HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
-      MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
-      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
     networks:
       - tpm-network
     depends_on:
@@ -200,8 +146,8 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./infrastructure/monitoring/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
-    expose:
-      - "5601"
+    ports:
+      - "5601:5601"
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
     networks:
@@ -210,174 +156,12 @@ services:
       - elasticsearch
     restart: unless-stopped
 
-  enterprise-search:
-    container_name: enterprise-search
-    build:
-      context: ./infrastructure/monitoring/enterprise-search
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - ./infrastructure/monitoring/enterprise-search/config/enterprise-search.yml:/usr/share/enterprise-search/config/enterprise-search.yml:ro,Z
-    environment:
-      JAVA_OPTS: -Xms2g -Xmx2g
-      ENT_SEARCH_DEFAULT_PASSWORD: 'changeme'
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-    expose:
-      - "3002"
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-
-  filebeat:
-    container_name: filebeat
-    build:
-      context: ./infrastructure/monitoring/filebeat
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    user: root
-    command:
-      - -e
-      - --strict.perms=false
-    volumes:
-      - ./infrastructure/monitoring/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro,Z
-      - type: bind
-        source: /var/lib/docker/containers
-        target: /var/lib/docker/containers
-        read_only: true
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-        read_only: true
-    environment:
-      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
-      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-
-  apm-server:
-    container_name: apm-server
-    build:
-      context: ./infrastructure/monitoring/fleet
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - apm-server-data:/usr/share/elastic-agent/state:Z
-    environment:
-      FLEET_ENROLL: '1'
-      FLEET_TOKEN_POLICY_NAME: Agent Policy APM Server
-      FLEET_INSECURE: '1'
-      FLEET_URL: http://fleet-server:8220
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    expose:
-      - "8200"
-    hostname: apm-server
-    restart: on-failure
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-      - kibana
-      - fleet-server
-
-  fleet-server:
-    container_name: fleet-server
-    build:
-      context: ./infrastructure/monitoring/fleet
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - fleet-server-data:/usr/share/elastic-agent/state:Z
-    environment:
-      FLEET_SERVER_ENABLE: '1'
-      FLEET_SERVER_INSECURE_HTTP: '1'
-      FLEET_SERVER_HOST: 0.0.0.0
-      FLEET_SERVER_POLICY_ID: fleet-server-policy
-      KIBANA_FLEET_SETUP: '1'
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
-    expose:
-      - "8220"
-    hostname: fleet-server
-    restart: on-failure
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-      - kibana
-
-  heartbeat:
-    container_name: heartbeat
-    build:
-      context: ./infrastructure/monitoring/heartbeat
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    command:
-      - -e
-      - --strict.perms=false
-    volumes:
-      - ./infrastructure/monitoring/heartbeat/config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro,Z
-    environment:
-      HEARTBEAT_INTERNAL_PASSWORD: ${HEARTBEAT_INTERNAL_PASSWORD:-}
-      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-
-  metricbeat:
-    container_name: metricbeat
-    build:
-      context: ./infrastructure/monitoring/metricbeat
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    user: root
-    command:
-      - -e
-      - --strict.perms=false
-      - --system.hostfs=/hostfs
-    volumes:
-      - ./infrastructure/monitoring/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro,Z
-      - type: bind
-        source: /
-        target: /hostfs
-        read_only: true
-      - type: bind
-        source: /sys/fs/cgroup
-        target: /hostfs/sys/fs/cgroup
-        read_only: true
-      - type: bind
-        source: /proc
-        target: /hostfs/proc
-        read_only: true
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-        read_only: true
-    environment:
-      METRICBEAT_INTERNAL_PASSWORD: ${METRICBEAT_INTERNAL_PASSWORD:-}
-      MONITORING_INTERNAL_PASSWORD: ${MONITORING_INTERNAL_PASSWORD:-}
-      BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
-    networks:
-      - tpm-network
-    depends_on:
-      - elasticsearch
-      - kibana
-
-
 volumes:
-  application-data:
   db-data:
-  pgadmin-data:
   cache-data:
   file-storage-data:
   monitoring-setup-data:
   elasticsearch-data:
-  apm-server-data:
-  fleet-server-data:
 
 networks:
   tpm-network:

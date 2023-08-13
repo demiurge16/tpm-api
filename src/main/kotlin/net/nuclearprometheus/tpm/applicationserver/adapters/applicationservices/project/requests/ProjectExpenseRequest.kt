@@ -11,6 +11,6 @@ sealed class ProjectExpenseRequest {
         val amount: BigDecimal,
         val currency: String,
         val date: ZonedDateTime,
-        val teamMemberId: UUID
+        val spenderId: UUID
     ) : ProjectExpenseRequest()
 }

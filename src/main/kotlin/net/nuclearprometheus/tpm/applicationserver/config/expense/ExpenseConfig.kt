@@ -5,6 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
@@ -15,21 +16,21 @@ import org.springframework.context.annotation.Configuration
 class ExpenseConfig(
     private val expenseRepository: ExpenseRepository,
     private val projectRepository: ProjectRepository,
+    private val userRepository: UserRepository,
     private val teamMemberRepository: TeamMemberRepository,
     private val expenseCategoryRepository: ExpenseCategoryRepository,
     private val currencyRepository: CurrencyRepository
 ) {
-
-    private val logger = loggerFor(ExpenseService::class.java)
 
     @Bean
     fun expenseService(): ExpenseService =
         ExpenseServiceImpl(
             expenseRepository,
             projectRepository,
+            userRepository,
             teamMemberRepository,
             expenseCategoryRepository,
             currencyRepository,
-            logger
+            loggerFor(ExpenseService::class.java)
         )
 }

@@ -35,21 +35,10 @@ keycloak:
   credentials:
     secret: 3212cvArL0ddrMCNrputbdF3uG7jVxDU
 
-elastic:
-  apm:
-    enabled: true
-    server-url: http://localhost:8200
-    service-name: tpm-application-server
-    secret-token: 8a5f8174a5cf7d1a9448c848c8dbfe59047264b1422e274e49723367a0cb8a16
-    application-packages: net.nuclearprometheus.tpm.applicationserver
-    log-level: INFO
-
 server:
   port: 8080
 
 spring:
-  profiles:
-    active: '@spring.profiles.active@'
   application:
     name: translation-project-manager-api
   mvc:
@@ -73,7 +62,6 @@ spring:
     properties:
       hibernate:
         default_schema: application
-        show_sql: true
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
     default-schema: application

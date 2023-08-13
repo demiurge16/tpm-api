@@ -6,6 +6,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -25,7 +27,7 @@ class Task(
     currency: Currency,
     status: TaskStatus = TaskStatus.DRAFT,
     priority: Priority,
-    assignee: TeamMember? = null,
+    assignee: User? = null,
     projectId: ProjectId
 ) : Entity<TaskId>(id) {
 
@@ -119,7 +121,7 @@ class Task(
         this.priority = priority
     }
 
-    fun assignTeamMember(assignee: TeamMember) {
+    fun assign(assignee: User) {
         this.assignee = assignee
 
         if (status == TaskStatus.DRAFT) {
@@ -127,7 +129,7 @@ class Task(
         }
     }
 
-    fun unassignTeamMember() {
+    fun unassign() {
         this.assignee = null
         status = TaskStatus.DRAFT
     }

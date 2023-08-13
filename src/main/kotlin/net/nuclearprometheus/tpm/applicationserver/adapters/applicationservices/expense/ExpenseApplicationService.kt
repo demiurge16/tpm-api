@@ -27,10 +27,12 @@ class ExpenseApplicationService(
         singlePage(repository.getAll()).map {
             val project = projectRepository.get(it.projectId)
                 ?: throw IllegalStateException("Project with id ${it.projectId} not found")
-            val teamMember = project.teamMembers.find { teamMember -> teamMember.id == it.teamMemberId }
-                ?: throw IllegalStateException("Team member with id ${it.teamMemberId} not found in project with id ${it.projectId}")
+            val user = project.teamMembers.map { it.user }
+                .distinctBy { it.id }
+                .find { user -> user.id == it.spender.id }
+                ?: throw IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
 
-            it.toView(teamMember, project)
+            it.toView(user, project)
         }
     }
 
@@ -40,10 +42,12 @@ class ExpenseApplicationService(
         repository.get(ExpenseId(expenseId))?.let {
             val project = projectRepository.get(it.projectId)
                 ?: throw IllegalStateException("Project with id ${it.projectId} not found")
-            val teamMember = project.teamMembers.find { teamMember -> teamMember.id == it.teamMemberId }
-                ?: throw IllegalStateException("Team member with id ${it.teamMemberId} not found in project with id ${it.projectId}")
+            val user = project.teamMembers.map { it.user }
+                .distinctBy { it.id }
+                .find { user -> user.id == it.spender.id }
+                ?: throw IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
 
-            it.toView(teamMember, project)
+            it.toView(user, project)
         } ?: throw NotFoundException("Expense with id $expenseId not found")
     }
 

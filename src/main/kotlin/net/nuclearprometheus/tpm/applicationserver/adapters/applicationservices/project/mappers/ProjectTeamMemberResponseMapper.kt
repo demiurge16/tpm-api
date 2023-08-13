@@ -26,7 +26,7 @@ object ProjectTeamMemberResponseMapper {
             status = Status(
                 status = project.status,
                 title = project.status.title,
-                description = project.status.shortDescription
+                description = project.status.description
             )
         )
     )
