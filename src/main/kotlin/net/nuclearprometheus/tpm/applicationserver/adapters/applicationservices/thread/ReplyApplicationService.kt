@@ -1,5 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toDislikeRemoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toLikeRemoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toNewDislike
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toNewLike
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ReplyRequest
@@ -36,18 +39,32 @@ class ReplyApplicationService(
         logger.info("likeReply($replyId)")
 
         val user = userContextProvider.getCurrentUser()
-        return service.like(ReplyId(replyId), user.id).toNewLike()
+        return service.like(ReplyId(replyId), user.id).toNewLike(user)
     }
 
-    fun dislikeReply(replyId: UUID): ReplyResponse.NewLike {
+    fun unlikeReply(replyId: UUID): ReplyResponse.LikeRemoved {
+        logger.info("unlikeReply($replyId)")
+
+        val user = userContextProvider.getCurrentUser()
+        return service.unlike(ReplyId(replyId), user.id).toLikeRemoved(user)
+    }
+
+    fun dislikeReply(replyId: UUID): ReplyResponse.NewDislike {
         logger.info("dislikeReply($replyId)")
 
         val user = userContextProvider.getCurrentUser()
-        return service.dislike(ReplyId(replyId), user.id).toNewLike()
+        return service.dislike(ReplyId(replyId), user.id).toNewDislike(user)
+    }
+
+    fun undislikeReply(replyId: UUID): ReplyResponse.DislikeRemoved {
+        logger.info("undislikeReply($replyId)")
+
+        val user = userContextProvider.getCurrentUser()
+        return service.undislike(ReplyId(replyId), user.id).toDislikeRemoved(user)
     }
 
     fun deleteReply(replyId: UUID) {
         logger.info("deleteReply($replyId)")
-        repository.delete(ReplyId(replyId))
+        service.delete(ReplyId(replyId))
     }
 }

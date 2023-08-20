@@ -55,3 +55,4 @@ class AccuracyController(private val service: AccuracyApplicationService) {
         ResponseEntity.ok().body(service.deactivateAccuracy(id))
     }
 }
+

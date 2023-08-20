@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 014-initial-schema-service-type
+      author: oleh-shatskyi
+      changes:
+        - createTable:
+            tableName: service_type
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: service_typePK
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false

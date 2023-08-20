@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.4"
+    id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.liquibase.gradle") version "2.2.0"
     kotlin("jvm") version "1.7.22"
@@ -24,7 +24,7 @@ repositories {
 }
 
 val springCloudVersion: String by extra {
-    "2022.0.1"
+    "2022.0.4"
 }
 
 val liquibaseVersion: String by extra {
@@ -40,7 +40,7 @@ val springdocVersion: String by extra {
 }
 
 val logstashLogbackEncoderVersion: String by extra {
-    "7.3"
+    "7.4"
 }
 
 val minioVersion: String by extra {
@@ -71,8 +71,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.keycloak:keycloak-spring-boot-starter:21.0.2")
-    implementation("org.keycloak:keycloak-admin-client:21.0.2")
+    implementation("org.keycloak:keycloak-core:22.0.1")
+    implementation("org.keycloak:keycloak-policy-enforcer:22.0.1")
+    implementation("org.keycloak:keycloak-admin-client:22.0.1")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")

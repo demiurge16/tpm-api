@@ -70,6 +70,22 @@ class ThreadServiceImpl(
         return thread
     }
 
+    override fun removeLike(id: ThreadId, authorId: UserId): Thread {
+        logger.info("Removing like from thread with id $id")
+
+        val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
+        val author = userRepository.get(authorId) ?: throw NotFoundException("Author with id $authorId not found")
+        val like = ThreadLike(author = author, threadId = thread.id)
+
+        if (threadLikeRepository.getByThreadIdAndAuthorId(thread.id, author.id) == null) {
+            return thread
+        }
+        threadLikeRepository.deleteByThreadIdAndAuthorId(thread.id, author.id)
+
+        thread.removeLike(like)
+        return thread
+    }
+
     override fun addDislike(id: ThreadId, authorId: UserId): Thread {
         logger.info("Adding dislike to thread with id $id")
 
@@ -84,6 +100,22 @@ class ThreadServiceImpl(
         threadDislikeRepository.create(dislike)
 
         thread.addDislike(dislike)
+        return thread
+    }
+
+    override fun removeDislike(id: ThreadId, authorId: UserId): Thread {
+        logger.info("Removing dislike from thread with id $id")
+
+        val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
+        val author = userRepository.get(authorId) ?: throw NotFoundException("Author with id $authorId not found")
+        val dislike = ThreadDislike(author = author, threadId = thread.id)
+
+        if (threadDislikeRepository.getByThreadIdAndAuthorId(thread.id, author.id) == null) {
+            return thread
+        }
+        threadDislikeRepository.deleteByThreadIdAndAuthorId(thread.id, author.id)
+
+        thread.removeDislike(dislike)
         return thread
     }
 

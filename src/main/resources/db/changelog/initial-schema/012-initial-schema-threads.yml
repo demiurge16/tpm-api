@@ -46,11 +46,6 @@ databaseChangeLog:
                     foreignKeyName: thread_project_id_fk
                     referencedTableName: project
                     referencedColumnNames: id
-              - column:
-                  name: creation_time
-                  type: TIMESTAMP(6) WITHOUT TIME ZONE
-                  constraints:
-                    nullable: false
         - createTable:
             tableName: reply
             columns:
@@ -69,6 +64,11 @@ databaseChangeLog:
               - column:
                   name: created_at
                   type: TIMESTAMP(6) WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: BOOLEAN
                   constraints:
                     nullable: false
               - column:

@@ -10,5 +10,8 @@ interface ReplyService {
     fun create(content: String, authorId: UserId, threadId: ThreadId, parentReplyId: ReplyId? = null): Reply
     fun update(id: ReplyId, content: String): Reply
     fun like(id: ReplyId, authorId: UserId): Reply
+    fun unlike(id: ReplyId, authorId: UserId): Reply
     fun dislike(id: ReplyId, authorId: UserId): Reply
+    fun undislike(id: ReplyId, authorId: UserId): Reply
+    fun delete(id: ReplyId)
 }

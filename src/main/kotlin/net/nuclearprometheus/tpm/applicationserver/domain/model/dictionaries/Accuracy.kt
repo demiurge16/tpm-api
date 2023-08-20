@@ -26,3 +26,4 @@ class Accuracy(
         active = false
     }
 }
+

@@ -5,6 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ReplyResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
@@ -18,8 +19,7 @@ import java.util.UUID
 class ThreadReplyApplicationService(
     private val service: ReplyService,
     private val repository: ReplyRepository,
-    private val userContextProvider: UserContextProvider,
-    private val userRepository: UserRepository
+    private val userContextProvider: UserContextProvider
 ) {
 
     private val logger = loggerFor(ThreadReplyApplicationService::class.java)
@@ -35,6 +35,11 @@ class ThreadReplyApplicationService(
         logger.info("addReplyToThread($id, $request)")
 
         val currentUser = userContextProvider.getCurrentUser()
-        return service.create(request.content, currentUser.id, ThreadId(id)).toView()
+        return service.create(
+            request.content,
+            currentUser.id,
+            ThreadId(id),
+            request.parentReplyId?.let { ReplyId(it) }
+        ).toView()
     }
 }

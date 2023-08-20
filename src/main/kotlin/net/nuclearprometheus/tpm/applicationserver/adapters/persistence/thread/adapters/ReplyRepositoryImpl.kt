@@ -45,6 +45,7 @@ class ReplyRepositoryImpl(
             threadId = threadId.value,
             authorId = author.id.value,
             content = content,
+            deleted = deleted,
             parentReplyId = parentReplyId?.let { it.value }
         )
 
@@ -58,8 +59,9 @@ class ReplyRepositoryImpl(
             createdAt = createdAt,
             threadId = ThreadId(threadId),
             content = content,
-            threadLikes = likeRepository.getAllByReplyId(ReplyId(id)),
-            threadDislikes = dislikeRepository.getAllByReplyId(ReplyId(id)),
+            deleted = deleted,
+            replyLikes = likeRepository.getAllByReplyId(ReplyId(id)),
+            replyDislikes = dislikeRepository.getAllByReplyId(ReplyId(id)),
             parentReplyId = parentReplyId?.let { ReplyId(it) }
         )
     }

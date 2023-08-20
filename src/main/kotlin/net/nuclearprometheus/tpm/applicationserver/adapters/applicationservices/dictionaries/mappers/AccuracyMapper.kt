@@ -13,3 +13,4 @@ object AccuracyMapper {
 
     fun Accuracy.toActivityStatus() = AccuracyResponse.Status(id = id.value, active = active)
 }
+

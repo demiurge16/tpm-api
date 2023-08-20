@@ -66,9 +66,20 @@ object ThreadMapper {
         }
     )
 
-    fun String.toTag(threadId: ThreadId) = ThreadTag(name = this, threadId = threadId)
+    fun Thread.toNewLike(author: User) = likes.first { it.author.id == author.id }.let {
+        ThreadResponse.NewLike(
+            id = id.value,
+            author = Author(
+                userId = author.id.value,
+                firstName = author.firstName,
+                lastName = author.lastName,
+                email = author.email
+            ),
+            createdAt = createdAt
+        )
+    }
 
-    fun Thread.toNewLike(author: User) = ThreadResponse.NewLike(
+    fun Thread.toLikeRemoved(author: User) = ThreadResponse.LikeRemoved(
         id = id.value,
         author = Author(
             userId = author.id.value,
@@ -79,7 +90,20 @@ object ThreadMapper {
         createdAt = createdAt
     )
 
-    fun Thread.toNewDislike(author: User) = ThreadResponse.NewDislike(
+    fun Thread.toNewDislike(author: User) = dislikes.first { it.author.id == author.id }.let {
+        ThreadResponse.NewDislike(
+            id = id.value,
+            author = Author(
+                userId = author.id.value,
+                firstName = author.firstName,
+                lastName = author.lastName,
+                email = author.email
+            ),
+            createdAt = createdAt
+        )
+    }
+
+    fun Thread.toDislikeRemoved(author: User) = ThreadResponse.DislikeRemoved(
         id = id.value,
         author = Author(
             userId = author.id.value,

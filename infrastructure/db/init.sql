@@ -12,3 +12,5 @@ GRANT ALL PRIVILEGES ON SCHEMA "application" TO "application";
 
 CREATE SCHEMA IF NOT EXISTS "keycloak";
 GRANT ALL PRIVILEGES ON SCHEMA "keycloak" TO "keycloak";
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

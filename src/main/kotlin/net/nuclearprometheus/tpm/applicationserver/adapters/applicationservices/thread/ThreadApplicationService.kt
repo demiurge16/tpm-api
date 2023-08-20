@@ -1,8 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toDislikeRemoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toLikeRemoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toNewDislike
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toNewLike
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toTag
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ThreadRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadResponse
@@ -70,9 +71,20 @@ class ThreadApplicationService(
         val user = userContextProvider.getCurrentUser()
         teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
             ?: throw IllegalStateException("User with id ${user.id} is not a member of project with id ${thread.projectId}")
-        val updatedThread = service.addLike(ThreadId(id), user.id)
 
-        return updatedThread.toNewLike(user)
+        return service.addLike(ThreadId(id), user.id).toNewLike(user)
+    }
+
+    fun removeLike(id: UUID): ThreadResponse.LikeRemoved {
+        logger.info("removeLike($id)")
+
+        val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread not found")
+        val user = userContextProvider.getCurrentUser()
+        teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
+            ?: throw IllegalStateException("Team member not found")
+        val updatedThread = service.removeLike(ThreadId(id), user.id)
+
+        return updatedThread.toLikeRemoved(user)
     }
 
     fun addDislike(id: UUID): ThreadResponse.NewDislike {
@@ -85,5 +97,17 @@ class ThreadApplicationService(
         val updatedThread = service.addDislike(ThreadId(id), user.id)
 
         return updatedThread.toNewDislike(user)
+    }
+
+    fun removeDislike(id: UUID): ThreadResponse.DislikeRemoved {
+        logger.info("removeDislike($id)")
+
+        val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread not found")
+        val user = userContextProvider.getCurrentUser()
+        teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
+            ?: throw IllegalStateException("Team member not found")
+        val updatedThread = service.removeDislike(ThreadId(id), user.id)
+
+        return updatedThread.toDislikeRemoved(user)
     }
 }

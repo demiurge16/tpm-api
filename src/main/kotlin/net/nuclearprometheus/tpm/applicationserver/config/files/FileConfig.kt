@@ -1,5 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.config.files
 
+import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
+import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
+import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
@@ -26,4 +29,41 @@ class FileConfig(
         projectRepository,
         loggerFor(FileService::class.java)
     )
+
+    @Bean
+    fun filePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
+        override val paths = mutableListOf(
+            pathConfig {
+                path = "/api/v1/file"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:file:read")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/file/{fileId}"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:file:read")
+                    },
+                    methodConfig {
+                        method = "DELETE"
+                        scopes = mutableListOf("tpm-backend:file:delete")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/file/{fileId}/download"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:file:read")
+                    }
+                )
+            }
+        )
+    }
 }

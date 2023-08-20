@@ -9,5 +9,5 @@ import java.util.*
 interface ThreadJpaRepository : JpaRepository<ThreadDatabaseModel, UUID> {
 
     @Query("SELECT t FROM Thread t WHERE t.projectId = :projectId")
-    fun findAllByProjectId(@Param("") projectId: UUID): List<ThreadDatabaseModel>
+    fun findAllByProjectId(@Param("projectId") projectId: UUID): List<ThreadDatabaseModel>
 }

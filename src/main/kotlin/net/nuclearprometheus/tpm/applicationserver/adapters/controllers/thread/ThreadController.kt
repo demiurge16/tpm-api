@@ -41,11 +41,25 @@ class ThreadController(private val service: ThreadApplicationService) {
         ResponseEntity.ok().body(service.addLike(id))
     }
 
+    @PatchMapping("/{id}/unlike")
+    fun unlike(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/thread/$id/unlike")
+
+        ResponseEntity.ok().body(service.removeLike(id))
+    }
+
     @PatchMapping("/{id}/dislike")
     fun dislike(@PathVariable(name = "id") id: UUID) = with(logger) {
         info("PATCH /api/v1/thread/$id/dislike")
 
         ResponseEntity.ok().body(service.addDislike(id))
+    }
+
+    @PatchMapping("/{id}/undislike")
+    fun undislike(@PathVariable(name = "id") id: UUID) = with(logger) {
+        info("PATCH /api/v1/thread/$id/undislike")
+
+        ResponseEntity.ok().body(service.removeDislike(id))
     }
 }
 

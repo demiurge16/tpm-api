@@ -1,5 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.config.expense
 
+import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
+import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
+import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
@@ -33,4 +36,32 @@ class ExpenseConfig(
             currencyRepository,
             loggerFor(ExpenseService::class.java)
         )
+
+    @Bean
+    fun expensePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
+        override val paths = mutableListOf(
+            pathConfig {
+                path = "/api/v1/expense"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:expense:read")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/expense/{id}"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:expense:read")
+                    },
+                    methodConfig {
+                        method = "DELETE"
+                        scopes = mutableListOf("tpm-backend:expense:delete")
+                    }
+                )
+            }
+        )
+    }
 }

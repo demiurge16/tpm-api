@@ -60,6 +60,22 @@ class ReplyServiceImpl(
         return reply
     }
 
+    override fun unlike(id: ReplyId, authorId: UserId): Reply {
+        logger.info("Removing like from reply with id $id")
+
+        val reply = repository.get(id) ?: throw NotFoundException("Reply with id $id not found")
+        val author = userRepository.get(authorId) ?: throw NotFoundException("Author with id $authorId not found")
+        val like = ReplyLike(author = author, replyId = reply.id)
+
+        if (replyLikeRepository.getByReplyIdAndUserId(reply.id, author.id) == null) {
+            return reply
+        }
+        replyLikeRepository.deleteByReplyIdAndUserId(reply.id, author.id)
+
+        reply.removeLike(like)
+        return reply
+    }
+
     override fun dislike(id: ReplyId, authorId: UserId): Reply {
         logger.info("Adding dislike to reply with id $id")
 
@@ -75,5 +91,29 @@ class ReplyServiceImpl(
 
         reply.addDislike(dislike)
         return reply
+    }
+
+    override fun undislike(id: ReplyId, authorId: UserId): Reply {
+        logger.info("Removing dislike from reply with id $id")
+
+        val reply = repository.get(id) ?: throw NotFoundException("Reply with id $id not found")
+        val author = userRepository.get(authorId) ?: throw NotFoundException("Author with id $authorId not found")
+        val dislike = ReplyDislike(author = author, replyId = reply.id)
+
+        if (replyDislikeRepository.getByReplyIdAndUserId(reply.id, author.id) == null) {
+            return reply
+        }
+        replyDislikeRepository.deleteByReplyIdAndUserId(reply.id, author.id)
+
+        reply.removeDislike(dislike)
+        return reply
+    }
+
+    override fun delete(id: ReplyId) {
+        logger.info("Deleting reply with id $id")
+
+        val reply = repository.get(id) ?: throw NotFoundException("Reply with id $id not found")
+        reply.delete()
+        repository.update(reply)
     }
 }

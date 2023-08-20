@@ -37,12 +37,20 @@ class Thread(
         this.tags = tags
     }
 
-    fun addLike(like : ThreadLike) {
-        this.likes = this.likes + like
+    fun addLike(like: ThreadLike) {
+        this.likes += like
     }
 
-    fun addDislike(dislike : ThreadDislike) {
-        this.dislikes = this.dislikes + dislike
+    fun removeLike(like: ThreadLike) {
+        this.likes -= like
+    }
+
+    fun addDislike(dislike: ThreadDislike) {
+        this.dislikes += dislike
+    }
+
+    fun removeDislike(dislike: ThreadDislike) {
+        this.dislikes -= dislike
     }
 
     fun activate() {

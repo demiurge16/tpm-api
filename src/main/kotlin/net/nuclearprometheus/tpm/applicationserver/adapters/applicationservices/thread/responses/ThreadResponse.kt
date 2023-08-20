@@ -24,7 +24,19 @@ sealed class ThreadResponse {
         val createdAt: ZonedDateTime
     ) : ThreadResponse()
 
+    data class LikeRemoved(
+        val id: UUID,
+        val author: Author,
+        val createdAt: ZonedDateTime
+    ) : ThreadResponse()
+
     data class NewDislike(
+        val id: UUID,
+        val author: Author,
+        val createdAt: ZonedDateTime
+    ) : ThreadResponse()
+
+    data class DislikeRemoved(
         val id: UUID,
         val author: Author,
         val createdAt: ZonedDateTime

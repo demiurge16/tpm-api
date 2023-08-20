@@ -1,5 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.config.thread
 
+import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
+import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
+import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyLikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
@@ -29,4 +32,68 @@ class ReplyConfig(
         userRepository = userRepository,
         logger = loggerFor(ReplyService::class.java)
     )
+
+    @Bean
+    fun replyPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
+        override val paths = mutableListOf(
+            pathConfig {
+                path = "/api/v1/reply/{replyId}"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:reply:read")
+                    },
+                    methodConfig {
+                        method = "PUT"
+                        scopes = mutableListOf("tpm-backend:reply:write")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/reply/{replyId}/like"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("tpm-backend:reply:write")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/reply/{replyId}/unlike"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("tpm-backend:reply:write")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/reply/{replyId}/dislike"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("tpm-backend:reply:write")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/reply/{replyId}/undislike"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("tpm-backend:reply:write")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/reply/{replyId}"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "DELETE"
+                        scopes = mutableListOf("tpm-backend:reply:delete")
+                    }
+                )
+            }
+        )
+    }
 }

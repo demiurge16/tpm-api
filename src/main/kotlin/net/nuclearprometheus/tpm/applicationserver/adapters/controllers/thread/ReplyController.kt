@@ -41,11 +41,25 @@ class ReplyController(private val service: ReplyApplicationService) {
         ResponseEntity.ok().body(service.likeReply(replyId))
     }
 
+    @PatchMapping("/{replyId}/unlike")
+    fun unlikeReply(@PathVariable(name = "replyId") replyId: UUID) = with(logger) {
+        info("PATCH /api/v1/reply/$replyId/like")
+
+        ResponseEntity.ok().body(service.unlikeReply(replyId))
+    }
+
     @PatchMapping("/{replyId}/dislike")
     fun dislikeReply(@PathVariable(name = "replyId") replyId: UUID) = with(logger) {
         info("PATCH /api/v1/reply/$replyId/dislike")
 
         ResponseEntity.ok().body(service.dislikeReply(replyId))
+    }
+
+    @PatchMapping("/{replyId}/undislike")
+    fun undislikeReply(@PathVariable(name = "replyId") replyId: UUID) = with(logger) {
+        info("PATCH /api/v1/reply/$replyId/undislike")
+
+        ResponseEntity.ok().body(service.undislikeReply(replyId))
     }
 
     @DeleteMapping("/{replyId}")

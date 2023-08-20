@@ -67,24 +67,8 @@ spring:
     default-schema: application
   security:
     oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: tpm-backend
-            client-secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
-            authorization-grant-type: authorization_code
-            scope: openid,profile,email
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:8081/realms/tpm
-            user-info-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/userinfo
-            jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
-            authorization-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/auth
-            token-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/token
-            user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/tpm
           jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
 
 springdoc:
