@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.adapters
 
 import TaskStatusDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.AccuracyRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.AccuracyRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.IndustryRepositoryImpl.Mappers.toDatabaseModel
@@ -11,6 +12,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.repositories.TaskJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TaskSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters.ReplyDislikeRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
@@ -31,6 +34,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class TaskRepositoryImpl(
     private val jpaRepository: TaskJpaRepository,
+    private val specificationBuilder: TaskSpecificationBuilder,
     private val languageRepository: LanguageRepository,
     private val currencyRepository: CurrencyRepository,
     private val userRepository: UserRepository
@@ -44,7 +48,13 @@ class TaskRepositoryImpl(
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
 
     override fun get(query: Query<Task>): Page<Task> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(languageRepository, currencyRepository, userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: Task) = jpaRepository.save(entity.toDatabaseModel())

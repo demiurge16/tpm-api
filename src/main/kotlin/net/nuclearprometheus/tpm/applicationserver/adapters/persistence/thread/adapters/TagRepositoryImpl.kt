@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.TagDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.TagJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.TagSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Tag
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.TagId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
@@ -11,13 +14,22 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Pag
 import org.springframework.stereotype.Repository
 
 @Repository
-class TagRepositoryImpl(private val jpaRepository: TagJpaRepository) : TagRepository {
+class TagRepositoryImpl(
+    private val jpaRepository: TagJpaRepository,
+    private val specificationBuilder: TagSpecificationBuilder
+) : TagRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: TagId) = jpaRepository.findById(id.value).orElse(null)?.toDomain()
     override fun get(ids: List<TagId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Tag>): Page<Tag> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain() },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
     override fun create(entity: Tag) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<Tag>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }

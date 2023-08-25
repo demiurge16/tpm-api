@@ -1,9 +1,13 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.adapters.ClientRepositoryImpl.Mapping.toDomain
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.entities.ExpenseDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.repositories.ExpenseJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications.ExpenseSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ExpenseRepositoryImpl(
     private val jpaRepository: ExpenseJpaRepository,
+    private val specificationBuilder: ExpenseSpecificationBuilder,
     private val userRepository: UserRepository,
     private val currencyRepository: CurrencyRepository
 ) : ExpenseRepository {
@@ -28,7 +33,13 @@ class ExpenseRepositoryImpl(
     override fun get(id: ExpenseId): Expense? = jpaRepository.findById(id.value).map { it.toDomain(currencyRepository, userRepository) }.orElse(null)
     override fun get(ids: List<ExpenseId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(currencyRepository, userRepository) }
     override fun get(query: Query<Expense>): Page<Expense> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(currencyRepository, userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: Expense) = jpaRepository.save(entity.toDatabaseModel()).toDomain(currencyRepository, userRepository)

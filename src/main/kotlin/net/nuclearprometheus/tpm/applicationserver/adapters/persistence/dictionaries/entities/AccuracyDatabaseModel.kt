@@ -14,4 +14,3 @@ open class AccuracyDatabaseModel(
     @Column(nullable = false, length = 512) open var description: String,
     @Column(nullable = false) open var active: Boolean
 )
-

@@ -1,8 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberRoleDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.repositories.TeamMemberJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.specifications.TeamMemberSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
@@ -16,27 +18,34 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class TeamMemberRepositoryImpl(
-    private val repository: TeamMemberJpaRepository,
+    private val jpaRepository: TeamMemberJpaRepository,
+    private val specificationBuilder: TeamMemberSpecificationBuilder,
     private val userRepository: UserRepository
 ) : TeamMemberRepository {
 
-    override fun getAll() = repository.findAll().map { it.toDomain(userRepository) }
-    override fun get(id: TeamMemberId) = repository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
-    override fun get(ids: List<TeamMemberId>) = repository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
+    override fun getAll() = jpaRepository.findAll().map { it.toDomain(userRepository) }
+    override fun get(id: TeamMemberId) = jpaRepository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
+    override fun get(ids: List<TeamMemberId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
     override fun get(query: Query<TeamMember>): Page<TeamMember> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
-    override fun create(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)
-    override fun createAll(entities: List<TeamMember>) = repository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
-    override fun update(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)
-    override fun updateAll(entities: List<TeamMember>) = repository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
-    override fun delete(id: TeamMemberId) = repository.deleteById(id.value)
-    override fun deleteAll(ids: List<TeamMemberId>) = repository.deleteAllById(ids.map { it.value })
-    override fun getAllByProjectId(projectId: ProjectId) = repository.findAllByProjectId(projectId.value).map { it.toDomain(userRepository) }
-    override fun deleteAllByProjectId(projectId: ProjectId) = repository.deleteAllByProjectId(projectId.value)
+    override fun create(entity: TeamMember) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
+    override fun createAll(entities: List<TeamMember>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
+    override fun update(entity: TeamMember) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
+    override fun updateAll(entities: List<TeamMember>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
+    override fun delete(id: TeamMemberId) = jpaRepository.deleteById(id.value)
+    override fun deleteAll(ids: List<TeamMemberId>) = jpaRepository.deleteAllById(ids.map { it.value })
+    override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(userRepository) }
+    override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
     override fun getByUserIdAndProjectId(userId: UserId, projectId: ProjectId): TeamMember? =
-        repository.findByUserIdAndProjectId(userId.value, projectId.value)?.toDomain(userRepository)
+        jpaRepository.findByUserIdAndProjectId(userId.value, projectId.value)?.toDomain(userRepository)
 
     companion object Mappers {
         fun TeamMemberDatabaseModel.toDomain(userRepository: UserRepository) = TeamMember(

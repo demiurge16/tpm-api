@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.entities.FileDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.repositories.FileJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.specifications.FileSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.adapters.TaskRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.FileId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class FileRepositoryImpl(
     private val jpaRepository: FileJpaRepository,
+    private val specificationBuilder: FileSpecificationBuilder,
     private val userRepository: UserRepository
 ) : FileRepository {
 
@@ -22,7 +26,13 @@ class FileRepositoryImpl(
     override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
     override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
     override fun get(query: Query<File>): Page<File> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
     override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }

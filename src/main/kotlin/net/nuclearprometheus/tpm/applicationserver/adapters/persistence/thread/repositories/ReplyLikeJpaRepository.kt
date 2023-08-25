@@ -2,13 +2,14 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyLikeDatabaseModel
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
-interface ReplyLikeJpaRepository : JpaRepository<ReplyLikeDatabaseModel, UUID> {
+interface ReplyLikeJpaRepository : JpaRepository<ReplyLikeDatabaseModel, UUID>, JpaSpecificationExecutor<ReplyLikeDatabaseModel> {
 
     @Query("SELECT r FROM ReplyLike r WHERE r.replyId = :replyId")
     fun findAllByReplyId(@Param("replyId") replyId: UUID): List<ReplyLikeDatabaseModel>

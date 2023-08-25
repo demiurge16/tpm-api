@@ -71,7 +71,7 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
             .toList()
 
         val totalItems = filteredItems.size
-        val totalPages = totalItems / (query.size ?: 0)
+        val totalPages = totalItems / (query.size ?: 1)
         val currentPage = query.page ?: 0
 
         return Page(

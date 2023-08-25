@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.adapters.ClientRepositoryImpl.Mapping.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.adapters.ClientRepositoryImpl.Mapping.toDomain
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.AccuracyRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.AccuracyRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.IndustryRepositoryImpl.Mappers.toDatabaseModel
@@ -11,6 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.repositories.ProjectJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
@@ -33,7 +35,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ProjectRepositoryImpl(
-    private val projectJpaRepository: ProjectJpaRepository,
+    private val jpaRepository: ProjectJpaRepository,
+    private val specificationBuilder: ProjectSpecificationBuilder,
     private val languageRepository: LanguageRepository,
     private val currencyRepository: CurrencyRepository,
     private val countryRepository: CountryRepository,
@@ -44,7 +47,7 @@ class ProjectRepositoryImpl(
     private val threadRepository: ThreadRepository
 ) : ProjectRepository {
 
-    override fun getAll() = projectJpaRepository.findAll()
+    override fun getAll() = jpaRepository.findAll()
         .map {
             it.toDomain(
                 languageRepository,
@@ -57,7 +60,7 @@ class ProjectRepositoryImpl(
             )
         }
 
-    override fun get(id: ProjectId): Project? = projectJpaRepository.findById(id.value)
+    override fun get(id: ProjectId): Project? = jpaRepository.findById(id.value)
         .map {
             it.toDomain(
                 languageRepository,
@@ -71,7 +74,7 @@ class ProjectRepositoryImpl(
         }
         .orElse(null)
 
-    override fun get(ids: List<ProjectId>) = projectJpaRepository.findAllById(ids.map { it.value })
+    override fun get(ids: List<ProjectId>) = jpaRepository.findAllById(ids.map { it.value })
         .map {
             it.toDomain(
                 languageRepository,
@@ -85,11 +88,28 @@ class ProjectRepositoryImpl(
         }
 
     override fun get(query: Query<Project>): Page<Project> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content
+                .map {
+                    it.toDomain(
+                        languageRepository,
+                        currencyRepository,
+                        countryRepository,
+                        teamMemberRepository,
+                        taskRepository,
+                        expenseRepository,
+                        fileRepository,
+                    )
+                },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: Project): Project {
-        val project = projectJpaRepository.save(entity.toDatabaseModel())
+        val project = jpaRepository.save(entity.toDatabaseModel())
         val teamMembers = teamMemberRepository.createAll(entity.teamMembers)
         val tasks = taskRepository.createAll(entity.tasks)
         val expenses = expenseRepository.createAll(entity.expenses)
@@ -128,7 +148,7 @@ class ProjectRepositoryImpl(
     override fun createAll(entities: List<Project>) = entities.map { create(it) }
 
     override fun update(entity: Project): Project {
-        val project = projectJpaRepository.save(entity.toDatabaseModel())
+        val project = jpaRepository.save(entity.toDatabaseModel())
 
         return Project(
             id = ProjectId(project.id),
@@ -167,7 +187,7 @@ class ProjectRepositoryImpl(
         taskRepository.deleteAllByProjectId(id)
         teamMemberRepository.deleteAllByProjectId(id)
 
-        projectJpaRepository.deleteById(id.value)
+        jpaRepository.deleteById(id.value)
     }
 
     override fun deleteAll(ids: List<ProjectId>) = ids.forEach { delete(it) }

@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadLikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ThreadLikeJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadLikeSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLikeId
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ThreadLikeRepositoryImpl(
     private val jpaRepository: ThreadLikeJpaRepository,
+    private val specificationBuilder: ThreadLikeSpecificationBuilder,
     private val userRepository: UserRepository
 ) : ThreadLikeRepository {
 
@@ -26,7 +30,13 @@ class ThreadLikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ThreadLike>): Page<ThreadLike> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: ThreadLike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)

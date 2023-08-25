@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.PriorityJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.PrioritySpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Priority
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.PriorityRepository
@@ -11,14 +14,21 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class PriorityRepositoryImpl(
-    private val jpaRepository: PriorityJpaRepository
+    private val jpaRepository: PriorityJpaRepository,
+    private val specificationBuilder: PrioritySpecificationBuilder
 ) : PriorityRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: PriorityId): Priority? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<PriorityId>): List<Priority> = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Priority>): Page<Priority> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain() },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
     override fun create(entity: Priority) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<Priority>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }

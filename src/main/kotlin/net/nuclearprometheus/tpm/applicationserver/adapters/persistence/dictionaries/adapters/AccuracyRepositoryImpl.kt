@@ -1,7 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.AccuracyJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.AccuracySpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.AccuracyId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.AccuracyRepository
@@ -11,14 +13,21 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class AccuracyRepositoryImpl(
-    private val jpaRepository: AccuracyJpaRepository
+    private val jpaRepository: AccuracyJpaRepository,
+    private val specificationBuilder: AccuracySpecificationBuilder
 ) : AccuracyRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: AccuracyId): Accuracy? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<AccuracyId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Accuracy>): Page<Accuracy> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain() },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: Accuracy) = jpaRepository.save(entity.toDatabaseModel()).toDomain()

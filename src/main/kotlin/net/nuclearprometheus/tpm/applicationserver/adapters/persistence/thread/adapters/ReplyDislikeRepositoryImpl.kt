@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters.ReplyLikeRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyDislikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ReplyDislikeJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyDislikeSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislikeId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ReplyDislikeRepositoryImpl(
     private val jpaRepository: ReplyDislikeJpaRepository,
+    private val specificationBuilder: ReplyDislikeSpecificationBuilder,
     private val userRepository: UserRepository
 ) : ReplyDislikeRepository {
 
@@ -27,7 +31,13 @@ class ReplyDislikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ReplyDislike>): Page<ReplyDislike> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: ReplyDislike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)

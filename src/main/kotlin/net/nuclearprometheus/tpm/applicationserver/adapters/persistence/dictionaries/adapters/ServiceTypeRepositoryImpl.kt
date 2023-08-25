@@ -1,7 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ServiceTypeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.ServiceTypeJpaRepository
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.ServiceTypeSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceTypeId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ServiceTypeRepository
@@ -11,14 +14,21 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ServiceTypeRepositoryImpl(
-    private val jpaRepository: ServiceTypeJpaRepository
+    private val jpaRepository: ServiceTypeJpaRepository,
+    private val specificationBuilder: ServiceTypeSpecificationBuilder
 ) : ServiceTypeRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ServiceTypeId): ServiceType? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ServiceTypeId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<ServiceType>): Page<ServiceType> {
-        TODO("Not yet implemented")
+        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain() },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
     }
 
     override fun create(entity: ServiceType) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
