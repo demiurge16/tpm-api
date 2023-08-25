@@ -8,6 +8,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -22,6 +24,11 @@ class ThreadDislikeRepositoryImpl(
         .orElse(null)
     override fun get(ids: List<ThreadDislikeId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(userRepository) }
+
+    override fun get(query: Query<ThreadDislike>): Page<ThreadDislike> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ThreadDislike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<ThreadDislike>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
         .map { it.toDomain(userRepository) }

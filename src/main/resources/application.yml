@@ -31,9 +31,9 @@ app:
 keycloak:
   realm: tpm
   auth-server-url: http://localhost:8081
-  resource: tpm-backend-admin
+  resource: tpm-backend
   credentials:
-    secret: 3212cvArL0ddrMCNrputbdF3uG7jVxDU
+    secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
 
 server:
   port: 8080

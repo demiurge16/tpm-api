@@ -7,6 +7,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Mea
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -17,6 +19,9 @@ class UnitRepositoryImpl(
     override fun getAll() = jpaRepostiory.findAll().map { it.toDomain() }
     override fun get(id: UnitId): Unit? = jpaRepostiory.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<UnitId>) = jpaRepostiory.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun get(query: Query<Unit>): Page<Unit> {
+        TODO()
+    }
     override fun create(entity: Unit) = jpaRepostiory.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<Unit>) = jpaRepostiory.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: Unit) = jpaRepostiory.save(entity.toDatabaseModel()).toDomain()

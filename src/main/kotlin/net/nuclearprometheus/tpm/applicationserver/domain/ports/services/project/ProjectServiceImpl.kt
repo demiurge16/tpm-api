@@ -5,10 +5,16 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
+import org.springframework.data.annotation.CreatedBy
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -20,6 +26,7 @@ class ProjectServiceImpl(
     private val unitRepository: UnitRepository,
     private val currencyRepository: CurrencyRepository,
     private val clientRepository: ClientRepository,
+    private val userRepository: UserRepository,
     private val logger: Logger
 ) : ProjectService {
 
@@ -37,9 +44,14 @@ class ProjectServiceImpl(
         externalDeadline: ZonedDateTime,
         budget: BigDecimal,
         currencyCode: CurrencyCode,
-        clientId: ClientId
+        clientId: ClientId,
+        createdById: UserId
     ): Project {
+        val projectId = ProjectId()
+        val createdByUser = userRepository.get(createdById) ?: throw NotFoundException("User not found")
+
         val project = Project(
+            id = projectId,
             title = title,
             description = description,
             sourceLanguage = languageRepository.get(sourceLanguage)
@@ -54,7 +66,22 @@ class ProjectServiceImpl(
             externalDeadline = externalDeadline,
             budget = budget,
             currency = currencyRepository.get(currencyCode) ?: throw NotFoundException("Currency not found"),
-            client = clientRepository.get(clientId) ?: throw NotFoundException("Client not found")
+            client = clientRepository.get(clientId) ?: throw NotFoundException("Client not found"),
+            teamMembers = listOf(
+                TeamMember(
+                    user = createdByUser,
+                    role = TeamMemberRole.PROJECT_MANAGER,
+                    projectId = projectId
+                )
+            ),
+            threads = listOf(
+                Thread(
+                    title = "General",
+                    content = "<p><i>Starting project thread</i></p>",
+                    author = createdByUser,
+                    projectId = projectId,
+                )
+            )
         )
 
         return projectRepository.create(project)

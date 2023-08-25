@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.expense
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.ExpenseApplicationService
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.requests.ExpenseRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
@@ -15,23 +16,20 @@ class ExpenseController(private val service: ExpenseApplicationService) {
     private val logger = loggerFor(ExpenseController::class.java)
 
     @GetMapping("")
-    fun getExpenses() = with(logger) {
+    fun getExpenses(query: ExpenseRequest.List) = with(logger) {
         info("GET /api/v1/expense")
-
-        ResponseEntity.ok().body(service.getExpenses())
+        ResponseEntity.ok().body(service.getExpenses(query))
     }
 
     @GetMapping("/{expenseId}")
     fun getExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
         info("GET /api/v1/expense/$expenseId")
-
         ResponseEntity.ok().body(service.getExpense(expenseId))
     }
 
     @DeleteMapping("/{expenseId}")
     fun deleteExpense(@PathVariable(name = "expenseId") expenseId: UUID) = with(logger) {
         info("DELETE /api/v1/expense/$expenseId")
-
         ResponseEntity.ok().body(service.deleteExpense(expenseId))
     }
 

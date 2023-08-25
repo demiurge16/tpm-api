@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.response.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User

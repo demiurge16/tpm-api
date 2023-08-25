@@ -8,6 +8,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -19,6 +21,9 @@ class FileRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(userRepository) }
     override fun get(id: FileId): File?  = jpaRepository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
     override fun get(ids: List<FileId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
+    override fun get(query: Query<File>): Page<File> {
+        TODO("Not yet implemented")
+    }
     override fun create(entity: File) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<File>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
     override fun update(entity: File) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)

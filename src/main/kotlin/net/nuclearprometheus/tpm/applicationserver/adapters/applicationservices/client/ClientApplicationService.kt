@@ -4,7 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
@@ -30,8 +29,7 @@ class ClientApplicationService(
     fun getClients(query: FilteredRequest<Client>) =
         with(logger) {
             info("getClients($query)")
-
-            repository.getAll().applyQuery(query).map { it.toView() }
+            repository.get(query.toQuery()).map { it.toView() }
         }
 
     @Cacheable("clients-cache")

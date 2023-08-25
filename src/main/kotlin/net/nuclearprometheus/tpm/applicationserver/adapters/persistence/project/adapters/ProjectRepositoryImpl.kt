@@ -27,6 +27,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -81,6 +83,10 @@ class ProjectRepositoryImpl(
                 fileRepository,
             )
         }
+
+    override fun get(query: Query<Project>): Page<Project> {
+        TODO("Not yet implemented")
+    }
 
     override fun create(entity: Project): Project {
         val project = projectJpaRepository.save(entity.toDatabaseModel())

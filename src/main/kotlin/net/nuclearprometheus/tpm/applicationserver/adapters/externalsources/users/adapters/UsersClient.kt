@@ -3,6 +3,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.externalsources.use
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.keycloak.admin.client.Keycloak
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
@@ -40,6 +42,10 @@ class UsersClient(
                 lastName = it.lastName
             )
         }
+
+    override fun get(query: Query<User>): Page<User> {
+        TODO("Not yet implemented")
+    }
 
     override fun getByUsername(username: String) = keycloakClient.realm(realm)
         .users()

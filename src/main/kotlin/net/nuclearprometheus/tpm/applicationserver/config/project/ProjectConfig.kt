@@ -6,6 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
@@ -20,10 +21,9 @@ class ProjectConfig(
     private val industryRepository: IndustryRepository,
     private val unitRepository: UnitRepository,
     private val currencyRepository: CurrencyRepository,
+    private val userRepository: UserRepository,
     private val clientRepository: ClientRepository
 ) {
-
-    private val logger = loggerFor(ProjectService::class.java)
 
     @Bean
     fun projectService(): ProjectService =
@@ -35,7 +35,8 @@ class ProjectConfig(
             unitRepository,
             currencyRepository,
             clientRepository,
-            logger
+            userRepository,
+            loggerFor(ProjectService::class.java)
         )
 
     @Bean
@@ -272,11 +273,11 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:project:task:read")
+                        scopes = mutableListOf("tpm-backend:task:read")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:project:task:write")
+                        scopes = mutableListOf("tpm-backend:task:write")
                     }
                 )
             }

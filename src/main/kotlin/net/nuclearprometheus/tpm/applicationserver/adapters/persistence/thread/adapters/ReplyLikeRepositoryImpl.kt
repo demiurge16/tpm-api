@@ -6,6 +6,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyLikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -20,6 +22,11 @@ class ReplyLikeRepositoryImpl(
         .orElse(null)
     override fun get(ids: List<ReplyLikeId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(userRepository) }
+
+    override fun get(query: Query<ReplyLike>): Page<ReplyLike> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ReplyLike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<ReplyLike>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
         .map { it.toDomain(userRepository) }

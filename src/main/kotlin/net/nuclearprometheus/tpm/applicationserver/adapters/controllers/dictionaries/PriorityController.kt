@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.PriorityApplicationService
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.AccuracyRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.PriorityRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.http.ResponseEntity
@@ -14,10 +15,10 @@ class PriorityController(private val service: PriorityApplicationService) {
     private val logger = loggerFor(PriorityController::class.java)
 
     @GetMapping("")
-    fun getAll() = with(logger) {
+    fun getAll(query: PriorityRequest.List) = with(logger) {
         info("GET /api/v1/priority")
 
-        ResponseEntity.ok().body(service.getPriorities())
+        ResponseEntity.ok().body(service.getPriorities(query))
     }
 
     @GetMapping("/{id}")

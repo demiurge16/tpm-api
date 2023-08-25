@@ -5,6 +5,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,6 +17,10 @@ class ExpenseCategoryRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ExpenseCategoryId) = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ExpenseCategoryId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun get(query: Query<ExpenseCategory>): Page<ExpenseCategory> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ExpenseCategory) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<ExpenseCategory>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: ExpenseCategory) = jpaRepository.save(entity.toDatabaseModel()).toDomain()

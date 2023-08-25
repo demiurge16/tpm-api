@@ -74,6 +74,7 @@ dependencies {
     implementation("org.keycloak:keycloak-core:22.0.1")
     implementation("org.keycloak:keycloak-policy-enforcer:22.0.1")
     implementation("org.keycloak:keycloak-admin-client:22.0.1")
+    implementation("org.keycloak:keycloak-authz-client:22.0.1")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")

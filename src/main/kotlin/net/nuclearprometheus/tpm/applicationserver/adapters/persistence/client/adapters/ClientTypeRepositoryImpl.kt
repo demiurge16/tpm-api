@@ -5,6 +5,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.r
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTypeId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -13,6 +15,10 @@ class ClientTypeRepositoryImpl(private var jpaRepository: ClientTypeJpaRepositor
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ClientTypeId): ClientType? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ClientTypeId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun get(query: Query<ClientType>): Page<ClientType> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ClientType) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<ClientType>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: ClientType) = jpaRepository.save(entity.toDatabaseModel()).toDomain()

@@ -2,7 +2,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.CurrencyMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.applyQuery
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
@@ -21,15 +20,13 @@ class CurrencyApplicationService(private val repository: CurrencyRepository) {
     fun getCurrencies(query: FilteredRequest<Currency>) =
         with(logger) {
             info("getCurrencies($query)")
-
-            repository.getAll().applyQuery(query).map { it.toView() }
+            repository.get(query.toQuery()).map { it.toView() }
         }
 
     @Cacheable("currencies-cache")
     fun getCurrencyByCode(code: String) =
         with(logger) {
             info("getCurrencyByCode($code)")
-
             repository.get(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
         }
 
@@ -37,7 +34,6 @@ class CurrencyApplicationService(private val repository: CurrencyRepository) {
     fun getExchangeRates(code: String, amount: BigDecimal) =
         with(logger) {
             info("getExchangeRates($code, $amount)")
-
             repository.getExchangeRates(CurrencyCode(code), amount).toView()
         }
 }

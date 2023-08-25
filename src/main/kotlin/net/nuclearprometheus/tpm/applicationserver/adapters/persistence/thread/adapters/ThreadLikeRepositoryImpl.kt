@@ -8,6 +8,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLik
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadLikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -22,6 +24,11 @@ class ThreadLikeRepositoryImpl(
         .orElse(null)
     override fun get(ids: List<ThreadLikeId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(userRepository) }
+
+    override fun get(query: Query<ThreadLike>): Page<ThreadLike> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ThreadLike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<ThreadLike>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
         .map { it.toDomain(userRepository) }

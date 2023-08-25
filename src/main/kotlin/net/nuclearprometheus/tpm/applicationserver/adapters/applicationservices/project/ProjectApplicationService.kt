@@ -4,13 +4,17 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toStartMovedResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,15 +22,16 @@ import java.util.*
 @Service
 class ProjectApplicationService(
     private val service: ProjectService,
-    private val repository: ProjectRepository
+    private val repository: ProjectRepository,
+    private val userContextProvider: UserContextProvider,
+    private val projectPermissionService: ProjectPermissionService
 ) {
 
     private val logger = loggerFor(ProjectApplicationService::class.java)
 
-    fun getProjects() = with(logger) {
-        info("getProjects()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getProjects(query: FilteredRequest<Project>) = with(logger) {
+        info("getProjects($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getProject(id: UUID) = with(logger) {
@@ -38,7 +43,7 @@ class ProjectApplicationService(
     fun createProject(request: ProjectRequest.Create) = with(logger) {
         info("createProject($request)")
 
-        service.create(
+        val project = service.create(
             title = request.title,
             description = request.description,
             sourceLanguage = LanguageCode(request.sourceLanguage),
@@ -52,8 +57,14 @@ class ProjectApplicationService(
             externalDeadline = request.externalDeadline,
             budget = request.budget,
             currencyCode = CurrencyCode(request.currencyCode),
-            clientId = ClientId(request.clientId)
-        ).toView()
+            clientId = ClientId(request.clientId),
+            createdById = userContextProvider.getCurrentUser().id
+        )
+
+        projectPermissionService.createProjectResource(project.id)
+        projectPermissionService.addUserProjectPermission(userContextProvider.getCurrentUser().id, project.id)
+
+        project.toView()
     }
 
     fun updateProject(id: UUID, request: ProjectRequest.Update) = with(logger) {

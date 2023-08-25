@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ExpenseCategoryRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ExpenseCategoryResponseMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ExpenseCategoryResponseMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ExpenseCategoryService
@@ -20,10 +21,9 @@ class ExpenseCategoryApplicationService(
 
     private val logger = loggerFor(ExpenseCategoryApplicationService::class.java)
 
-    fun getExpenseCategories() = with(logger) {
-        info("getExpenseCategories()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getExpenseCategories(query: FilteredRequest<ExpenseCategory>) = with(logger) {
+        info("getExpenseCategories($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getExpenseCategory(id: UUID) = with(logger) {

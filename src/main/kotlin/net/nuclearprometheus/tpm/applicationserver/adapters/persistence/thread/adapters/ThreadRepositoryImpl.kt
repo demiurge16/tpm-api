@@ -11,6 +11,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadSta
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -30,6 +32,11 @@ class ThreadRepositoryImpl(
         .orElse(null)
     override fun get(ids: List<ThreadId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(userRepository, replyRepository, threadLikeRepository, threadDislikeRepository, tagRepository) }
+
+    override fun get(query: Query<Thread>): Page<Thread> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: Thread): Thread {
         val thread = jpaRepository.save(entity.toDatabaseModel())
         val likes = threadLikeRepository.createAll(entity.likes)

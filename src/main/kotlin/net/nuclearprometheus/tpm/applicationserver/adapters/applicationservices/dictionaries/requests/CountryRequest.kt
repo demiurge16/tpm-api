@@ -10,19 +10,11 @@ sealed class CountryRequest {
         size: Int?,
         sort: String?,
         search: String?
-    ) : FilteredRequest<Country>(
-        page,
-        size,
-        sort,
-        search,
-        mapOf(
-            "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-            "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
-        )
-    ) {
+    ) : FilteredRequest<Country>( page, size, sort, search) {
 
         override fun toString(): String {
             return "CountryRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
         }
     }
 }
+

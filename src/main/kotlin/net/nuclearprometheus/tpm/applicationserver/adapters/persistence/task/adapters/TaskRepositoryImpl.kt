@@ -24,6 +24,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -40,6 +42,11 @@ class TaskRepositoryImpl(
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }.orElse(null)
     override fun get(ids: List<TaskId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
+
+    override fun get(query: Query<Task>): Page<Task> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: Task) = jpaRepository.save(entity.toDatabaseModel())
         .toDomain(languageRepository, currencyRepository, userRepository)
     override fun createAll(entities: List<Task>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })

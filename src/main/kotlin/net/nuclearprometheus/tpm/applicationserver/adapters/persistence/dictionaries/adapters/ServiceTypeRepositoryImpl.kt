@@ -5,6 +5,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceTypeId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ServiceTypeRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,6 +17,10 @@ class ServiceTypeRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ServiceTypeId): ServiceType? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ServiceTypeId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun get(query: Query<ServiceType>): Page<ServiceType> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ServiceType) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<ServiceType>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: ServiceType) = jpaRepository.save(entity.toDatabaseModel()).toDomain()

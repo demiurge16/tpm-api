@@ -13,6 +13,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -25,6 +27,10 @@ class ExpenseRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(currencyRepository, userRepository) }
     override fun get(id: ExpenseId): Expense? = jpaRepository.findById(id.value).map { it.toDomain(currencyRepository, userRepository) }.orElse(null)
     override fun get(ids: List<ExpenseId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(currencyRepository, userRepository) }
+    override fun get(query: Query<Expense>): Page<Expense> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: Expense) = jpaRepository.save(entity.toDatabaseModel()).toDomain(currencyRepository, userRepository)
     override fun createAll(entities: List<Expense>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(currencyRepository, userRepository) }
     override fun update(entity: Expense) = jpaRepository.save(entity.toDatabaseModel()).toDomain(currencyRepository, userRepository)

@@ -9,6 +9,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyLike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -23,6 +25,11 @@ class ReplyDislikeRepositoryImpl(
         .orElse(null)
     override fun get(ids: List<ReplyDislikeId>) = jpaRepository.findAllById(ids.map { it.value })
         .map { it.toDomain(userRepository) }
+
+    override fun get(query: Query<ReplyDislike>): Page<ReplyDislike> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: ReplyDislike) = jpaRepository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<ReplyDislike>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() })
         .map { it.toDomain(userRepository) }

@@ -7,15 +7,16 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ThreadRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -31,14 +32,15 @@ class ThreadApplicationService(
 
     private val logger = loggerFor(ThreadApplicationService::class.java)
 
-    fun getThreads(): Pageable<ThreadResponse.View> {
-        logger.info("getThreads()")
+    fun getThreads(query: FilteredRequest<Thread>): Page<ThreadResponse.View> {
+        logger.info("getThreads($query)")
 
-        return singlePage(repository.getAll()).map {
-            val project = projectRepository.get(it.projectId)
-                ?: throw IllegalStateException("Project with id ${it.projectId} not found")
-            it.toView(project)
-        }
+        return repository.get(query.toQuery())
+            .map {
+                val project = projectRepository.get(it.projectId)
+                    ?: throw IllegalStateException("Project with id ${it.projectId} not found")
+                it.toView(project)
+            }
     }
 
     fun getThread(id: UUID): ThreadResponse.View {

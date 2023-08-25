@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.IndustryMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.IndustryMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.IndustryRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.IndustryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.IndustryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.IndustryService
@@ -20,15 +21,13 @@ class IndustryApplicationService(
 
     private val logger = loggerFor(IndustryApplicationService::class.java)
 
-    fun getIndustries() = with(logger) {
-        info("getIndustries()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getIndustries(query: FilteredRequest<Industry>) = with(logger) {
+        info("getIndustries($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getIndustry(id: UUID) = with(logger) {
         info("getIndustry($id)")
-
         repository.get(IndustryId(id))?.toView() ?: throw NotFoundException("Industry with id $id not found")
     }
 

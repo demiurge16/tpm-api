@@ -4,13 +4,14 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ServiceTypeMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ServiceTypeRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ServiceTypeResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries.ServiceTypeController
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ServiceTypeId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ServiceTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeService
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -23,12 +24,9 @@ class ServiceTypeApplicationService(
 
     private val logger = loggerFor(ServiceTypeController::class.java)
 
-    fun getServiceTypes(): Pageable<ServiceTypeResponse.ServiceType> {
-        logger.info("getServiceTypes()")
-
-        return singlePage(
-            repository.getAll().map { it.toView() }
-        )
+    fun getServiceTypes(query: FilteredRequest<ServiceType>): Page<ServiceTypeResponse.ServiceType> {
+        logger.info("getServiceTypes($query)")
+        return repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getServiceType(serviceTypeId: UUID): ServiceTypeResponse.ServiceType {

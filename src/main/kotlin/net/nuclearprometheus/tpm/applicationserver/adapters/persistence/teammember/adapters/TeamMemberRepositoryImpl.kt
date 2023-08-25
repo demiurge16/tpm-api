@@ -10,6 +10,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamM
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -21,6 +23,10 @@ class TeamMemberRepositoryImpl(
     override fun getAll() = repository.findAll().map { it.toDomain(userRepository) }
     override fun get(id: TeamMemberId) = repository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
     override fun get(ids: List<TeamMemberId>) = repository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
+    override fun get(query: Query<TeamMember>): Page<TeamMember> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)
     override fun createAll(entities: List<TeamMember>) = repository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain(userRepository) }
     override fun update(entity: TeamMember) = repository.save(entity.toDatabaseModel()).toDomain(userRepository)

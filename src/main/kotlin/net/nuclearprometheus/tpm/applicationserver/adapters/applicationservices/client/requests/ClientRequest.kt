@@ -11,16 +11,7 @@ sealed class ClientRequest {
         size: Int?,
         sort: String?,
         search: String?
-    ) : FilteredRequest<Client>(
-        page,
-        size,
-        sort,
-        search,
-        mapOf(
-            "id" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-            "name" to Comparator { o1, o2 -> compareValues(o1.name, o2.name) }
-        )
-    ) {
+    ) : FilteredRequest<Client>(page, size, sort, search) {
 
         override fun toString(): String {
             return "ClientRequest.List(page=$page, size=$size, sort=$sort, search=$search)"

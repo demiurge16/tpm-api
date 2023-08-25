@@ -1,11 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries.AccuracyController
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.AccuracyMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.AccuracyMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.AccuracyRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.AccuracyId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.AccuracyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.AccuracyService
@@ -21,10 +24,9 @@ class AccuracyApplicationService(
 
     private val logger = loggerFor(AccuracyController::class.java)
 
-    fun getAccuracies() = with(logger) {
-        info("getAccuracies()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getAccuracies(query: FilteredRequest<Accuracy>) = with(logger) {
+        info("getAccuracies($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getAccuracy(id: UUID) = with(logger) {

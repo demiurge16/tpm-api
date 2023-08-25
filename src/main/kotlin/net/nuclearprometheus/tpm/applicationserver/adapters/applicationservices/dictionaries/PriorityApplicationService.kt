@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.PriorityMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.PriorityMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.PriorityRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Priority
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.PriorityRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.PriorityService
@@ -17,13 +18,11 @@ class PriorityApplicationService(
     private val repository: PriorityRepository,
     private val service: PriorityService
 ) {
-
     private val logger = loggerFor(PriorityApplicationService::class.java)
 
-    fun getPriorities() = with(logger) {
-        info("getPriorities()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getPriorities(query: FilteredRequest<Priority>) = with(logger) {
+        info("getPriorities($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getPriority(id: UUID) = with(logger) {

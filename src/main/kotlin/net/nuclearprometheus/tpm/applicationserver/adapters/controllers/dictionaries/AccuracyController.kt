@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.AccuracyApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.AccuracyRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CountryRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,10 +15,10 @@ class AccuracyController(private val service: AccuracyApplicationService) {
     private val logger = loggerFor(AccuracyController::class.java)
 
     @GetMapping("")
-    fun getAll() = with(logger) {
+    fun getAll(query: AccuracyRequest.List) = with(logger) {
         info("GET /api/v1/accuracy")
 
-        ResponseEntity.ok().body(service.getAccuracies())
+        ResponseEntity.ok().body(service.getAccuracies(query))
     }
 
     @GetMapping("/{id}")

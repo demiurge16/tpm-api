@@ -1,13 +1,13 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitMeasurement
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.UnitService
@@ -23,15 +23,13 @@ class UnitApplicationService(
 
     private val logger = loggerFor(UnitApplicationService::class.java)
 
-    fun getUnits() = with(logger) {
-        info("getUnits()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+    fun getUnits(query: FilteredRequest<Unit>) = with(logger) {
+        info("getUnits($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getUnit(id: UUID) = with(logger) {
         info("getUnit($id)")
-
         repository.get(UnitId(id))?.toView() ?: throw NotFoundException("Unit with id $id not found")
     }
 

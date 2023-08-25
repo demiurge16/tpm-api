@@ -5,8 +5,10 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toStartMoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
@@ -19,7 +21,7 @@ class TaskApplicationService(private val service: TaskService, private val repos
 
     private val logger = loggerFor(TaskApplicationService::class.java)
 
-    fun getTasks() = with(logger) {
+    fun getTasks(query: FilteredRequest<Task>) = with(logger) {
         info("getTasks()")
 
         singlePage(repository.getAll()).map { it.toView() }

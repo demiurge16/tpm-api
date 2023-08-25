@@ -1,11 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.mappers.UserMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.responses.UserResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,21 +21,18 @@ class UserApplicationService(
 
     private val logger = loggerFor(UserApplicationService::class.java)
 
-    fun getUsers() = with(logger) {
-        info("getUsers()")
-
-        singlePage(userRepository.getAll()).map { it.toView() }
+    fun getUsers(query: FilteredRequest<User>): Page<UserResponse.User> {
+        logger.info("getUsers($query)")
+        return userRepository.get(query.toQuery()).map { it.toView() }
     }
 
-    fun getUser(userId: UUID) = with(logger) {
-        info("getUser($userId)")
-
-        userRepository.get(UserId(userId))?.toView() ?: throw NotFoundException("User with id $userId not found")
+    fun getUser(userId: UUID): UserResponse.User {
+        logger.info("getUser($userId)")
+        return userRepository.get(UserId(userId))?.toView() ?: throw NotFoundException("User with id $userId not found")
     }
 
-    fun getCurrentUser() = with(logger) {
-        info("getCurrentUser()")
-
-        userContextProvider.getCurrentUser().toView()
+    fun getCurrentUser(): UserResponse.User {
+        logger.info("getCurrentUser()")
+        return userContextProvider.getCurrentUser().toView()
     }
 }

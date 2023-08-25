@@ -2,7 +2,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
 
 sealed class CurrencyRequest {
 
@@ -11,16 +10,7 @@ sealed class CurrencyRequest {
         size: Int?,
         sort: String?,
         search: String?
-    ) : FilteredRequest<Currency>(
-        page,
-        size,
-        sort,
-        search,
-        mapOf(
-            "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-            "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
-        )
-    ) {
+    ) : FilteredRequest<Currency>(page, size, sort, search) {
 
         override fun toString(): String {
             return "CurrencyRequest.List(page=$page, size=$size, sort=$sort, search=$search)"

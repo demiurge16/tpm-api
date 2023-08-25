@@ -5,6 +5,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.IndustryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.IndustryRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,6 +17,9 @@ class IndustryRepositoryImpl(
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: IndustryId): Industry? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<IndustryId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
+    override fun get(query: Query<Industry>): Page<Industry> {
+        TODO("Not yet implemented")
+    }
     override fun create(entity: Industry) = jpaRepository.save(entity.toDatabaseModel()).toDomain()
     override fun createAll(entities: List<Industry>) = jpaRepository.saveAll(entities.map { it.toDatabaseModel() }).map { it.toDomain() }
     override fun update(entity: Industry) = jpaRepository.save(entity.toDatabaseModel()).toDomain()

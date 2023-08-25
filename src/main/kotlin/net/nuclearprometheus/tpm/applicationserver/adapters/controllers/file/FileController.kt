@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.file
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.FileApplicationService
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.requests.FileRequest
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -16,16 +17,14 @@ class FileController(private val service: FileApplicationService) {
     private val logger = loggerFor(FileController::class.java)
 
     @GetMapping("")
-    fun getFiles() = with(logger) {
+    fun getFiles(query: FileRequest.List) = with(logger) {
         info("GET /api/v1/file")
-
-        ResponseEntity.ok().body(service.getFiles())
+        ResponseEntity.ok().body(service.getFiles(query))
     }
 
     @GetMapping("/{fileId}")
     fun getFile(@PathVariable(name = "fileId") fileId: UUID) = with(logger) {
         info("GET /api/v1/file/$fileId")
-
         ResponseEntity.ok().body(service.getFile(fileId))
     }
 

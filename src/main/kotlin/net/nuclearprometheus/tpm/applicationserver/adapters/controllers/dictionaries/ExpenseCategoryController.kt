@@ -14,10 +14,10 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
     private val logger = loggerFor(ExpenseCategoryController::class.java)
 
     @GetMapping("")
-    fun getAll() = with(logger) {
+    fun getAll(query: ExpenseCategoryRequest.List) = with(logger) {
         info("GET /api/v1/expense-category")
 
-        ResponseEntity.ok().body(service.getExpenseCategories())
+        ResponseEntity.ok().body(service.getExpenseCategories(query))
     }
 
     @GetMapping("/{id}")

@@ -4,6 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -23,7 +24,8 @@ interface ProjectService {
         externalDeadline: ZonedDateTime,
         budget: BigDecimal,
         currencyCode: CurrencyCode,
-        clientId: ClientId
+        clientId: ClientId,
+        createdById: UserId
     ): Project
 
     fun update(
