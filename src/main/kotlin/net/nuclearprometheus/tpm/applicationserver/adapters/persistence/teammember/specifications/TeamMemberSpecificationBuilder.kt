@@ -14,13 +14,16 @@ class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemb
     override val filterPredicates = filterPredicates<TeamMemberDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -28,13 +31,16 @@ class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemb
         }
         field("role") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<TeamMemberRoleDatabaseModel>("role"), value)
+                val role = TeamMemberRoleDatabaseModel.valueOf(value as String)
+                criteriaBuilder.equal(root.get<TeamMemberRoleDatabaseModel>("role"), role)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<TeamMemberRoleDatabaseModel>("role").`in`(value)
+                val roles = (value as List<String>).map { TeamMemberRoleDatabaseModel.valueOf(it) }
+                root.get<TeamMemberRoleDatabaseModel>("role").`in`(roles)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<TeamMemberRoleDatabaseModel>("role").`in`(value))
+                val roles = (value as List<String>).map { TeamMemberRoleDatabaseModel.valueOf(it) }
+                criteriaBuilder.not(root.get<TeamMemberRoleDatabaseModel>("role").`in`(roles))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<TeamMemberRoleDatabaseModel>("role"))
@@ -42,13 +48,16 @@ class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemb
         }
         field("userId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("userId"), value)
+                val userId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("userId"), userId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("userId").`in`(value)
+                val userIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("userId").`in`(userIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("userId").`in`(value))
+                val userIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("userId").`in`(userIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("userId"))
@@ -56,13 +65,16 @@ class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemb
         }
         field("projectId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("projectId"), value)
+                val projectId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("projectId"), projectId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("projectId").`in`(value)
+                val projectIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("projectId").`in`(projectIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("projectId").`in`(value))
+                val projectIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("projectId").`in`(projectIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("projectId"))
