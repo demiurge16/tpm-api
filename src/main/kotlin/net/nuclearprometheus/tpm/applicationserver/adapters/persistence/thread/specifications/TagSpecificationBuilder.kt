@@ -13,13 +13,16 @@ class TagSpecificationBuilder : SpecificationBuilder<Tag, TagDatabaseModel>() {
     override val filterPredicates = filterPredicates<TagDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -30,12 +33,14 @@ class TagSpecificationBuilder : SpecificationBuilder<Tag, TagDatabaseModel>() {
                 criteriaBuilder.equal(root.get<String>("name"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("name"), "%$value%")
+                criteriaBuilder.like(root.get("name"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("name").`in`(value)
+                val values = value as List<String>
+                root.get<String>("name").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
+                val values = value as List<String>
                 criteriaBuilder.not(root.get<String>("name").`in`(value))
             }
             isNull { criteriaBuilder, _, root, _ ->
@@ -47,13 +52,16 @@ class TagSpecificationBuilder : SpecificationBuilder<Tag, TagDatabaseModel>() {
         }
         field("threadId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("threadId"), value)
+                val threadId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("threadId"), threadId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("threadId").`in`(value)
+                val threadIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("threadId").`in`(threadIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("threadId").`in`(value))
+                val threadIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("threadId").`in`(threadIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("threadId"))

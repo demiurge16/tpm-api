@@ -14,13 +14,16 @@ class ReplyLikeSpecificationBuilder : SpecificationBuilder<ReplyLike, ReplyLikeD
     override val filterPredicates = filterPredicates<ReplyLikeDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -28,25 +31,32 @@ class ReplyLikeSpecificationBuilder : SpecificationBuilder<ReplyLike, ReplyLikeD
         }
         field("createdAt") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), value)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), createdAt)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("createdAt"), createdAt)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("createdAt"), createdAt)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("createdAt").`in`(value)
+                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("createdAt").`in`(createdAt)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(value))
+                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(createdAt))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("createdAt"))
@@ -54,13 +64,16 @@ class ReplyLikeSpecificationBuilder : SpecificationBuilder<ReplyLike, ReplyLikeD
         }
         field("authorId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("authorId"), value)
+                val authorId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("authorId"), authorId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("authorId").`in`(value)
+                val authorIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("authorId").`in`(authorIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("authorId").`in`(value))
+                val authorIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("authorId").`in`(authorIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("authorId"))
@@ -68,13 +81,16 @@ class ReplyLikeSpecificationBuilder : SpecificationBuilder<ReplyLike, ReplyLikeD
         }
         field("replyId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("replyId"), value)
+                val replyId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("replyId"), replyId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("replyId").`in`(value)
+                val replyIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("replyId").`in`(replyIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("replyId").`in`(value))
+                val replyIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("replyId").`in`(replyIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("replyId"))

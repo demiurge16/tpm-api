@@ -15,13 +15,16 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
     override val filterPredicates = filterPredicates<ThreadDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -34,11 +37,13 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
             contains { criteriaBuilder, _, root, value ->
                 criteriaBuilder.like(root.get<String>("title"), "%$value%")
             }
-            any{ criteriaBuilder, _, root, value ->
-                root.get<String>("title").`in`(value)
+            any { criteriaBuilder, _, root, value ->
+                val values = value as List<String>
+                root.get<String>("title").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("title").`in`(value))
+                val values = value as List<String>
+                criteriaBuilder.not(root.get<String>("title").`in`(values))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("title"))
@@ -49,25 +54,32 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
         }
         field("createdAt") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), value)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), createdAt)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("createdAt"), createdAt)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("createdAt"), createdAt)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("createdAt").`in`(value)
+                val values = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("createdAt").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(value))
+                val values = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(values))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("createdAt"))
@@ -75,13 +87,16 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
         }
         field("status") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ThreadStatusDatabaseModel>("status"), value)
+                val status = ThreadStatusDatabaseModel.valueOf(value as String)
+                criteriaBuilder.equal(root.get<ThreadStatusDatabaseModel>("status"), status)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ThreadStatusDatabaseModel>("status").`in`(value)
+                val values = (value as List<String>).map { ThreadStatusDatabaseModel.valueOf(it) }
+                root.get<ThreadStatusDatabaseModel>("status").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ThreadStatusDatabaseModel>("status").`in`(value))
+                val values = (value as List<String>).map { ThreadStatusDatabaseModel.valueOf(it) }
+                criteriaBuilder.not(root.get<ThreadStatusDatabaseModel>("status").`in`(values))
             }
             isNull { criteriaBuilder, _, root, value ->
                 criteriaBuilder.isNull(root.get<ThreadStatusDatabaseModel>("status"))
@@ -89,13 +104,16 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
         }
         field("authorId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("authorId"), value)
+                val authorId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("authorId"), authorId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("authorId").`in`(value)
+                val values = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("authorId").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("authorId").`in`(value))
+                val values = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("authorId").`in`(values))
             }
             isNull { criteriaBuilder, _, root, value ->
                 criteriaBuilder.isNull(root.get<UUID>("authorId"))
@@ -103,13 +121,16 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
         }
         field("projectId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("projectId"), value)
+                val projectId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("projectId"), projectId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("projectId").`in`(value)
+                val values = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("projectId").`in`(values)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("projectId").`in`(value))
+                val values = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("projectId").`in`(values))
             }
             isNull { criteriaBuilder, _, root, value ->
                 criteriaBuilder.isNull(root.get<UUID>("projectId"))

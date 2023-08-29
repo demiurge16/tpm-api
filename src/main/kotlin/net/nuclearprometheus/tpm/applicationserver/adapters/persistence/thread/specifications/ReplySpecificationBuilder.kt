@@ -14,13 +14,16 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
     override val filterPredicates = filterPredicates<ReplyDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -28,25 +31,32 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
         }
         field("createdAt") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), value)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), createdAt)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("createdAt"), createdAt)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("createdAt"), createdAt)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("createdAt"), value as ZonedDateTime)
+                val createdAt = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), createdAt)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("createdAt").`in`(value)
+                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("createdAt").`in`(createdAt)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(value))
+                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(createdAt))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("createdAt"))
@@ -54,7 +64,7 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
         }
         field("deleted") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("deleted"), value)
+                criteriaBuilder.equal(root.get<Boolean>("deleted"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Boolean>("deleted"))
@@ -62,13 +72,16 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
         }
         field("authorId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("authorId"), value)
+                val authorId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("authorId"), authorId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("authorId").`in`(value)
+                val authorIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("authorId").`in`(authorIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("authorId").`in`(value))
+                val authorIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("authorId").`in`(authorIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("authorId"))
@@ -76,13 +89,16 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
         }
         field("parentReplyId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("parentReplyId"), value)
+                val parentReplyId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("parentReplyId"), parentReplyId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("parentReplyId").`in`(value)
+                val parentReplyIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("parentReplyId").`in`(parentReplyIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("parentReplyId").`in`(value))
+                val parentReplyIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("parentReplyId").`in`(parentReplyIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("parentReplyId"))
@@ -90,13 +106,16 @@ class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel
         }
         field("threadId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("threadId"), value)
+                val threadId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("threadId"), threadId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("threadId").`in`(value)
+                val threadIds = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("threadId").`in`(threadIds)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("threadId").`in`(value))
+                val threadIds = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("threadId").`in`(threadIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("threadId"))
