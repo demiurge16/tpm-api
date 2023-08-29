@@ -1,12 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities
 
-import TaskStatusDatabaseModel
 import jakarta.persistence.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.*

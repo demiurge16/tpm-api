@@ -8,7 +8,17 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
 import org.springframework.data.jpa.domain.Specification
 
-typealias PredicateSupplier<T> = (CriteriaBuilder, Root<T>, Any) -> Predicate
+// possible type combinations and filters:
+// any unique singular token: eq, any, none, null
+// any string type: eq, contains, any, none, null, empty
+// any number type: eq, gt, gte, lt, lte, any, none, null
+// any date type: eq, gt, gte, lt, lte, any, none, null
+// any boolean type: eq, null
+// any enumerated type: eq, any, none, null
+// any collection type: all, any, none, null, empty
+// leave the possibility to add custom filters
+
+typealias PredicateSupplier<T> = (CriteriaBuilder, CriteriaQuery<*>, Root<T>, Any) -> Predicate
 
 abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
 
@@ -41,8 +51,8 @@ abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
                 }
                 is Operation.Comparison -> {
                     val (field, op, value) = operation.filter
-                    val predicateSupplier = filters[field]?.get(op.symbol) ?: throw Exception("Unknown field")
-                    predicates.add(predicateSupplier(criteriaBuilder, root, value))
+                    val predicateSupplier = filterPredicates[field, op.symbol]
+                    predicates.add(predicateSupplier(criteriaBuilder, criteriaQuery, root, value))
                 }
             }
         }
@@ -50,5 +60,5 @@ abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
         return predicates.singleOrNull() ?: criteriaBuilder.conjunction()
     }
 
-    abstract val filters: Map<String, Map<String, PredicateSupplier<TDatabaseModel>>>
+    abstract val filterPredicates: FilterPredicates<TDatabaseModel>
 }

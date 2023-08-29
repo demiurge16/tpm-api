@@ -1,8 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications
 
-import jakarta.persistence.criteria.CriteriaBuilder
-import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.MeasurementDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
@@ -12,88 +11,90 @@ import java.util.*
 @Component
 class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>() {
 
-    override val filters = mapOf(
-        "id" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+    override val filterPredicates = filterPredicates<UnitDatabaseModel> {
+        field("id") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<UUID>("id"), value)
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            any { criteriaBuilder, _, root, value ->
                 root.get<UUID>("id").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            none { criteriaBuilder, _, root, value ->
                 criteriaBuilder.not(root.get<UUID>("id").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
             }
-        ),
-        "name" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+        }
+        field("name") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<String>("name"), value)
-            },
-            "contains" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            contains { criteriaBuilder, _, root, value ->
                 criteriaBuilder.like(root.get<String>("name"), "%$value%")
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
-                root.get<String>("name").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
-                criteriaBuilder.not(root.get<String>("name").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
-                criteriaBuilder.isNull(root.get<String>("name"))
-            },
-            "empty" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
+            }
+            any { criteriaBuilder, _, root, value ->
+                val list = value as List<String>
+                root.get<String>("name").`in`(list)
+            }
+            none { criteriaBuilder, _, root, value ->
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("name").`in`(list))
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("name"))
             }
-        ),
-        "volume" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            isEmpty { criteriaBuilder, _, root, _ ->
+                criteriaBuilder.isNull(root.get<String>("name"))
+            }
+        }
+        field("volume") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<Int>("volume"), value)
-            },
-            "gt" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            greaterThan { criteriaBuilder, _, root, value ->
                 criteriaBuilder.greaterThan(root.get<Int>("volume"), value as Int)
-            },
-            "lt" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            lessThan { criteriaBuilder, _, root, value ->
                 criteriaBuilder.lessThan(root.get<Int>("volume"), value as Int)
-            },
-            "gte" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
                 criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("volume"), value as Int)
-            },
-            "lte" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            lessThanOrEqualTo { criteriaBuilder, _, root, value ->
                 criteriaBuilder.lessThanOrEqualTo(root.get<Int>("volume"), value as Int)
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            any { criteriaBuilder, _, root, value ->
                 root.get<Int>("volume").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            none { criteriaBuilder, _, root, value ->
                 criteriaBuilder.not(root.get<Int>("volume").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Int>("volume"))
             }
-        ),
-        "measurement" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+        }
+        field("measurement") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<MeasurementDatabaseModel>("measurement"), value)
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            any { criteriaBuilder, _, root, value ->
                 root.get<MeasurementDatabaseModel>("measurement").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+            }
+            none { criteriaBuilder, _, root, value ->
                 criteriaBuilder.not(root.get<MeasurementDatabaseModel>("measurement").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<MeasurementDatabaseModel>("measurement"))
             }
-        ),
-        "active" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, value: Any ->
+        }
+        field("active") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<Boolean>("active"), value)
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<UnitDatabaseModel>, _: Any ->
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Boolean>("active"))
             }
-        )
-    )
+        }
+    }
 }

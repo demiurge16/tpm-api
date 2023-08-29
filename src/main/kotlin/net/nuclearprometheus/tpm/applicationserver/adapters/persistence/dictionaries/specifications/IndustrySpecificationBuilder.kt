@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import org.springframework.stereotype.Component
@@ -11,48 +12,50 @@ import java.util.*
 @Component
 class IndustrySpecificationBuilder : SpecificationBuilder<Industry, IndustryDatabaseModel>() {
 
-    override val filters = mapOf(
-        "id" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
+    override val filterPredicates = filterPredicates<IndustryDatabaseModel> {
+        field("id") {
+            eq { criteriaBuilder, _, root, value ->
                 criteriaBuilder.equal(root.get<UUID>("id"), value)
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
+            }
+            any { criteriaBuilder, _, root, value ->
                 root.get<UUID>("id").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
+            }
+            none { criteriaBuilder, _, root, value ->
                 criteriaBuilder.not(root.get<UUID>("id").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, _: Any ->
+            }
+            isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
             }
-        ),
-        "name" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
-                criteriaBuilder.equal(root.get<String>("name"), value)
-            },
-            "contains" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
-                criteriaBuilder.like(root.get<String>("name"), "%$value%")
-            },
-            "any" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
-                root.get<String>("name").`in`(value)
-            },
-            "none" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
-                criteriaBuilder.not(root.get<String>("name").`in`(value))
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, _: Any ->
-                criteriaBuilder.isNull(root.get<String>("name"))
-            },
-            "empty" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, _: Any ->
-                criteriaBuilder.isNull(root.get<String>("name"))
+        }
+        field("name") {
+            eq { criteriaBuilder, _, root, value ->
+                criteriaBuilder.equal(root.get<kotlin.String>("name"), value)
             }
-        ),
-        "active" to mapOf(
-            "eq" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, value: Any ->
-                criteriaBuilder.equal(root.get<Boolean>("active"), value)
-            },
-            "null" to { criteriaBuilder: CriteriaBuilder, root: Root<IndustryDatabaseModel>, _: Any ->
-                criteriaBuilder.isNull(root.get<Boolean>("active"))
+            contains { criteriaBuilder, _, root, value ->
+                criteriaBuilder.like(root.get<kotlin.String>("name"), "%$value%")
             }
-        )
-    )
+            any { criteriaBuilder, _, root, value ->
+                val list = value as List<String>
+                root.get<kotlin.String>("name").`in`(list)
+            }
+            none { criteriaBuilder, _, root, value ->
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<kotlin.String>("name").`in`(list))
+            }
+            isNull { criteriaBuilder, _, root, _ ->
+                criteriaBuilder.isNull(root.get<kotlin.String>("name"))
+            }
+            isEmpty { criteriaBuilder, _, root, _ ->
+                criteriaBuilder.isNull(root.get<kotlin.String>("name"))
+            }
+        }
+        field("active") {
+            eq { criteriaBuilder, _, root, value ->
+                criteriaBuilder.equal(root.get<kotlin.Boolean>("active"), value)
+            }
+            isNull { criteriaBuilder, _, root, _ ->
+                criteriaBuilder.isNull(root.get<kotlin.Boolean>("active"))
+            }
+        }
+    }
 }
