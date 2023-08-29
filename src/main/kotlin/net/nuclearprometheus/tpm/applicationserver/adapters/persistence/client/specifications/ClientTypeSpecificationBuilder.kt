@@ -13,13 +13,16 @@ class ClientTypeSpecificationBuilder : SpecificationBuilder<ClientType, ClientTy
     override val filterPredicates = filterPredicates<ClientTypeDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val uuid = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), uuid)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val list = value as List<String>
+                root.get<UUID>("id").`in`(list.map { UUID.fromString(it) })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<UUID>("id").`in`(list.map { UUID.fromString(it) }))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -47,7 +50,7 @@ class ClientTypeSpecificationBuilder : SpecificationBuilder<ClientType, ClientTy
         }
         field("corporate") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("corporate"), value)
+                criteriaBuilder.equal(root.get<Boolean>("corporate"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Boolean>("corporate"))
@@ -55,7 +58,7 @@ class ClientTypeSpecificationBuilder : SpecificationBuilder<ClientType, ClientTy
         }
         field("active") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("active"), value)
+                criteriaBuilder.equal(root.get<Boolean>("active"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Boolean>("active"))

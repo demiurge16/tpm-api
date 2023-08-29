@@ -12,13 +12,16 @@ class ClientSpecificationBuilder : SpecificationBuilder<Client, ClientDatabaseMo
     override val filterPredicates = filterPredicates<ClientDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val uuid = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), uuid)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val list = value as List<String>
+                root.get<UUID>("id").`in`(list.map { UUID.fromString(it) })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<UUID>("id").`in`(list.map { UUID.fromString(it) }))
             }
             isNull { criteriaBuilder, _, root, value ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -206,7 +209,7 @@ class ClientSpecificationBuilder : SpecificationBuilder<Client, ClientDatabaseMo
         }
         field("active") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("active"), value)
+                criteriaBuilder.equal(root.get<Boolean>("active"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, value ->
                 criteriaBuilder.isNull(root.get<Boolean>("active"))
