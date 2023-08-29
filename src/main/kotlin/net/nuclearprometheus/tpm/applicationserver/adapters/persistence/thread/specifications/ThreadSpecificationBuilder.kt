@@ -35,7 +35,7 @@ class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseMo
                 criteriaBuilder.equal(root.get<String>("title"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("title"), "%$value%")
+                criteriaBuilder.like(root.get("title"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
                 val values = value as List<String>

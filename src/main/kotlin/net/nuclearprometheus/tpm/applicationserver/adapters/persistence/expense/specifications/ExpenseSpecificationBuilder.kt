@@ -68,10 +68,10 @@ class ExpenseSpecificationBuilder : SpecificationBuilder<Expense, ExpenseDatabas
                 criteriaBuilder.equal(root.get<String>("currency"), value)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("currency").`in`(value)
+                root.get<String>("currency").`in`(value as List<String>)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("currency").`in`(value))
+                criteriaBuilder.not(root.get<String>("currency").`in`(value as List<String>))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("currency"))

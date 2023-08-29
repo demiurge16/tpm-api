@@ -16,13 +16,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
     override val filterPredicates = filterPredicates<ProjectDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -33,14 +36,15 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
                 criteriaBuilder.equal(root.get<String>("title"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("title"), "%$value%")
+                criteriaBuilder.like(root.get("title"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
                 val list = value as List<String>
                 root.get<String>("title").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("title").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("title").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("title"))
@@ -54,10 +58,12 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
                 criteriaBuilder.equal(root.get<String>("sourceLanguage"), value)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("sourceLanguage").`in`(value)
+                val list = value as List<String>
+                root.get<String>("sourceLanguage").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("sourceLanguage").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("sourceLanguage").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("sourceLanguage"))
@@ -65,25 +71,26 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("targetLanguages") {
             all { criteriaBuilder, _, root, value ->
+                val targetLanguages = value as List<String>
                 criteriaBuilder.and(
-                    *(value as List<*>).map { criteriaBuilder.isMember(it, root.get<List<String>>("targetLanguages")) }
+                    *targetLanguages.map { criteriaBuilder.isMember(it, root.get<List<String>>("targetLanguages")) }
                         .toTypedArray()
                 )
             }
             any { criteriaBuilder, _, root, value ->
+                val targetLanguages = value as List<String>
                 criteriaBuilder.or(
-                    *(value as List<*>).map { criteriaBuilder.isMember(it, root.get<List<String>>("targetLanguages")) }
+                    *targetLanguages.map { criteriaBuilder.isMember(it, root.get<List<String>>("targetLanguages")) }
                         .toTypedArray()
                 )
             }
             none { criteriaBuilder, _, root, value ->
+                val targetLanguages = value as List<String>
                 criteriaBuilder.and(
-                    *(value as List<*>).map {
-                        criteriaBuilder.isNotMember(
-                            it,
-                            root.get<List<String>>("targetLanguages")
-                        )
-                    }
+                    *targetLanguages
+                        .map {
+                            criteriaBuilder.isNotMember(it, root.get<List<String>>("targetLanguages"))
+                        }
                         .toTypedArray()
                 )
             }
@@ -96,13 +103,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("accuracyId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("accuracy.id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("accuracy.id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("accuracy.id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("accuracy.id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("accuracy.id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("accuracy.id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("accuracy.id"))
@@ -110,13 +120,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("industryId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("industry.id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("industry.id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("industry.id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("industry.id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("industry.id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("industry.id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("industry.id"))
@@ -124,13 +137,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("unitId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("unit.id"), value)
+                val id = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("unit.id"), id)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("unit.id").`in`(value)
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("unit.id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("unit.id").`in`(value))
+                val ids = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("unit.id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("unit.id"))
@@ -138,25 +154,27 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("amount") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Int>("amount"), value)
+                criteriaBuilder.equal(root.get<Int>("amount"), (value as String).toInt())
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<Int>("amount"), (value as String).toInt())
+                criteriaBuilder.lessThan(root.get("amount"), (value as String).toInt())
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<Int>("amount"), (value as String).toInt())
+                criteriaBuilder.greaterThan(root.get("amount"), (value as String).toInt())
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<Int>("amount"), (value as String).toInt())
+                criteriaBuilder.lessThanOrEqualTo(root.get("amount"), (value as String).toInt())
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("amount"), (value as String).toInt())
+                criteriaBuilder.greaterThanOrEqualTo(root.get("amount"), (value as String).toInt())
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<Int>("amount").`in`(value as List<Int>)
+                val list = (value as List<String>).map { it.toInt() }
+                root.get<Int>("amount").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<Int>("amount").`in`(value as List<Int>))
+                val list = (value as List<String>).map { it.toInt() }
+                criteriaBuilder.not(root.get<Int>("amount").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Int>("amount"))
@@ -164,25 +182,32 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("expectedStart") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("expectedStart"), value)
+                val expectedStart = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("expectedStart"), expectedStart)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("expectedStart"), value as ZonedDateTime)
+                val expectedStart = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("expectedStart"), expectedStart)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("expectedStart"), value as ZonedDateTime)
+                val expectedStart = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("expectedStart"), expectedStart)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("expectedStart"), value as ZonedDateTime)
+                val expectedStart = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("expectedStart"), expectedStart)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<ZonedDateTime>("expectedStart"), value as ZonedDateTime)
+                val expectedStart = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("expectedStart"), expectedStart)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("expectedStart").`in`(value as List<ZonedDateTime>)
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("expectedStart").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("expectedStart").`in`(value as List<ZonedDateTime>))
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("expectedStart").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("expectedStart"))
@@ -190,28 +215,32 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("internalDeadline") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("internalDeadline"), value)
+                val internalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("internalDeadline"), internalDeadline)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("internalDeadline"), value as ZonedDateTime)
+                val internalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("internalDeadline"), internalDeadline)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("internalDeadline"), value as ZonedDateTime)
+                val internalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("internalDeadline"), internalDeadline)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("internalDeadline"), value as ZonedDateTime)
+                val internalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("internalDeadline"), internalDeadline)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(
-                    root.get<ZonedDateTime>("internalDeadline"),
-                    value as ZonedDateTime
-                )
+                val internalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("internalDeadline"), internalDeadline)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("internalDeadline").`in`(value as List<ZonedDateTime>)
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("internalDeadline").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("internalDeadline").`in`(value as List<ZonedDateTime>))
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("internalDeadline").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("internalDeadline"))
@@ -219,28 +248,32 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("externalDeadline") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("externalDeadline"), value)
+                val externalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("externalDeadline"), externalDeadline)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("externalDeadline"), value as ZonedDateTime)
+                val externalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("externalDeadline"), externalDeadline)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("externalDeadline"), value as ZonedDateTime)
+                val externalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("externalDeadline"), externalDeadline)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("externalDeadline"), value as ZonedDateTime)
+                val externalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("externalDeadline"), externalDeadline)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(
-                    root.get<ZonedDateTime>("externalDeadline"),
-                    value as ZonedDateTime
-                )
+                val externalDeadline = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("externalDeadline"), externalDeadline)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("externalDeadline").`in`(value as List<ZonedDateTime>)
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("externalDeadline").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("externalDeadline").`in`(value as List<ZonedDateTime>))
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("externalDeadline").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("externalDeadline"))
@@ -248,25 +281,32 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("budget") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<BigDecimal>("budget"), value)
+                val budget = (value as String).toBigDecimal()
+                criteriaBuilder.equal(root.get<BigDecimal>("budget"), budget)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get("budget"), value as BigDecimal)
+                val budget = (value as String).toBigDecimal()
+                criteriaBuilder.lessThan(root.get("budget"), budget)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get("budget"), value as BigDecimal)
+                val budget = (value as String).toBigDecimal()
+                criteriaBuilder.greaterThan(root.get("budget"), budget)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get("budget"), value as BigDecimal)
+                val budget = (value as String).toBigDecimal()
+                criteriaBuilder.lessThanOrEqualTo(root.get("budget"), budget)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get("budget"), value as BigDecimal)
+                val budget = (value as String).toBigDecimal()
+                criteriaBuilder.greaterThanOrEqualTo(root.get("budget"), budget)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<BigDecimal>("budget").`in`(value as List<BigDecimal>)
+                val list = (value as List<String>).map { it.toBigDecimal() }
+                root.get<BigDecimal>("budget").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<BigDecimal>("budget").`in`(value as List<BigDecimal>))
+                val list = (value as List<String>).map { it.toBigDecimal() }
+                criteriaBuilder.not(root.get<BigDecimal>("budget").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<BigDecimal>("budget"))
@@ -288,15 +328,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("status") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ProjectStatusDatabaseModel>("status"), value)
+                val status = ProjectStatusDatabaseModel.valueOf(value as String)
+                criteriaBuilder.equal(root.get<ProjectStatusDatabaseModel>("status"), status)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ProjectStatusDatabaseModel>("status").`in`(value as List<ProjectStatusDatabaseModel>)
+                val list = (value as List<String>).map { ProjectStatusDatabaseModel.valueOf(it) }
+                root.get<ProjectStatusDatabaseModel>("status").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(
-                    root.get<ProjectStatusDatabaseModel>("status").`in`(value as List<ProjectStatusDatabaseModel>)
-                )
+                val list = (value as List<String>).map { ProjectStatusDatabaseModel.valueOf(it) }
+                criteriaBuilder.not(root.get<ProjectStatusDatabaseModel>("status").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ProjectStatusDatabaseModel>("status"))
@@ -304,13 +345,16 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         }
         field("clientId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("client.id"), value)
+                val clientId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("client.id"), clientId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("client.id").`in`(value as List<UUID>)
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("client.id").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("client.id").`in`(value as List<UUID>))
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("client.id").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("client.id"))
