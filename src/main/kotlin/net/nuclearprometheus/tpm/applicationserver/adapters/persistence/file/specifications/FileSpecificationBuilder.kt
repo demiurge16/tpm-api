@@ -14,13 +14,16 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
     override val filterPredicates = filterPredicates<FileDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
+                val uuid = UUID.fromString(value as String)
                 criteriaBuilder.equal(root.get<UUID>("id"), value)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("id").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("id").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -31,13 +34,15 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
                 criteriaBuilder.equal(root.get<String>("name"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("name"), "%$value%")
+                criteriaBuilder.like(root.get("name"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("name").`in`(value)
+                val list = value as List<String>
+                root.get<String>("name").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("name").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("name").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("name"))
@@ -51,13 +56,15 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
                 criteriaBuilder.equal(root.get<String>("type"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("type"), "%$value%")
+                criteriaBuilder.like(root.get("type"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("type").`in`(value)
+                val list = value as List<String>
+                root.get<String>("type").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("type").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("type").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("type"))
@@ -71,13 +78,15 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
                 criteriaBuilder.equal(root.get<String>("location"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("location"), "%$value%")
+                criteriaBuilder.like(root.get("location"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<String>("location").`in`(value)
+                val list = value as List<String>
+                root.get<String>("location").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("location").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<String>("location").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<String>("location"))
@@ -88,25 +97,32 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
         }
         field("size") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Long>("size"), value)
+                val size = (value as String).toLong()
+                criteriaBuilder.equal(root.get<Long>("size"), size)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<Long>("size"), value as Long)
+                val size = (value as String).toLong()
+                criteriaBuilder.greaterThan(root.get("size"), size)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<Long>("size"), value as Long)
+                val size = (value as String).toLong()
+                criteriaBuilder.lessThan(root.get("size"), size)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<Long>("size"), value as Long)
+                val size = (value as String).toLong()
+                criteriaBuilder.greaterThanOrEqualTo(root.get("size"), size)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<Long>("size"), value as Long)
+                val size = (value as String).toLong()
+                criteriaBuilder.lessThanOrEqualTo(root.get("size"), size)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<Long>("size").`in`(value)
+                val list = (value as List<String>).map { it.toLong() }
+                root.get<Long>("size").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<Long>("size").`in`(value))
+                val list = (value as List<String>).map { it.toLong() }
+                criteriaBuilder.not(root.get<Long>("size").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Long>("size"))
@@ -114,25 +130,32 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
         }
         field("uploadTime") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<ZonedDateTime>("uploadTime"), value)
+                val uploadTime = ZonedDateTime.parse(value as String)
+                criteriaBuilder.equal(root.get<ZonedDateTime>("uploadTime"), uploadTime)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<ZonedDateTime>("uploadTime"), value as ZonedDateTime)
+                val uploadTime = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThan(root.get("uploadTime"), uploadTime)
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<ZonedDateTime>("uploadTime"), value as ZonedDateTime)
+                val uploadTime = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThan(root.get("uploadTime"), uploadTime)
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<ZonedDateTime>("uploadTime"), value as ZonedDateTime)
+                val uploadTime = ZonedDateTime.parse(value as String)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("uploadTime"), uploadTime)
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<ZonedDateTime>("uploadTime"), value as ZonedDateTime)
+                val uploadTime = ZonedDateTime.parse(value as String)
+                criteriaBuilder.lessThanOrEqualTo(root.get("uploadTime"), uploadTime)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<ZonedDateTime>("uploadTime").`in`(value)
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                root.get<ZonedDateTime>("uploadTime").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<ZonedDateTime>("uploadTime").`in`(value))
+                val list = (value as List<String>).map { ZonedDateTime.parse(it) }
+                criteriaBuilder.not(root.get<ZonedDateTime>("uploadTime").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<ZonedDateTime>("uploadTime"))
@@ -140,13 +163,16 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
         }
         field("uploaderId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("uploaderId"), value)
+                val uploaderId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("uploaderId"), uploaderId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("uploaderId").`in`(value)
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("uploaderId").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("uploaderId").`in`(value))
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("uploaderId").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("uploaderId"))
@@ -154,13 +180,16 @@ class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>()
         }
         field("projectId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("projectId"), value)
+                val projectId = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("projectId"), projectId)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("projectId").`in`(value)
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                root.get<UUID>("projectId").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("projectId").`in`(value))
+                val list = (value as List<String>).map { UUID.fromString(it) }
+                criteriaBuilder.not(root.get<UUID>("projectId").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("projectId"))
