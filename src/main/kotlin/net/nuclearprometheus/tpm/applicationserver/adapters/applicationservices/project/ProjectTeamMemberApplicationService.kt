@@ -1,17 +1,17 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTeamMemberRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectTeamMemberResponseMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.TeamMember
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.emptyPage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember.TeamMemberService
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.emptyPage
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -25,7 +25,7 @@ class ProjectTeamMemberApplicationService(
 
     private val logger = loggerFor(ProjectTeamMemberApplicationService::class.java)
 
-    fun getTeamMembers(projectId: UUID): Pageable<TeamMember> {
+    fun getTeamMembers(projectId: UUID): Page<TeamMember> {
         logger.info("getTeamMembers($projectId)")
 
         val project = projectRepository.get(ProjectId(projectId))

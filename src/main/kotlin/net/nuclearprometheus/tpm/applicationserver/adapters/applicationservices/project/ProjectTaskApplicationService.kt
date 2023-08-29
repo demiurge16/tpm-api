@@ -1,12 +1,12 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectTaskMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -21,7 +21,6 @@ class ProjectTaskApplicationService(
 
     fun getTasksForProject(projectId: UUID) = with(logger) {
         info("getTasksForProject($projectId)")
-
         singlePage(taskRepository.getAllByProjectId(ProjectId(projectId))).map { it.toView() }
     }
 

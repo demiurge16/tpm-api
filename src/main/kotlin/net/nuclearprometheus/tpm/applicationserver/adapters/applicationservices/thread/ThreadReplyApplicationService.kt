@@ -3,13 +3,13 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ReplyMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ReplyRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ReplyResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -23,7 +23,7 @@ class ThreadReplyApplicationService(
 
     private val logger = loggerFor(ThreadReplyApplicationService::class.java)
 
-    fun getRepliesForThread(threadId: UUID): Pageable<ReplyResponse.View> {
+    fun getRepliesForThread(threadId: UUID): Page<ReplyResponse.View> {
         logger.info("getRepliesForThread($threadId)")
         return singlePage(
             repository.getAllByThreadId(ThreadId(threadId)).map { it.toView() }

@@ -1,6 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectFileMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
@@ -9,6 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -30,7 +30,6 @@ class ProjectFileApplicationService(
 
     fun getFilesForProject(projectId: UUID) = with(logger) {
         info("getFiles($projectId)")
-
         singlePage(fileRepository.getAllByProjectId(ProjectId(projectId))).map { it.toView() }
     }
 

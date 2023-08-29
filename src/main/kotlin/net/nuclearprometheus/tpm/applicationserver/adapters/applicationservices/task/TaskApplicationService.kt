@@ -1,6 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toDeadlineMoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toStartMoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toView
@@ -22,9 +21,8 @@ class TaskApplicationService(private val service: TaskService, private val repos
     private val logger = loggerFor(TaskApplicationService::class.java)
 
     fun getTasks(query: FilteredRequest<Task>) = with(logger) {
-        info("getTasks()")
-
-        singlePage(repository.getAll()).map { it.toView() }
+        info("getTasks($query)")
+        repository.get(query.toQuery()).map { it.toView() }
     }
 
     fun getTask(taskId: UUID) = with(logger) {

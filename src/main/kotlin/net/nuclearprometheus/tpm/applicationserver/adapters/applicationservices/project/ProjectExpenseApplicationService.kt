@@ -3,9 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.ExpenseResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectExpenseMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectExpenseRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Pageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.emptyPage
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.singlePage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -13,6 +10,9 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.expense.ExpenseRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseService
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.emptyPage
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.lang.IllegalStateException
@@ -27,7 +27,7 @@ class ProjectExpenseApplicationService(
 
     private val logger = loggerFor(ProjectExpenseApplicationService::class.java)
 
-    fun getExpensesForProject(projectId: UUID): Pageable<ExpenseResponse.Expense> {
+    fun getExpensesForProject(projectId: UUID): Page<ExpenseResponse.Expense> {
         logger.info("getExpensesForProject($projectId)")
 
         val project = projectRepository.get(ProjectId(projectId))
@@ -42,7 +42,7 @@ class ProjectExpenseApplicationService(
                 val user = project.teamMembers.map { it.user }
                     .distinctBy { it.id }
                     .find { user -> user.id == it.spender.id }
-                    ?: throw java.lang.IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
+                    ?: throw IllegalStateException("Team member with id ${it.spender.id} not found in project with id ${it.projectId}")
 
                 it.toView(user, project)
             }
