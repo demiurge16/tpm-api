@@ -14,13 +14,16 @@ class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>()
     override val filterPredicates = filterPredicates<UnitDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val uuid = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), uuid)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val list = value as List<String>
+                root.get<UUID>("id").`in`(list.map { UUID.fromString(it) })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<UUID>("id").`in`(list.map { UUID.fromString(it) }))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -31,7 +34,7 @@ class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>()
                 criteriaBuilder.equal(root.get<String>("name"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("name"), "%$value%")
+                criteriaBuilder.like(root.get("name"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
                 val list = value as List<String>
@@ -50,25 +53,27 @@ class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>()
         }
         field("volume") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Int>("volume"), value)
+                criteriaBuilder.equal(root.get<Int>("volume"), (value as String).toInt())
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<Int>("volume"), value as Int)
+                criteriaBuilder.greaterThan(root.get("volume"), (value as String).toInt())
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<Int>("volume"), value as Int)
+                criteriaBuilder.lessThan(root.get("volume"), (value as String).toInt())
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("volume"), value as Int)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("volume"), (value as String).toInt())
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<Int>("volume"), value as Int)
+                criteriaBuilder.lessThanOrEqualTo(root.get("volume"), (value as String).toInt())
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<Int>("volume").`in`(value)
+                val list = value as List<String>
+                root.get<Int>("volume").`in`(list.map { it.toInt() })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<Int>("volume").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<Int>("volume").`in`(list.map { it.toInt() }))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Int>("volume"))
@@ -76,13 +81,16 @@ class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>()
         }
         field("measurement") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<MeasurementDatabaseModel>("measurement"), value)
+                val measurement = MeasurementDatabaseModel.valueOf(value as String)
+                criteriaBuilder.equal(root.get<MeasurementDatabaseModel>("measurement"), measurement)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<MeasurementDatabaseModel>("measurement").`in`(value)
+                val list = value as List<String>
+                root.get<MeasurementDatabaseModel>("measurement").`in`(list.map { MeasurementDatabaseModel.valueOf(it) })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<MeasurementDatabaseModel>("measurement").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<MeasurementDatabaseModel>("measurement").`in`(list.map { MeasurementDatabaseModel.valueOf(it) }))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<MeasurementDatabaseModel>("measurement"))
@@ -90,7 +98,7 @@ class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>()
         }
         field("active") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("active"), value)
+                criteriaBuilder.equal(root.get<Boolean>("active"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<Boolean>("active"))

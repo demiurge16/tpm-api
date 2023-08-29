@@ -123,16 +123,16 @@ class TaskSpecificationBuilder : SpecificationBuilder<Task, TaskDatabaseModel>()
                 criteriaBuilder.equal(root.get<Int>("amount"), value)
             }
             greaterThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThan(root.get<Int>("amount"), value as Int)
+                criteriaBuilder.greaterThan(root.get<Int>("amount"), (value as String).toInt())
             }
             lessThan { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThan(root.get<Int>("amount"), value as Int)
+                criteriaBuilder.lessThan(root.get<Int>("amount"), (value as String).toInt())
             }
             greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("amount"), value as Int)
+                criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("amount"), (value as String).toInt())
             }
             lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                criteriaBuilder.lessThanOrEqualTo(root.get<Int>("amount"), value as Int)
+                criteriaBuilder.lessThanOrEqualTo(root.get<Int>("amount"), (value as String).toInt())
             }
             any { criteriaBuilder, _, root, value ->
                 root.get<Int>("amount").`in`(value as List<Int>)

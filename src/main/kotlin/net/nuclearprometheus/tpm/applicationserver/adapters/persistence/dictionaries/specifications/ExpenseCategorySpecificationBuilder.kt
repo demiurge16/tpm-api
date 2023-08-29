@@ -1,7 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications
 
-import jakarta.persistence.criteria.CriteriaBuilder
-import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
@@ -15,13 +13,16 @@ class ExpenseCategorySpecificationBuilder : SpecificationBuilder<ExpenseCategory
     override val filterPredicates = filterPredicates<ExpenseCategoryDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("id"), value)
+                val uuid = UUID.fromString(value as String)
+                criteriaBuilder.equal(root.get<UUID>("id"), uuid)
             }
             any { criteriaBuilder, _, root, value ->
-                root.get<UUID>("id").`in`(value)
+                val list = value as List<String>
+                root.get<UUID>("id").`in`(list.map { UUID.fromString(it) })
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("id").`in`(value))
+                val list = value as List<String>
+                criteriaBuilder.not(root.get<UUID>("id").`in`(list.map { UUID.fromString(it) }))
             }
             isNull { criteriaBuilder, _, root, _ ->
                 criteriaBuilder.isNull(root.get<UUID>("id"))
@@ -29,32 +30,32 @@ class ExpenseCategorySpecificationBuilder : SpecificationBuilder<ExpenseCategory
         }
         field("name") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<kotlin.String>("name"), value)
+                criteriaBuilder.equal(root.get<String>("name"), value)
             }
             contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<kotlin.String>("name"), "%$value%")
+                criteriaBuilder.like(root.get("name"), "%$value%")
             }
             any { criteriaBuilder, _, root, value ->
                 val list = value as List<String>
-                root.get<kotlin.String>("name").`in`(list)
+                root.get<String>("name").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
                 val list = value as List<String>
-                criteriaBuilder.not(root.get<kotlin.String>("name").`in`(list))
+                criteriaBuilder.not(root.get<String>("name").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<kotlin.String>("name"))
+                criteriaBuilder.isNull(root.get<String>("name"))
             }
             isEmpty { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<kotlin.String>("name"))
+                criteriaBuilder.isNull(root.get<String>("name"))
             }
         }
         field("active") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<kotlin.Boolean>("active"), value)
+                criteriaBuilder.equal(root.get<Boolean>("active"), (value as String).toBoolean())
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<kotlin.Boolean>("active"))
+                criteriaBuilder.isNull(root.get<Boolean>("active"))
             }
         }
     }
