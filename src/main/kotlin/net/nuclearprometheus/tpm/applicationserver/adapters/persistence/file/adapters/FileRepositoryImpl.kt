@@ -4,7 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.t
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.entities.FileDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.repositories.FileJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.specifications.FileSpecificationBuilder
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.adapters.TaskRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.FileId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
@@ -14,6 +13,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class FileRepositoryImpl(
@@ -41,6 +41,18 @@ class FileRepositoryImpl(
     override fun delete(id: FileId) = jpaRepository.deleteById(id.value)
     override fun deleteAll(ids: List<FileId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(userRepository) }
+    override fun getAllByProjectIdAndQuery(projectId: ProjectId, query: Query<File>): Page<File> {
+        val specification = specificationBuilder.build(query)
+            .and { root, _, criteriaBuilder -> criteriaBuilder.equal(root.get<UUID>("projectId"), projectId.value) }
+        val page = jpaRepository.findAll(specification, query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
+    }
+
     override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
 
     companion object Mappers {

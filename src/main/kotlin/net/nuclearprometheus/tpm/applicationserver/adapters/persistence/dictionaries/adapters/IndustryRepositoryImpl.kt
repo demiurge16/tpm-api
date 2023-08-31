@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.IndustryJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.IndustrySpecificationBuilder

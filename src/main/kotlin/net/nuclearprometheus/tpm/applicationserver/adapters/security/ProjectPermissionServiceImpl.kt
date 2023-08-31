@@ -6,7 +6,10 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.keycloak.authorization.client.AuthzClient
 import org.keycloak.authorization.client.Configuration
-import org.keycloak.representations.idm.authorization.*
+import org.keycloak.representations.idm.authorization.Logic
+import org.keycloak.representations.idm.authorization.ResourceRepresentation
+import org.keycloak.representations.idm.authorization.ScopeRepresentation
+import org.keycloak.representations.idm.authorization.UmaPermissionRepresentation
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 

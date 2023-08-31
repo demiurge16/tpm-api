@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.logging
 
 import org.apache.logging.log4j.ThreadContext
-import java.util.UUID
+import java.util.*
 
 object LoggingContext {
     fun correlationId(): String = ThreadContext.get(ThreadContextKey.CORRELATION_ID.key)

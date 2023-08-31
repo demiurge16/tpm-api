@@ -3,8 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Tag as ThreadTag
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 
 object ThreadMapper {

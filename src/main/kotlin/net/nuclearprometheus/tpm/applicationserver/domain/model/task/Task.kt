@@ -5,9 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
-import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 

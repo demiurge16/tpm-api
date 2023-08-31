@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort
 fun <TEntity : Any> Query<TEntity>.toPageable(): Pageable =
     PageRequest.of(
         page ?: 0,
-        size ?: 10,
+        size ?: Int.MAX_VALUE,
         Sort.by(
             sort.map {
                 when (it.direction) {

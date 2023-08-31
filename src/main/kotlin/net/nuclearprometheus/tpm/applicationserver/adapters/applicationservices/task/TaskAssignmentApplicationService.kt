@@ -3,7 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskAssignmentMapper.toAssignee
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignmentRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor

@@ -8,3 +8,4 @@ fun ISO6393LanguageScope.toDomain() = when (this) {
     ISO6393LanguageScope.Macrolanguage -> LanguageScope.MACROLANGUAGE
     ISO6393LanguageScope.Special -> LanguageScope.SPECIAL
 }
+

@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.f
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.TagDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Tag
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class TagSpecificationBuilder : SpecificationBuilder<Tag, TagDatabaseModel>() {

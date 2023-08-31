@@ -4,8 +4,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.Role
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.Status
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.TeamMember as ProjectTeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.TeamMember as ProjectTeamMember
 
 object ProjectTeamMemberResponseMapper {
 

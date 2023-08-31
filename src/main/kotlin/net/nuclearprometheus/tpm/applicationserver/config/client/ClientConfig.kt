@@ -3,12 +3,12 @@ package net.nuclearprometheus.tpm.applicationserver.config.client
 import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
 import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CountryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientServiceImpl
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

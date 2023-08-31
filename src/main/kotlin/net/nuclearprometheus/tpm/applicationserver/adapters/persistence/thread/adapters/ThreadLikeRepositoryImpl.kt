@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadLikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ThreadLikeJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadLikeSpecificationBuilder

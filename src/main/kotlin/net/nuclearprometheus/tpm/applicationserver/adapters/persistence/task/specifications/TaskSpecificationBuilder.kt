@@ -8,7 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class TaskSpecificationBuilder : SpecificationBuilder<Task, TaskDatabaseModel>() {

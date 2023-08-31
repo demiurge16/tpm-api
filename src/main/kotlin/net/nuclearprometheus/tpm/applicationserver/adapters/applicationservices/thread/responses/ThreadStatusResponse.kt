@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses
 
-import java.util.UUID
+import java.util.*
 
 sealed class ThreadStatusResponse {
 

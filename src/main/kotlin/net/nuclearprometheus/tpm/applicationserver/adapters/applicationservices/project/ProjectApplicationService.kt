@@ -11,8 +11,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service

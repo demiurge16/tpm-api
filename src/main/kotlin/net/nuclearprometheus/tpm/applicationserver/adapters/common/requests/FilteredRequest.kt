@@ -1,11 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.common.requests
 
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.createSearch
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.nonFiltered
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.SortDirection
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 
 abstract class FilteredRequest<TEntity : Any>(
     val page: Int?,

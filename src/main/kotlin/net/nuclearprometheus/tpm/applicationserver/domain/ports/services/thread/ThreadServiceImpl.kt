@@ -6,7 +6,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadLikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository

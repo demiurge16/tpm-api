@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class ThreadStatusApplicationService(private val service: ThreadService) {

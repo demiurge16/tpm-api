@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.e
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLike
 import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class ThreadLikeSpecificationBuilder : SpecificationBuilder<ThreadLike, ThreadLikeDatabaseModel>() {

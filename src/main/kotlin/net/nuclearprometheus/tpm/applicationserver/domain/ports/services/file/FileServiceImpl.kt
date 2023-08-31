@@ -4,7 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotF
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.FileId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository

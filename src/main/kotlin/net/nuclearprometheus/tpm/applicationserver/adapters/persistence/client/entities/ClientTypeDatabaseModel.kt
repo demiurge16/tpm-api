@@ -1,10 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities
 
-import java.util.UUID
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.util.*
 
 @Entity(name = "ClientType")
 @Table(name = "client_type")

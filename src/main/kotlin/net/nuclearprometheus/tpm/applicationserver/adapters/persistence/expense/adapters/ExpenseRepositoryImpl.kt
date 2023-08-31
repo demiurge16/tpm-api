@@ -1,10 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.adapters.ClientRepositoryImpl.Mapping.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.entities.ExpenseDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.repositories.ExpenseJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications.ExpenseSpecificationBuilder
@@ -20,6 +18,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class ExpenseRepositoryImpl(
@@ -49,6 +48,18 @@ class ExpenseRepositoryImpl(
     override fun delete(id: ExpenseId) = jpaRepository.deleteById(id.value)
     override fun deleteAll(ids: List<ExpenseId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(currencyRepository, userRepository) }
+    override fun getAllByProjectIdAndQuery(projectId: ProjectId, query: Query<Expense>): Page<Expense> {
+        val specification = specificationBuilder.build(query)
+            .and { root, _, criteriaBuilder -> criteriaBuilder.equal(root.get<UUID>("projectId"), projectId.value) }
+        val page = jpaRepository.findAll(specification, query.toPageable())
+        return Page(
+            items = page.content.map { it.toDomain(currencyRepository, userRepository) },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
+    }
+
     override fun deleteAllByProjectId(projectId: ProjectId) = jpaRepository.deleteAllByProjectId(projectId.value)
 
     companion object Mappers {

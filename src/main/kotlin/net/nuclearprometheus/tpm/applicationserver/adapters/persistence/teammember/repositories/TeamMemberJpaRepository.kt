@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammem
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
-import java.util.UUID
+import java.util.*
 
 interface TeamMemberJpaRepository : JpaRepository<TeamMemberDatabaseModel, UUID>, JpaSpecificationExecutor<TeamMemberDatabaseModel> {
     fun findAllByProjectId(projectId: UUID): List<TeamMemberDatabaseModel>

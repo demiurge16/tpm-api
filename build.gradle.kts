@@ -31,16 +31,8 @@ val liquibaseVersion: String by extra {
     "4.20.0"
 }
 
-val kotlinCsvVersion: String by extra {
-    "1.8.0"
-}
-
 val springdocVersion: String by extra {
     "2.1.0"
-}
-
-val logstashLogbackEncoderVersion: String by extra {
-    "7.4"
 }
 
 val minioVersion: String by extra {
@@ -79,9 +71,9 @@ dependencies {
     implementation("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:$kotlinCsvVersion")
+    implementation("com.opencsv:opencsv:5.8")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion")
-    implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
     implementation("io.minio:minio:$minioVersion")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     runtimeOnly("org.postgresql:postgresql")

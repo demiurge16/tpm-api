@@ -4,10 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.Pro
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File

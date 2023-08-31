@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammemb
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberRoleDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemberDatabaseModel>() {

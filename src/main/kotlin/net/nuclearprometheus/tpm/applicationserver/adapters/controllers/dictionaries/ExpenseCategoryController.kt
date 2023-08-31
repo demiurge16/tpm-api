@@ -1,11 +1,21 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries
 
+import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.ExpenseCategoryApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ExpenseCategoryRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ExpenseCategoryResponse
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.core.io.InputStreamResource
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.io.OutputStreamWriter
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
+import java.time.LocalDate
 import java.util.*
+import kotlin.concurrent.thread
 
 @RestController
 @RequestMapping("/api/v1/expense-category")
@@ -18,6 +28,40 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
         info("GET /api/v1/expense-category")
 
         ResponseEntity.ok().body(service.getExpenseCategories(query))
+    }
+
+    @GetMapping("/export", produces = ["text/csv"])
+    fun export(query: ExpenseCategoryRequest.List) = with(logger) {
+        info("GET /api/v1/expense-category/export")
+
+        val expenseCategories = service.getExpenseCategories(query)
+
+        val output = PipedOutputStream()
+        val input = PipedInputStream(output)
+
+        thread {
+            val writer = OutputStreamWriter(output)
+            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseCategoryResponse.ExpenseCategory>(writer).build()
+            beanToCsv.write(expenseCategories.items)
+            writer.flush()
+            writer.close()
+            output.close()
+        }
+
+        val name = "expense-categories-${LocalDate.now()}.csv"
+        val resource = InputStreamResource(input)
+
+        ResponseEntity.ok()
+            .headers(
+                HttpHeaders().apply {
+                    add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$name")
+                    add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
+                    add(HttpHeaders.PRAGMA, "no-cache")
+                    add(HttpHeaders.EXPIRES, "0")
+                }
+            )
+            .contentType(MediaType.parseMediaType("text/csv"))
+            .body(resource)
     }
 
     @GetMapping("/{id}")

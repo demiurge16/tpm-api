@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 
 object ProjectMapper {
 
-    fun Project.toView() = ProjectResponse.View(
+    fun Project.toView() = ProjectResponse.Project(
         id = id.value,
         title = title,
         description = description,

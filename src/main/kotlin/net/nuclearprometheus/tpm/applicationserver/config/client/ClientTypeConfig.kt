@@ -6,7 +6,6 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeServiceImpl
-import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

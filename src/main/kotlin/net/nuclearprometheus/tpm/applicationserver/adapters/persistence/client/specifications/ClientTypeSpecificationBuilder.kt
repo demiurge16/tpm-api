@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.S
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class ClientTypeSpecificationBuilder : SpecificationBuilder<ClientType, ClientTypeDatabaseModel>() {

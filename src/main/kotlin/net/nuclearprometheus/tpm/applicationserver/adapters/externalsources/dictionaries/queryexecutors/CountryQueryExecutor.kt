@@ -2,7 +2,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.externalsources.dic
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.executors.*
-import net.nuclearprometheus.tpm.applicationserver.queries.executors.*
 import org.springframework.stereotype.Component
 
 @Component

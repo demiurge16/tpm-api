@@ -2,11 +2,12 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectTaskMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,9 +20,9 @@ class ProjectTaskApplicationService(
 
     private val logger = loggerFor(ProjectTaskApplicationService::class.java)
 
-    fun getTasksForProject(projectId: UUID) = with(logger) {
+    fun getTasksForProject(projectId: UUID, query: FilteredRequest<Task>) = with(logger) {
         info("getTasksForProject($projectId)")
-        singlePage(taskRepository.getAllByProjectId(ProjectId(projectId))).map { it.toView() }
+        taskRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery()).map { it.toView() }
     }
 
     fun createTask(projectId: UUID, request: ProjectTaskRequest.Create) = with(logger) {

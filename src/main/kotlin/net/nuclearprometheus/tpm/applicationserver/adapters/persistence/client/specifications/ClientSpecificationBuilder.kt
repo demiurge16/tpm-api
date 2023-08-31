@@ -1,10 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class ClientSpecificationBuilder : SpecificationBuilder<Client, ClientDatabaseModel>() {

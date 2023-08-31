@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.adapters.ExpenseRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ReplyJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplySpecificationBuilder
@@ -9,7 +8,9 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Reply
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.*
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyDislikeRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyLikeRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page

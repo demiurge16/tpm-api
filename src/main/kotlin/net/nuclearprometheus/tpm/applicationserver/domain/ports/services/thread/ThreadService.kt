@@ -1,10 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Tag
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 
 interface ThreadService {

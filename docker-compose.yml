@@ -125,10 +125,10 @@ services:
     volumes:
       - ./infrastructure/monitoring/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./infrastructure/monitoring/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
-    expose:
-      - "5000"
-      - "5044"
-      - "9600"
+    ports:
+      - "5000:5000"
+      - "5044:5044"
+      - "9600:9600"
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}

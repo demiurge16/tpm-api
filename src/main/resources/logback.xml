@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <configuration>
-<!--  <include resource="logback-${spring.profiles.active}.xml"/>-->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread]-[%X{correlationId}]-[%X{scopeId}] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
-  <root level="INFO">
-    <appender-ref ref="STDOUT" />
-  </root>
+  <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>localhost:5000</destination>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <arguments />
+        <callerData />
+        <contextName />
+        <loggerName />
+        <logLevel />
+        <logLevelValue />
+        <logstashMarkers />
+        <mdc />
+        <keyValuePairs />
+        <message />
+        <rawMessage />
+        <rootStackTraceElement />
+        <stackHash />
+        <stackTrace />
+        <tags />
+        <throwableClassName />
+        <throwableMessage />
+        <throwableRootCauseClassName />
+        <throwableRootCauseMessage />
+        <pattern>
+          <pattern>
+            {
+              "correlationId": "%X{correlationId}",
+              "scopeId": "%X{scopeId}",
+              "applicationLabel": "tpm-application-server"
+            }
+          </pattern>
+        </pattern>
+      </providers>
+    </encoder>
+  </appender>
+
+  <springProfile name="!qa">
+    <root level="INFO">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="LOGSTASH" />
+    </root>
+  </springProfile>
+
+  <springProfile name="qa">
+    <root level="INFO">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="LOGSTASH" />
+    </root>
+  </springProfile>
 </configuration>

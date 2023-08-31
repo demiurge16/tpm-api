@@ -1,6 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread
 
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.*
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislike
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislikeId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.BaseRepository
 

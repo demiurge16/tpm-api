@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.e
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Reply
 import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel>() {

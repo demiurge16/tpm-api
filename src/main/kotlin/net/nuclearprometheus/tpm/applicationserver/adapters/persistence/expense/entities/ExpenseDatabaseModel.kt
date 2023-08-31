@@ -2,7 +2,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense
 
 import jakarta.persistence.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.*

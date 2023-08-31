@@ -14,7 +14,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
-import org.springframework.data.annotation.CreatedBy
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 

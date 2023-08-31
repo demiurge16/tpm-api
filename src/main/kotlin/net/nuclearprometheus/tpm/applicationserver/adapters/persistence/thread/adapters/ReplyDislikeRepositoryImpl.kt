@@ -1,14 +1,12 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.adapters.ReplyLikeRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyDislikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ReplyDislikeJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyDislikeSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislikeId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyLike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository

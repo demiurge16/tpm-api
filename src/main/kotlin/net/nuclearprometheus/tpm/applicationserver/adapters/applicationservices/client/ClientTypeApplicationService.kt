@@ -2,7 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientTypeRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType

@@ -8,7 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabaseModel>() {

@@ -1,13 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Entity(name = "Thread")
 @Table(name = "thread")

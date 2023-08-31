@@ -10,7 +10,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.Us
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
-import java.lang.IllegalStateException
 import java.util.*
 
 @Service

@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class ExpenseSpecificationBuilder : SpecificationBuilder<Expense, ExpenseDatabaseModel>() {

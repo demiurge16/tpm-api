@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.ent
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>() {

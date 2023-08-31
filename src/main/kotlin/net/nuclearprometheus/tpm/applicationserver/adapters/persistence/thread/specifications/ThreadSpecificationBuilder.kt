@@ -1,13 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.TagDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
-import java.util.UUID
+import java.util.*
 
 @Component
 class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseModel>() {
