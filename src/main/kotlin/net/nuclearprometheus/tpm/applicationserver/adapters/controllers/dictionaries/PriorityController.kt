@@ -64,8 +64,8 @@ class PriorityController(private val service: PriorityApplicationService) {
             .body(resource)
     }
 
-    @GetMapping("/{id}")
-    fun get(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @GetMapping("/{priorityId}")
+    fun get(@PathVariable(name = "priorityId") id: UUID) = with(logger) {
         info("GET /api/v1/priority/$id")
 
         ResponseEntity.ok().body(service.getPriority(id))
@@ -78,22 +78,22 @@ class PriorityController(private val service: PriorityApplicationService) {
         ResponseEntity.ok().body(service.createPriority(request))
     }
 
-    @PutMapping("/{id}")
-    fun update(@PathVariable(name = "id") id: UUID, @RequestBody request: PriorityRequest.Update) = with(logger) {
+    @PutMapping("/{priorityId}")
+    fun update(@PathVariable(name = "priorityId") id: UUID, @RequestBody request: PriorityRequest.Update) = with(logger) {
         info("PUT /api/v1/priority/$id")
 
         ResponseEntity.ok().body(service.updatePriority(id, request))
     }
 
-    @PatchMapping("/{id}/activate")
-    fun activate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{priorityId}/activate")
+    fun activate(@PathVariable(name = "priorityId") id: UUID) = with(logger) {
         info("PATCH /api/v1/priority/$id/activate")
 
         ResponseEntity.ok().body(service.activatePriority(id))
     }
 
-    @PatchMapping("/{id}/deactivate")
-    fun deactivate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{priorityId}/deactivate")
+    fun deactivate(@PathVariable(name = "priorityId") id: UUID) = with(logger) {
         info("PATCH /api/v1/priority/$id/deactivate")
 
         ResponseEntity.ok().body(service.deactivatePriority(id))

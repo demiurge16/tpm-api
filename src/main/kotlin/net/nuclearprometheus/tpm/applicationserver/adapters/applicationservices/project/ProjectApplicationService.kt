@@ -60,7 +60,7 @@ class ProjectApplicationService(
             createdById = userContextProvider.getCurrentUser().id
         )
 
-        projectPermissionService.createProjectResource(project.id)
+        projectPermissionService.createProjectResources(project.id)
         projectPermissionService.addUserProjectPermission(userContextProvider.getCurrentUser().id, project.id)
 
         project.toView()

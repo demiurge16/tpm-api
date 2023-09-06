@@ -65,8 +65,8 @@ class AccuracyController(private val service: AccuracyApplicationService) {
             .body(resource)
     }
 
-    @GetMapping("/{id}")
-    fun get(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @GetMapping("/{accuracyId}")
+    fun get(@PathVariable(name = "accuracyId") id: UUID) = with(logger) {
         info("GET /api/v1/accuracy/$id")
 
         ResponseEntity.ok().body(service.getAccuracy(id))
@@ -79,22 +79,22 @@ class AccuracyController(private val service: AccuracyApplicationService) {
         ResponseEntity.ok().body(service.createAccuracy(request))
     }
 
-    @PutMapping("/{id}")
-    fun update(@PathVariable(name = "id") id: UUID, @RequestBody request: AccuracyRequest.Update) = with(logger) {
+    @PutMapping("/{accuracyId}")
+    fun update(@PathVariable(name = "accuracyId") id: UUID, @RequestBody request: AccuracyRequest.Update) = with(logger) {
         info("PUT /api/v1/accuracy/$id")
 
         ResponseEntity.ok().body(service.updateAccuracy(id, request))
     }
 
-    @PatchMapping("/{id}/activate")
-    fun activate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{accuracyId}/activate")
+    fun activate(@PathVariable(name = "accuracyId") id: UUID) = with(logger) {
         info("PATCH /api/v1/accuracy/$id/activate")
 
         ResponseEntity.ok().body(service.activateAccuracy(id))
     }
 
-    @PatchMapping("/{id}/deactivate")
-    fun deactivate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{accuracyId}/deactivate")
+    fun deactivate(@PathVariable(name = "accuracyId") id: UUID) = with(logger) {
         info("PATCH /api/v1/accuracy/$id/deactivate")
 
         ResponseEntity.ok().body(service.deactivateAccuracy(id))

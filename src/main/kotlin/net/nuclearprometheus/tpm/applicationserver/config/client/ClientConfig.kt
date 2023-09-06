@@ -44,7 +44,7 @@ class ClientConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/client/{id}"
+                path = "/api/v1/client/{clientId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -57,7 +57,7 @@ class ClientConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/client/{id}/*"
+                path = "/api/v1/client/{clientId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

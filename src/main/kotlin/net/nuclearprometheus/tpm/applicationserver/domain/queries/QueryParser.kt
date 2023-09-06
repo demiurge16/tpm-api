@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.OperationType
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operator
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
 
 /**
@@ -112,21 +112,21 @@ private fun <TEntity : Any> Token.toOperator(): Operation.Comparison<TEntity> {
     val value = tokens.getOrNull(2)
 
     return when (operator.toOperationType()) {
-        OperationType.EQUALS -> Operation.Equals(field, value!!.trimQuotes())
-        OperationType.CONTAINS -> Operation.Contains(field, value!!.trimQuotes())
-        OperationType.GREATER_THAN -> Operation.GreaterThan(field, value!!.trimQuotes())
-        OperationType.LESS_THAN -> Operation.LessThan(field, value!!.trimQuotes())
-        OperationType.GREATER_THAN_OR_EQUAL -> Operation.GreaterThanOrEqual(field, value!!.trimQuotes())
-        OperationType.LESS_THAN_OR_EQUAL -> Operation.LessThanOrEqual(field, value!!.trimQuotes())
-        OperationType.ANY -> Operation.AnyElement(field, value!!.toList())
-        OperationType.ALL -> Operation.AllElements(field, value!!.toList())
-        OperationType.NONE -> Operation.NoneElement(field, value!!.toList())
-        OperationType.IS_NULL -> Operation.IsNull(field)
-        OperationType.IS_EMPTY -> Operation.IsEmpty(field)
+        Operator.EQUALS -> Operation.Equals(field, value!!.trimQuotes())
+        Operator.CONTAINS -> Operation.Contains(field, value!!.trimQuotes())
+        Operator.GREATER_THAN -> Operation.GreaterThan(field, value!!.trimQuotes())
+        Operator.LESS_THAN -> Operation.LessThan(field, value!!.trimQuotes())
+        Operator.GREATER_THAN_OR_EQUAL -> Operation.GreaterThanOrEqual(field, value!!.trimQuotes())
+        Operator.LESS_THAN_OR_EQUAL -> Operation.LessThanOrEqual(field, value!!.trimQuotes())
+        Operator.ANY -> Operation.AnyElement(field, value!!.toList())
+        Operator.ALL -> Operation.AllElements(field, value!!.toList())
+        Operator.NONE -> Operation.NoneElement(field, value!!.toList())
+        Operator.IS_NULL -> Operation.IsNull(field)
+        Operator.IS_EMPTY -> Operation.IsEmpty(field)
     }
 }
 
-private fun String.toOperationType() = OperationType.values().find { it.symbol == this }
+private fun String.toOperationType() = Operator.values().find { it.symbol == this }
     ?: throw IllegalArgumentException("Unknown operation type: $this")
 
 private fun String.trimQuotes() = this.trim('"')

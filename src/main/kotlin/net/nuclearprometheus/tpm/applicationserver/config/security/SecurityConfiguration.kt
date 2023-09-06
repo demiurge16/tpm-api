@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.config.security
 
 import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnforcerFilter
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -49,7 +49,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}"
+                path = "/api/v1/thread/{threadId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -62,7 +62,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/like"
+                path = "/api/v1/thread/{threadId}/like"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -71,7 +71,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/unlike"
+                path = "/api/v1/thread/{threadId}/unlike"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -80,7 +80,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/dislike"
+                path = "/api/v1/thread/{threadId}/dislike"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -89,7 +89,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/undislike"
+                path = "/api/v1/thread/{threadId}/undislike"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -104,7 +104,7 @@ class ThreadConfig(
     fun threadReplyPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
         override val paths = mutableListOf(
             pathConfig {
-                path = "/api/v1/thread/{id}/reply"
+                path = "/api/v1/thread/{threadId}/reply"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -123,7 +123,7 @@ class ThreadConfig(
     fun threadStatusPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
         override val paths = mutableListOf(
             pathConfig {
-                path = "/api/v1/thread/{id}/activate"
+                path = "/api/v1/thread/{threadId}/activate"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -132,7 +132,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/freeze"
+                path = "/api/v1/thread/{threadId}/freeze"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -141,7 +141,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/close"
+                path = "/api/v1/thread/{threadId}/close"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -150,7 +150,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/archive"
+                path = "/api/v1/thread/{threadId}/archive"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -159,7 +159,7 @@ class ThreadConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/thread/{id}/delete"
+                path = "/api/v1/thread/{threadId}/delete"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

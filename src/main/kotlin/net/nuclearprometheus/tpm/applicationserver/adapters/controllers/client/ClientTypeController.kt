@@ -66,8 +66,8 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
             .body(resource)
     }
 
-    @GetMapping("/{id}")
-    fun getClientTypeById(@PathVariable(name = "id") id: UUID) =
+    @GetMapping("/{clientTypeId}")
+    fun getClientTypeById(@PathVariable(name = "clientTypeId") id: UUID) =
         with (logger) {
             info("GET /api/v1/client-type/$id")
 
@@ -82,24 +82,24 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
             ResponseEntity.ok().body(service.createClientType(request))
         }
 
-    @PutMapping("/{id}")
-    fun updateClientType(@PathVariable(name = "id") id: UUID, @RequestBody request: ClientTypeRequest.Update) =
+    @PutMapping("/{clientTypeId}")
+    fun updateClientType(@PathVariable(name = "clientTypeId") id: UUID, @RequestBody request: ClientTypeRequest.Update) =
         with(logger) {
             info("PUT /api/v1/client-type/$id")
 
             ResponseEntity.ok().body(service.updateClientType(id, request))
         }
 
-    @PatchMapping("/{id}/activate")
-    fun activate(@PathVariable(name = "id") id: UUID) =
+    @PatchMapping("/{clientTypeId}/activate")
+    fun activate(@PathVariable(name = "clientTypeId") id: UUID) =
         with(logger) {
             info("PATCH /api/v1/client-type/$id/activate")
 
             ResponseEntity.ok().body(service.activateClientType(id))
         }
 
-    @PatchMapping("/{id}/deactivate")
-    fun deactivate(@PathVariable(name = "id") id: UUID) =
+    @PatchMapping("/{clientTypeId}/deactivate")
+    fun deactivate(@PathVariable(name = "clientTypeId") id: UUID) =
         with(logger) {
             info("PATCH /api/v1/client-type/$id/deactivate")
 

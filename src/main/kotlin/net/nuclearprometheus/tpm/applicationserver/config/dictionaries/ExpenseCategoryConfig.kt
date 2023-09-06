@@ -36,7 +36,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 )
             },
             pathConfig {
-                path = "/api/v1/expense-category/{id}"
+                path = "/api/v1/expense-category/{expenseCategoryId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -49,7 +49,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 )
             },
             pathConfig {
-                path = "/api/v1/expense-category/{id}/*"
+                path = "/api/v1/expense-category/{expenseCategoryId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

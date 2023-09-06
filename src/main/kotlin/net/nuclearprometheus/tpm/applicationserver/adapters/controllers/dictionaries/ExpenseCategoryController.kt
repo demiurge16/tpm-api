@@ -64,8 +64,8 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
             .body(resource)
     }
 
-    @GetMapping("/{id}")
-    fun get(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @GetMapping("/{expenseCategoryId}")
+    fun get(@PathVariable(name = "expenseCategoryId") id: UUID) = with(logger) {
         info("GET /api/v1/expense-category/$id")
 
         ResponseEntity.ok().body(service.getExpenseCategory(id))
@@ -78,22 +78,22 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
         ResponseEntity.ok().body(service.createExpenseCategory(request))
     }
 
-    @PutMapping("/{id}")
-    fun update(@PathVariable(name = "id") id: UUID, @RequestBody request: ExpenseCategoryRequest.Update) = with(logger) {
+    @PutMapping("/{expenseCategoryId}")
+    fun update(@PathVariable(name = "expenseCategoryId") id: UUID, @RequestBody request: ExpenseCategoryRequest.Update) = with(logger) {
         info("PUT /api/v1/expense-category/$id")
 
         ResponseEntity.ok().body(service.updateExpenseCategory(id, request))
     }
 
-    @PatchMapping("/{id}/activate")
-    fun activate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{expenseCategoryId}/activate")
+    fun activate(@PathVariable(name = "expenseCategoryId") id: UUID) = with(logger) {
         info("PATCH /api/v1/expense-category/$id/activate")
 
         ResponseEntity.ok().body(service.activateExpenseCategory(id))
     }
 
-    @PatchMapping("/{id}/deactivate")
-    fun deactivate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{expenseCategoryId}/deactivate")
+    fun deactivate(@PathVariable(name = "expenseCategoryId") id: UUID) = with(logger) {
         info("PATCH /api/v1/expense-category/$id/deactivate")
 
         ResponseEntity.ok().body(service.deactivateExpenseCategory(id))

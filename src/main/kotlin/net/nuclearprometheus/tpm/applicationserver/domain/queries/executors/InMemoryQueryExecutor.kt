@@ -32,7 +32,7 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
     }
 
     private fun filterPredicate(search: Search<TEntity>): (TEntity) -> Boolean {
-        return { person: TEntity ->
+        return { entity: TEntity ->
             val stack = mutableListOf<Boolean>()
             if (search.operationStack.isEmpty()) {
                 stack.add(true)
@@ -42,17 +42,28 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
                 when (operation) {
                     is Operation.Comparison<*> -> {
                         val filter = (operation as Operation.Comparison<TEntity>).filter
-                        val (field, operation, value) = filter
+                        val (field, operator, value) = filter
                         val availablePredicates = queryFilters[field]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operation")
-                        val filterOperation = availablePredicates[operation.symbol]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operation")
+                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
+                        val filterOperation = availablePredicates[operator.symbol]
+                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
 
-                        stack.add(filterOperation(person, value))
+                        stack.add(filterOperation(entity, value))
                     }
-                    is Operation.And -> stack.add(stack.removeLast() && stack.removeLast())
-                    is Operation.Or -> stack.add(stack.removeLast() || stack.removeLast())
-                    is Operation.Not -> stack.add(!stack.removeLast())
+                    is Operation.And -> {
+                        val right = stack.removeLast()
+                        val left = stack.removeLast()
+                        stack.add(left && right)
+                    }
+                    is Operation.Or -> {
+                        val right = stack.removeLast()
+                        val left = stack.removeLast()
+                        stack.add(left || right)
+                    }
+                    is Operation.Not -> {
+                        val value = stack.removeLast()
+                        stack.add(!value)
+                    }
                 }
             }
 

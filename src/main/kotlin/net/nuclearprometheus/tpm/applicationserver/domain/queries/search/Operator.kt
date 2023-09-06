@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries.search
 
-enum class OperationType(val symbol: String) {
+enum class Operator(val symbol: String) {
     EQUALS("eq"),
     CONTAINS("contains"),
     GREATER_THAN("gt"),

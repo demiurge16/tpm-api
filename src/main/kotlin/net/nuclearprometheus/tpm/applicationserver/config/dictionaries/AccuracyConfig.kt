@@ -36,7 +36,7 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/accuracy/{id}"
+                path = "/api/v1/accuracy/{accuracyId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -49,7 +49,7 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/accuracy/{id}/*"
+                path = "/api/v1/accuracy/{accuracyId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

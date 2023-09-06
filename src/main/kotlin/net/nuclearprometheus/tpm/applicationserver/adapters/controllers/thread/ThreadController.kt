@@ -19,38 +19,38 @@ class ThreadController(private val service: ThreadApplicationService) {
         ResponseEntity.ok().body(service.getThreads(query))
     }
 
-    @GetMapping("/{id}")
-    fun getThread(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @GetMapping("/{threadId}")
+    fun getThread(@PathVariable(name = "threadId") id: UUID) = with(logger) {
         info("GET /api/v1/thread/$id")
         ResponseEntity.ok().body(service.getThread(id))
     }
 
-    @PutMapping("/{id}")
-    fun updateThread(@PathVariable(name = "id") id: UUID, @RequestBody request: ThreadRequest.Update) = with(logger) {
+    @PutMapping("/{threadId}")
+    fun updateThread(@PathVariable(name = "threadId") id: UUID, @RequestBody request: ThreadRequest.Update) = with(logger) {
         info("PUT /api/v1/thread/$id")
         ResponseEntity.ok().body(service.updateThread(id, request))
     }
 
-    @PatchMapping("/{id}/like")
-    fun like(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{threadId}/like")
+    fun like(@PathVariable(name = "threadId") id: UUID) = with(logger) {
         info("PATCH /api/v1/thread/$id/like")
         ResponseEntity.ok().body(service.addLike(id))
     }
 
-    @PatchMapping("/{id}/unlike")
-    fun unlike(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{threadId}/unlike")
+    fun unlike(@PathVariable(name = "threadId") id: UUID) = with(logger) {
         info("PATCH /api/v1/thread/$id/unlike")
         ResponseEntity.ok().body(service.removeLike(id))
     }
 
-    @PatchMapping("/{id}/dislike")
-    fun dislike(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{threadId}/dislike")
+    fun dislike(@PathVariable(name = "threadId") id: UUID) = with(logger) {
         info("PATCH /api/v1/thread/$id/dislike")
         ResponseEntity.ok().body(service.addDislike(id))
     }
 
-    @PatchMapping("/{id}/undislike")
-    fun undislike(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{threadId}/undislike")
+    fun undislike(@PathVariable(name = "threadId") id: UUID) = with(logger) {
         info("PATCH /api/v1/thread/$id/undislike")
         ResponseEntity.ok().body(service.removeDislike(id))
     }

@@ -32,7 +32,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/client-type/{id}"
+                path = "/api/v1/client-type/{clientTypeId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -45,7 +45,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/client-type/{id}/*"
+                path = "/api/v1/client-type/{clientTypeId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

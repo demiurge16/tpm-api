@@ -36,7 +36,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/industry/{id}"
+                path = "/api/v1/industry/{industryId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -49,7 +49,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/industry/{id}/*"
+                path = "/api/v1/industry/{industryId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

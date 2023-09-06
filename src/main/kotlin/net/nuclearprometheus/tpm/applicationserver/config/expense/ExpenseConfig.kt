@@ -50,7 +50,7 @@ class ExpenseConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/expense/{id}"
+                path = "/api/v1/expense/{expenseId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"

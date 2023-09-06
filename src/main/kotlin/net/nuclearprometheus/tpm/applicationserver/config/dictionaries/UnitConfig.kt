@@ -33,7 +33,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/unit/{id}"
+                path = "/api/v1/unit/{unitId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -46,7 +46,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/unit/{id}/*"
+                path = "/api/v1/unit/{unitId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

@@ -80,7 +80,11 @@ open class Person(
     val countries: List<String>,
     val favouriteNumbers: List<Int>,
     val mood: Mood = Mood.HAPPY
-)
+) {
+    override fun toString(): String {
+        return "Person(name='$name', middlename=$middlename, lastname='$lastname', age=$age, occupations=$occupations, countries=$countries, favouriteNumbers=$favouriteNumbers, mood=$mood)"
+    }
+}
 
 enum class Mood {
     HAPPY,

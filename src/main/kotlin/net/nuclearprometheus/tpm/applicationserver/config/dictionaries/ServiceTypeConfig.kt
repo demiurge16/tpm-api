@@ -36,7 +36,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 )
             },
             pathConfig {
-                path = "/api/v1/service-type/{id}"
+                path = "/api/v1/service-type/{serviceTypeId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -49,7 +49,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 )
             },
             pathConfig {
-                path = "/api/v1/service-type/{id}/*"
+                path = "/api/v1/service-type/{serviceTypeId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

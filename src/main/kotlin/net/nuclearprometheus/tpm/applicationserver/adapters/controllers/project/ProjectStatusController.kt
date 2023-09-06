@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/api/v1/project/{id}")
+@RequestMapping("/api/v1/project/{projectId}")
 class ProjectStatusController(
     private val service: ProjectStatusApplicationService
 ) {
@@ -18,84 +18,84 @@ class ProjectStatusController(
     private val logger = loggerFor(ProjectStatusController::class.java)
 
     @PatchMapping("/finish-draft")
-    fun finishDraft(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun finishDraft(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/finish-draft")
 
         ResponseEntity.ok().body(service.finishDraft(id))
     }
 
     @PatchMapping("/back-to-draft")
-    fun backToDraft(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun backToDraft(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/back-to-draft")
 
         ResponseEntity.ok().body(service.backToDraft(id))
     }
 
     @PatchMapping("/start-progress")
-    fun startProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun startProgress(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/start-progress")
 
         ResponseEntity.ok().body(service.startProgress(id))
     }
 
     @PatchMapping("/finish-progress")
-    fun finishProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun finishProgress(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/finish-progress")
 
         ResponseEntity.ok().body(service.finishProgress(id))
     }
 
     @PatchMapping("/back-to-progress")
-    fun backToProgress(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun backToProgress(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/back-to-progress")
 
         ResponseEntity.ok().body(service.backToProgress(id))
     }
 
     @PatchMapping("/deliver")
-    fun deliver(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun deliver(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/deliver")
 
         ResponseEntity.ok().body(service.deliver(id))
     }
 
     @PatchMapping("/invoice")
-    fun invoice(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun invoice(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/invoice")
 
         ResponseEntity.ok().body(service.invoice(id))
     }
 
     @PatchMapping("/pay")
-    fun pay(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun pay(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/pay")
 
         ResponseEntity.ok().body(service.pay(id))
     }
 
     @PatchMapping("/put-on-hold")
-    fun putOnHold(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun putOnHold(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/put-on-hold")
 
         ResponseEntity.ok().body(service.putOnHold(id))
     }
 
     @PatchMapping("/resume")
-    fun resume(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun resume(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/resume")
 
         ResponseEntity.ok().body(service.resume(id))
     }
 
     @PatchMapping("/cancel")
-    fun cancel(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun cancel(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/cancel")
 
         ResponseEntity.ok().body(service.cancel(id))
     }
 
     @PatchMapping("/reopen")
-    fun reopen(@PathVariable(name = "id") id: UUID) = with(logger) {
+    fun reopen(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/reopen")
 
         ResponseEntity.ok().body(service.reopen(id))

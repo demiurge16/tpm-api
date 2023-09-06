@@ -121,7 +121,7 @@ class QueryTest {
         """.trimIndent()
 
         val person = Person(
-            name = "tom",
+            name = "adam",
             lastname = "smith",
             age = 20,
             occupations = listOf("programmer", "developer"),

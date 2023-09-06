@@ -133,7 +133,7 @@ fun <TEntity : Any, TValue : Any> any(valueGetter: ValueGetter<TEntity, TValue?>
                 else -> value == valueGetter(entity)
             }
             is Collection<*> -> when (value) {
-                is Collection<*> -> value.any { it in (valueGetter(entity) as Collection<*>) }
+                is Collection<*> -> value.any { it in fieldValue.map { it.toString() } }
                 else -> value in (valueGetter(entity) as Collection<*>)
             }
             else -> throw IllegalArgumentException("Type ${fieldValue?.let { it::class }} is not supported")

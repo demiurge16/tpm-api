@@ -36,7 +36,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/priority/{id}"
+                path = "/api/v1/priority/{priorityId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -49,7 +49,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 )
             },
             pathConfig {
-                path = "/api/v1/priority/{id}/*"
+                path = "/api/v1/priority/{priorityId}/*"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"

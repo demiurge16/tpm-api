@@ -63,8 +63,8 @@ class UnitController(private val service: UnitApplicationService) {
             .body(resource)
     }
 
-    @GetMapping("/{id}")
-    fun get(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @GetMapping("/{unitId}")
+    fun get(@PathVariable(name = "unitId") id: UUID) = with(logger) {
         info("GET /api/v1/unit/$id")
         ResponseEntity.ok().body(service.getUnit(id))
     }
@@ -75,20 +75,20 @@ class UnitController(private val service: UnitApplicationService) {
         ResponseEntity.ok().body(service.createUnit(request))
     }
 
-    @PutMapping("/{id}")
-    fun update(@PathVariable(name = "id") id: UUID, @RequestBody request: UnitRequest.Update) = with(logger) {
+    @PutMapping("/{unitId}")
+    fun update(@PathVariable(name = "unitId") id: UUID, @RequestBody request: UnitRequest.Update) = with(logger) {
         info("PUT /api/v1/unit/$id")
         ResponseEntity.ok().body(service.updateUnit(id, request))
     }
 
-    @PatchMapping("/{id}/activate")
-    fun activate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{unitId}/activate")
+    fun activate(@PathVariable(name = "unitId") id: UUID) = with(logger) {
         info("PATCH /api/v1/unit/$id/activate")
         ResponseEntity.ok().body(service.activateUnit(id))
     }
 
-    @PatchMapping("/{id}/deactivate")
-    fun deactivate(@PathVariable(name = "id") id: UUID) = with(logger) {
+    @PatchMapping("/{unitId}/deactivate")
+    fun deactivate(@PathVariable(name = "unitId") id: UUID) = with(logger) {
         info("PATCH /api/v1/unit/$id/deactivate")
         ResponseEntity.ok().body(service.deactivateUnit(id))
     }

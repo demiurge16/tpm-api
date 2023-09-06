@@ -8,6 +8,7 @@ sealed class UserResponse {
         val firstName: String,
         val lastName: String,
         val username: String,
-        val email: String
+        val email: String,
+        val roles: List<Role>
     ) : UserResponse()
 }

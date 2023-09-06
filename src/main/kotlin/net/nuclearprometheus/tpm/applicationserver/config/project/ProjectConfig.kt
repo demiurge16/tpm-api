@@ -10,6 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -56,7 +57,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}"
+                path = "/api/v1/project/{projectId}"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
@@ -69,7 +70,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/move-start"
+                path = "/api/v1/project/{projectId}/move-start"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -78,7 +79,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/move-deadline"
+                path = "/api/v1/project/{projectId}/move-deadline"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -155,7 +156,7 @@ class ProjectConfig(
     fun projectStatusPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
         override val paths = mutableListOf(
             pathConfig {
-                path = "/api/v1/project/{id}/finish-draft"
+                path = "/api/v1/project/{projectId}/finish-draft"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -164,7 +165,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/back-to-draft"
+                path = "/api/v1/project/{projectId}/back-to-draft"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -173,7 +174,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/start-progress"
+                path = "/api/v1/project/{projectId}/start-progress"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -182,7 +183,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/finish-progress"
+                path = "/api/v1/project/{projectId}/finish-progress"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -191,7 +192,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/back-to-progress"
+                path = "/api/v1/project/{projectId}/back-to-progress"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -200,7 +201,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/deliver"
+                path = "/api/v1/project/{projectId}/deliver"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -209,7 +210,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/invoice"
+                path = "/api/v1/project/{projectId}/invoice"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -218,7 +219,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/pay"
+                path = "/api/v1/project/{projectId}/pay"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -227,7 +228,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/put-on-hold"
+                path = "/api/v1/project/{projectId}/put-on-hold"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -236,7 +237,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/resume"
+                path = "/api/v1/project/{projectId}/resume"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -245,7 +246,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/cancel"
+                path = "/api/v1/project/{projectId}/cancel"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -254,7 +255,7 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{id}/reopen"
+                path = "/api/v1/project/{projectId}/reopen"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
@@ -278,6 +279,7 @@ class ProjectConfig(
                     methodConfig {
                         method = "POST"
                         scopes = mutableListOf("tpm-backend:task:write")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             }
