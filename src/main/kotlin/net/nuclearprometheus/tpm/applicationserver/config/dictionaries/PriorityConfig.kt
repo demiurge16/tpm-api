@@ -27,11 +27,11 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:priority:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:priority:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:create")
                     }
                 )
             },
@@ -40,7 +40,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:priority:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:export")
                     }
                 )
             },
@@ -49,11 +49,11 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:priority:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:priority:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:update")
                     }
                 )
             },
@@ -62,7 +62,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:priority:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:priority:update")
                     }
                 )
             }

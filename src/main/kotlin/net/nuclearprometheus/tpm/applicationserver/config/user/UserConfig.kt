@@ -78,7 +78,7 @@ class UserConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:user:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:user:query")
                     }
                 )
             },
@@ -87,7 +87,7 @@ class UserConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:user:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:user:export")
                     }
                 )
             },
@@ -96,7 +96,7 @@ class UserConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:user:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:user:read")
                     }
                 )
             },
@@ -105,7 +105,7 @@ class UserConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:user:self")
+                        scopes = mutableListOf("urn:tpm-backend:resource:user:self")
                     }
                 )
             }

@@ -27,11 +27,11 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:service-type:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:service-type:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:create")
                     }
                 )
             },
@@ -40,7 +40,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:service-type:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:export")
                     }
                 )
             },
@@ -49,11 +49,11 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:service-type:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:service-type:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:update")
                     }
                 )
             },
@@ -62,7 +62,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:service-type:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:service-type:update")
                     }
                 )
             }

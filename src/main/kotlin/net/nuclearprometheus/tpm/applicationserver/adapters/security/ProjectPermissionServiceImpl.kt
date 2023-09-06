@@ -58,12 +58,12 @@ class ProjectPermissionServiceImpl(
         }
     }
 
-    private fun projectResourceId(projectId: ProjectId) = "tpm-backend:project:${projectId.value}"
+    private fun projectResourceId(projectId: ProjectId) = "urn:tpm-backend:resource:project:${projectId.value}"
 
     private fun projectResource(projectId: ProjectId): ResourceRepresentation {
         return ResourceRepresentation().apply {
             name = projectResourceId(projectId)
-            type = "tpm-backend:project"
+            type = "urn:tpm-backend:resource:project"
             displayName = "Manage project ${projectId.value}"
             ownerManagedAccess = true
             uris = setOf(
@@ -88,19 +88,19 @@ class ProjectPermissionServiceImpl(
                 "/api/v1/project/${projectId.value}/team-member/{teamMemberId}",
             )
             scopes = setOf(
-                scope("tpm-backend:project:read"),
-                scope("tpm-backend:project:write"),
-                scope("tpm-backend:project:manage")
+                scope("urn:tpm-backend:resource:project:read"),
+                scope("urn:tpm-backend:resource:project:write"),
+                scope("urn:tpm-backend:resource:project:manage")
             )
         }
     }
 
-    private fun projectExpensesResourceId(projectId: ProjectId) = "tpm-backend:project:${projectId.value}:expense"
+    private fun projectExpensesResourceId(projectId: ProjectId) = "urn:tpm-backend:resource:project:${projectId.value}:expense"
 
     private fun projectExpensesResource(projectId: ProjectId): ResourceRepresentation {
         return ResourceRepresentation().apply {
             name = projectExpensesResourceId(projectId)
-            type = "tpm-backend:project:expense"
+            type = "urn:tpm-backend:resource:project:expense"
             displayName = "Manage project ${projectId.value} expenses"
             ownerManagedAccess = true
             uris = setOf(
@@ -108,19 +108,19 @@ class ProjectPermissionServiceImpl(
                 "/api/v1/project/${projectId.value}/expense/export"
             )
             scopes = setOf(
-                scope("tpm-backend:expense:read"),
-                scope("tpm-backend:expense:write"),
-                scope("tpm-backend:expense:manage")
+                scope("urn:tpm-backend:resource:expense:read"),
+                scope("urn:tpm-backend:resource:expense:write"),
+                scope("urn:tpm-backend:resource:expense:manage")
             )
         }
     }
 
-    private fun projectFilesResourceId(projectId: ProjectId) = "tpm-backend:project:${projectId.value}:file"
+    private fun projectFilesResourceId(projectId: ProjectId) = "urn:tpm-backend:resource:project:${projectId.value}:file"
 
     private fun projectFilesResource(projectId: ProjectId): ResourceRepresentation {
         return ResourceRepresentation().apply {
             name = projectFilesResourceId(projectId)
-            type = "tpm-backend:project:file"
+            type = "urn:tpm-backend:resource:project:file"
             displayName = "Manage project ${projectId.value} files"
             ownerManagedAccess = true
             uris = setOf(
@@ -128,19 +128,19 @@ class ProjectPermissionServiceImpl(
                 "/api/v1/project/${projectId.value}/file/export"
             )
             scopes = setOf(
-                scope("tpm-backend:file:read"),
-                scope("tpm-backend:file:write"),
-                scope("tpm-backend:file:manage")
+                scope("urn:tpm-backend:resource:file:read"),
+                scope("urn:tpm-backend:resource:file:write"),
+                scope("urn:tpm-backend:resource:file:manage")
             )
         }
     }
 
-    private fun projectTasksResourceId(projectId: ProjectId) = "tpm-backend:project:${projectId.value}:task"
+    private fun projectTasksResourceId(projectId: ProjectId) = "urn:tpm-backend:resource:project:${projectId.value}:task"
 
     private fun projectTasksResource(projectId: ProjectId): ResourceRepresentation {
         return ResourceRepresentation().apply {
             name = projectTasksResourceId(projectId)
-            type = "tpm-backend:project:task"
+            type = "urn:tpm-backend:resource:project:task"
             displayName = "Manage project ${projectId.value} tasks"
             ownerManagedAccess = true
             uris = setOf(
@@ -148,28 +148,28 @@ class ProjectPermissionServiceImpl(
                 "/api/v1/project/${projectId.value}/task/export"
             )
             scopes = setOf(
-                scope("tpm-backend:task:read"),
-                scope("tpm-backend:task:write"),
-                scope("tpm-backend:task:manage")
+                scope("urn:tpm-backend:resource:task:read"),
+                scope("urn:tpm-backend:resource:task:write"),
+                scope("urn:tpm-backend:resource:task:manage")
             )
         }
     }
 
-    private fun projectThreadsResourceId(projectId: ProjectId) = "tpm-backend:project:${projectId.value}:thread"
+    private fun projectThreadsResourceId(projectId: ProjectId) = "urn:tpm-backend:resource:project:${projectId.value}:thread"
 
     private fun projectThreadsResource(projectId: ProjectId): ResourceRepresentation {
         return ResourceRepresentation().apply {
             name = projectThreadsResourceId(projectId)
-            type = "tpm-backend:project:thread"
+            type = "urn:tpm-backend:resource:project:thread"
             displayName = "Manage project ${projectId.value} threads"
             ownerManagedAccess = true
             uris = setOf(
                 "/api/v1/project/${projectId.value}/thread"
             )
             scopes = setOf(
-                scope("tpm-backend:thread:read"),
-                scope("tpm-backend:thread:write"),
-                scope("tpm-backend:thread:manage")
+                scope("urn:tpm-backend:resource:thread:read"),
+                scope("urn:tpm-backend:resource:thread:write"),
+                scope("urn:tpm-backend:resource:thread:manage")
             )
         }
     }
@@ -184,10 +184,10 @@ class ProjectPermissionServiceImpl(
         try {
             val resourceId = keycloakAuthzClient.protection()
                 .resource()
-                .findByName("tpm-backend:project:${projectId.value}")
+                .findByName("urn:tpm-backend:resource:project:${projectId.value}")
                 .id
 
-            val permissionName = "tpm-backend:project:${projectId.value}:user:${userId.value}:permission:read"
+            val permissionName = "urn:tpm-backend:resource:project:${projectId.value}:user:${userId.value}:permission:read"
             keycloakAuthzClient.protection()
                 .policy(resourceId)
                 .create(
@@ -198,8 +198,8 @@ class ProjectPermissionServiceImpl(
                         resources = setOf(resourceId)
                         users = setOf(userId.toString())
                         scopes = setOf(
-                            "tpm-backend:project:read",
-                            "tpm-backend:project:write",
+                            "urn:tpm-backend:resource:project:read",
+                            "urn:tpm-backend:resource:project:write",
                         )
                     }
                 )
@@ -219,10 +219,10 @@ class ProjectPermissionServiceImpl(
         try {
             val resourceId = keycloakAuthzClient.protection()
                 .resource()
-                .findByName("tpm-backend:project:${projectId.value}")
+                .findByName("urn:tpm-backend:resource:project:${projectId.value}")
                 .id
 
-            val policyName = "tpm-backend:project:${projectId.value}:user:${userId.value}:read"
+            val policyName = "urn:tpm-backend:resource:project:${projectId.value}:user:${userId.value}:read"
             keycloakAuthzClient.protection()
                 .policy(resourceId)
                 .find(policyName, null, null, null)
@@ -233,7 +233,7 @@ class ProjectPermissionServiceImpl(
                         .delete(it.id)
                 }
 
-            val permissionName = "tpm-backend:project:${projectId.value}:user:${userId.value}:permission:read"
+            val permissionName = "urn:tpm-backend:resource:project:${projectId.value}:user:${userId.value}:permission:read"
             keycloakAuthzClient.protection()
                 .policy(resourceId)
                 .find(permissionName, null, null, null)

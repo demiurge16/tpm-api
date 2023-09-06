@@ -23,11 +23,11 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client-type:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:client-type:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:create")
                     }
                 )
             },
@@ -36,7 +36,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client-type:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:export")
                     }
                 )
             },
@@ -45,11 +45,11 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client-type:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:client-type:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:update")
                     }
                 )
             },
@@ -58,7 +58,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:client-type:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client-type:update")
                     }
                 )
             }

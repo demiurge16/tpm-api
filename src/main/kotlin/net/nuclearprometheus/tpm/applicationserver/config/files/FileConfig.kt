@@ -38,7 +38,7 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:file:query")
                     }
                 )
             },
@@ -47,7 +47,7 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:file:export")
                     }
                 )
             },
@@ -56,11 +56,11 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:file:read")
                     },
                     methodConfig {
                         method = "DELETE"
-                        scopes = mutableListOf("tpm-backend:file:delete")
+                        scopes = mutableListOf("urn:tpm-backend:resource:file:delete")
                     }
                 )
             },
@@ -69,7 +69,7 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:download")
+                        scopes = mutableListOf("urn:tpm-backend:resource:file:download")
                     }
                 )
             }

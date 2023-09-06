@@ -45,7 +45,7 @@ class ExpenseConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense:query")
                     }
                 )
             },
@@ -54,7 +54,7 @@ class ExpenseConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense:export")
                     }
                 )
             },
@@ -63,11 +63,11 @@ class ExpenseConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense:read")
                     },
                     methodConfig {
                         method = "DELETE"
-                        scopes = mutableListOf("tpm-backend:expense:delete")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense:delete")
                     }
                 )
             }

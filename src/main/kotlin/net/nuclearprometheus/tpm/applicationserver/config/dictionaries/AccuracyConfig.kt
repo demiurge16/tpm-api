@@ -27,11 +27,11 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:accuracy:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:accuracy:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:create")
                     }
                 )
             },
@@ -40,7 +40,7 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:accuracy:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:export")
                     }
                 )
             },
@@ -49,11 +49,11 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:accuracy:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:accuracy:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:update")
                     }
                 )
             },
@@ -62,7 +62,7 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:accuracy:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:accuracy:update")
                     }
                 )
             }

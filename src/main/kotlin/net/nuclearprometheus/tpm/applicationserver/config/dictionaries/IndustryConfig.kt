@@ -27,11 +27,11 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:industry:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:industry:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:create")
                     }
                 )
             },
@@ -40,7 +40,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:industry:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:export")
                     }
                 )
             },
@@ -49,11 +49,11 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:industry:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:industry:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:update")
                     }
                 )
             },
@@ -62,7 +62,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:industry:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:industry:update")
                     }
                 )
             }

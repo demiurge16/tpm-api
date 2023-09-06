@@ -35,11 +35,11 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:client:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:create")
                     }
                 )
             },
@@ -48,7 +48,7 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:export")
                     }
                 )
             },
@@ -57,11 +57,11 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:client:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:update")
                     }
                 )
             },
@@ -70,7 +70,7 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:client:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:update")
                     }
                 )
             }

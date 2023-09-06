@@ -18,7 +18,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:query")
                     }
                 )
             },
@@ -27,7 +27,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:export")
                     }
                 )
             },
@@ -36,7 +36,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:query")
                     }
                 )
             },
@@ -45,7 +45,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:read")
                     }
                 )
             },
@@ -54,7 +54,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read", "tpm-backend:language:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:read", "urn:tpm-backend:resource:language:query")
                         scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
@@ -64,7 +64,7 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read", "tpm-backend:language:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:language:read", "urn:tpm-backend:resource:language:query")
                         scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )

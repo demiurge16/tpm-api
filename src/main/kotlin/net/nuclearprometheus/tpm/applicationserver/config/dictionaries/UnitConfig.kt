@@ -24,11 +24,11 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:unit:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:unit:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:create")
                     }
                 )
             },
@@ -37,7 +37,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:unit:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:export")
                     }
                 )
             },
@@ -46,11 +46,11 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:unit:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:unit:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:update")
                     }
                 )
             },
@@ -59,7 +59,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:unit:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:unit:update")
                     }
                 )
             }

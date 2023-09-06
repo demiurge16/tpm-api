@@ -41,11 +41,11 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:reply:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:reply:write")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:write")
                     }
                 )
             },
@@ -54,7 +54,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:interact")
                     }
                 )
             },
@@ -63,7 +63,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:interact")
                     }
                 )
             },
@@ -72,7 +72,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:interact")
                     }
                 )
             },
@@ -81,7 +81,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:interact")
                     }
                 )
             },
@@ -90,7 +90,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "DELETE"
-                        scopes = mutableListOf("tpm-backend:reply:delete")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:delete")
                     }
                 )
             }

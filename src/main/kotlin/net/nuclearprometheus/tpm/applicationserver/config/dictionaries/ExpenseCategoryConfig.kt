@@ -27,11 +27,11 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense-category:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:expense-category:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:create")
                     }
                 )
             },
@@ -40,7 +40,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense-category:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:export")
                     }
                 )
             },
@@ -49,11 +49,11 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense-category:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:expense-category:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:update")
                     }
                 )
             },
@@ -62,7 +62,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:expense-category:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:expense-category:update")
                     }
                 )
             },

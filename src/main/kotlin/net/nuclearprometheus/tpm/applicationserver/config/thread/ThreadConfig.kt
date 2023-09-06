@@ -44,7 +44,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:thread:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:query")
                     }
                 )
             },
@@ -53,11 +53,11 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:thread:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:thread:update")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:update")
                     }
                 )
             },
@@ -66,7 +66,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:interact")
                     }
                 )
             },
@@ -75,7 +75,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:interact")
                     }
                 )
             },
@@ -84,7 +84,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:interact")
                     }
                 )
             },
@@ -93,7 +93,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:interact")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:interact")
                     }
                 )
             }
@@ -108,11 +108,11 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:reply:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:reply:create")
+                        scopes = mutableListOf("urn:tpm-backend:resource:reply:create")
                     }
                 )
             }
@@ -127,7 +127,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:manage")
                     }
                 )
             },
@@ -136,7 +136,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:manage")
                     }
                 )
             },
@@ -145,7 +145,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:manage")
                     }
                 )
             },
@@ -154,7 +154,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:manage")
                     }
                 )
             },
@@ -163,7 +163,7 @@ class ThreadConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:thread:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:thread:manage")
                     }
                 )
             }

@@ -17,7 +17,7 @@ class CurrencyConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:currency:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:currency:query")
                     }
                 )
             },
@@ -26,7 +26,7 @@ class CurrencyConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:currency:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:currency:export")
                     }
                 )
             },
@@ -35,7 +35,7 @@ class CurrencyConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:currency:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:currency:read")
                     }
                 )
             },
@@ -44,7 +44,7 @@ class CurrencyConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:currency:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:currency:read")
                     }
                 )
             }

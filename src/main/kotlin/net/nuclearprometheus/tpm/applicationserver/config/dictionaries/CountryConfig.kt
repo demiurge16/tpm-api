@@ -17,7 +17,7 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:country:query")
                     }
                 )
             },
@@ -26,7 +26,7 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:export")
+                        scopes = mutableListOf("urn:tpm-backend:resource:country:export")
                     }
                 )
             },
@@ -35,7 +35,7 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:country:read")
                     }
                 )
             },
@@ -44,7 +44,7 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:country:query")
                     }
                 )
             }

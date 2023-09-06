@@ -125,10 +125,66 @@
         "policyEnforcementMode": "ENFORCING",
         "resources": [
           {
+            "name": "urn:tpm-backend:resource:file",
+            "type": "urn:tpm-backend:resource-type:file",
+            "ownerManagedAccess": false,
+            "displayName": "Files",
+            "uris": [
+              "/api/v1/file/*",
+              "/api/v1/file"
+            ],
+            "scopes": [
+              {
+                "name": "urn:tpm-backend:resource:file:download"
+              },
+              {
+                "name": "urn:tpm-backend:resource:file:read"
+              },
+              {
+                "name": "urn:tpm-backend:resource:file:delete"
+              },
+              {
+                "name": "urn:tpm-backend:resource:file:export"
+              },
+              {
+                "name": "urn:tpm-backend:resource:file:create"
+              },
+              {
+                "name": "urn:tpm-backend:resource:file:query"
+              }
+            ]
+          },
+          {
+            "name": "urn:tpm-backend:resource:expense",
+            "type": "urn:tpm-backend:resource-type:expense",
+            "ownerManagedAccess": false,
+            "displayName": "Expenses",
+            "uris": [
+              "/api/v1/expense/*",
+              "/api/v1/expense"
+            ],
+            "scopes": [
+              {
+                "name": "urn:tpm-backend:resource:expense:read"
+              },
+              {
+                "name": "urn:tpm-backend:resource:expense:delete"
+              },
+              {
+                "name": "urn:tpm-backend:resource:expense:create"
+              },
+              {
+                "name": "urn:tpm-backend:resource:expense:query"
+              },
+              {
+                "name": "urn:tpm-backend:resource:expense:export"
+              }
+            ]
+          },
+          {
             "name": "urn:tpm-backend:resource:accuracy",
             "type": "urn:tpm-backend:resource-type:accuracy",
             "ownerManagedAccess": false,
-            "displayName": "Accuracies",
             "uris": [
               "/api/v1/accuracy",
               "/api/v1/accuracy/*"
@@ -165,10 +221,10 @@
                 "name": "urn:tpm-backend:resource:client-type:query"
               },
               {
-                "name": "urn:tpm-backend:resource:client-type:read"
+                "name": "urn:tpm-backend:resource:client-type:update"
               },
               {
-                "name": "urn:tpm-backend:resource:client-type:update"
+                "name": "urn:tpm-backend:resource:client-type:read"
               },
               {
                 "name": "urn:tpm-backend:resource:client-type:export"
@@ -267,61 +323,10 @@
                 "name": "urn:tpm-backend:resource:expense-category:export"
               },
               {
-                "name": "urn:tpm-backend:resource:expense-category:create"
-              },
-              {
                 "name": "urn:tpm-backend:resource:expense-category:update"
-              }
-            ]
-          },
-          {
-            "name": "urn:tpm-backend:resource:expense",
-            "type": "urn:tpm-backend:resource-type:expense",
-            "ownerManagedAccess": false,
-            "displayName": "Expenses",
-            "uris": [
-              "/api/v1/expense/*",
-              "/api/v1/expense"
-            ],
-            "scopes": [
-              {
-                "name": "urn:tpm-backend:resource:expense:read"
               },
               {
-                "name": "urn:tpm-backend:resource:expense:delete"
-              },
-              {
-                "name": "urn:tpm-backend:resource:expense:query"
-              },
-              {
-                "name": "urn:tpm-backend:resource:expense:export"
-              }
-            ]
-          },
-          {
-            "name": "urn:tpm-backend:resource:file",
-            "type": "urn:tpm-backend:resource-type:file",
-            "ownerManagedAccess": false,
-            "displayName": "Files",
-            "uris": [
-              "/api/v1/file/*",
-              "/api/v1/file"
-            ],
-            "scopes": [
-              {
-                "name": "urn:tpm-backend:resource:file:download"
-              },
-              {
-                "name": "urn:tpm-backend:resource:file:read"
-              },
-              {
-                "name": "urn:tpm-backend:resource:file:delete"
-              },
-              {
-                "name": "urn:tpm-backend:resource:file:export"
-              },
-              {
-                "name": "urn:tpm-backend:resource:file:query"
+                "name": "urn:tpm-backend:resource:expense-category:create"
               }
             ]
           },
@@ -349,27 +354,6 @@
               },
               {
                 "name": "urn:tpm-backend:resource:industry:query"
-              }
-            ]
-          },
-          {
-            "name": "urn:tpm-backend:resource:language",
-            "type": "urn:tpm-backend:resource-type:language",
-            "ownerManagedAccess": false,
-            "displayName": "Languages",
-            "uris": [
-              "/api/v1/language",
-              "/api/v1/langauge/*"
-            ],
-            "scopes": [
-              {
-                "name": "urn:tpm-backend:resource:language:read"
-              },
-              {
-                "name": "urn:tpm-backend:resource:language:export"
-              },
-              {
-                "name": "urn:tpm-backend:resource:language:query"
               }
             ]
           },
@@ -447,10 +431,16 @@
                 "name": "urn:tpm-backend:resource:reply:interact"
               },
               {
+                "name": "urn:tpm-backend:resource:reply:create"
+              },
+              {
                 "name": "urn:tpm-backend:resource:reply:update"
               },
               {
                 "name": "urn:tpm-backend:resource:reply:read"
+              },
+              {
+                "name": "urn:tpm-backend:resource:reply:query"
               }
             ]
           },
@@ -492,10 +482,10 @@
             ],
             "scopes": [
               {
-                "name": "urn:tpm-backend:resource:task:read"
+                "name": "urn:tpm-backend:resource:task:update"
               },
               {
-                "name": "urn:tpm-backend:resource:task:update"
+                "name": "urn:tpm-backend:resource:task:read"
               },
               {
                 "name": "urn:tpm-backend:resource:task:export"
@@ -531,10 +521,10 @@
                 "name": "urn:tpm-backend:resource:thread:read"
               },
               {
-                "name": "urn:tpm-backend:resource:thread:update"
+                "name": "urn:tpm-backend:resource:thread:create"
               },
               {
-                "name": "urn:tpm-backend:resource:thread:create"
+                "name": "urn:tpm-backend:resource:thread:update"
               }
             ]
           },
@@ -582,18 +572,66 @@
                 "name": "urn:tpm-backend:resource:user:query"
               },
               {
-                "name": "urn:tpm-backend:resource:user:export"
+                "name": "urn:tpm-backend:resource:user:self"
               },
               {
-                "name": "urn:tpm-backend:resource:user:self"
+                "name": "urn:tpm-backend:resource:user:export"
               }
             ]
+          },
+          {
+            "name": "urn:tpm-backend:resource:language",
+            "type": "urn:tpm-backend:resource-type:language",
+            "ownerManagedAccess": false,
+            "displayName": "Languages",
+            "uris": [
+              "/api/v1/language",
+              "/api/v1/language/*"
+            ],
+            "scopes": [
+              {
+                "name": "urn:tpm-backend:resource:language:read"
+              },
+              {
+                "name": "urn:tpm-backend:resource:language:export"
+              },
+              {
+                "name": "urn:tpm-backend:resource:language:query"
+              }
+            ],
+            "icon_uri": ""
           }
         ],
         "policies": [
           {
+            "name": "urn:tpm-backend:policy:anyone",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"editor\",\"required\":false},{\"id\":\"subject-matter-expert\",\"required\":false},{\"id\":\"project-manager\",\"required\":false},{\"id\":\"publisher\",\"required\":false},{\"id\":\"user\",\"required\":false},{\"id\":\"observer\",\"required\":false},{\"id\":\"proofreader\",\"required\":false},{\"id\":\"translator\",\"required\":false},{\"id\":\"admin\",\"required\":false}]"
+            }
+          },
+          {
+            "name": "urn:tpm-backend:policy:any-user-with-project-role",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"subject-matter-expert\",\"required\":false},{\"id\":\"swagger-ui\",\"required\":false},{\"id\":\"project-manager\",\"required\":false},{\"id\":\"publisher\",\"required\":false},{\"id\":\"translator\",\"required\":false},{\"id\":\"admin\",\"required\":false},{\"id\":\"editor\",\"required\":false},{\"id\":\"proofreader\",\"required\":false},{\"id\":\"observer\",\"required\":false}]"
+            }
+          },
+          {
+            "name": "urn:tpm-backend:policy:any-project-management-role",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"project-manager\",\"required\":false},{\"id\":\"admin\",\"required\":false},{\"id\":\"observer\",\"required\":false}]"
+            }
+          },
+          {
             "name": "urn:tpm-backend:policy:any-admin",
-            "description": "Any user with the admin role",
             "type": "role",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
@@ -602,97 +640,440 @@
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-editor",
-            "description": "Any user with the editor role",
+            "name": "urn:tpm-backend:policy:any-admin-or-project-manager",
             "type": "role",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"editor\",\"required\":false}]"
+              "roles": "[{\"id\":\"project-manager\",\"required\":false},{\"id\":\"admin\",\"required\":false}]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-observer",
-            "description": "Any user with the observer role",
-            "type": "role",
+            "name": "Admins and project managers have full access to client types",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"observer\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:client-type\"]",
+              "scopes": "[\"urn:tpm-backend:resource:client-type:query\",\"urn:tpm-backend:resource:client-type:create\",\"urn:tpm-backend:resource:client-type:export\",\"urn:tpm-backend:resource:client-type:update\",\"urn:tpm-backend:resource:client-type:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-project-manager",
-            "description": "Any user with the project manager role",
-            "type": "role",
+            "name": "Admins and project managers have full access to languages",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"project-manager\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:language\"]",
+              "scopes": "[\"urn:tpm-backend:resource:language:query\",\"urn:tpm-backend:resource:language:export\",\"urn:tpm-backend:resource:language:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-proofreader",
-            "description": "Any user with the proofreader role",
-            "type": "role",
+            "name": "Admins and project managers have full access to currencies",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"proofreader\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:currency\"]",
+              "scopes": "[\"urn:tpm-backend:resource:currency:query\",\"urn:tpm-backend:resource:currency:read\",\"urn:tpm-backend:resource:currency:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-publisher",
-            "description": "Any user with the publisher role",
-            "type": "role",
+            "name": "Any user with project related role can read, export and query currencies",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"publisher\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:currency\"]",
+              "scopes": "[\"urn:tpm-backend:resource:currency:query\",\"urn:tpm-backend:resource:currency:read\",\"urn:tpm-backend:resource:currency:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-subject-matter-expert",
-            "description": "Any user with the subject matter expert role",
-            "type": "role",
+            "name": "Admins and project managers have full access to countries",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"subject-matter-expert\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:country\"]",
+              "scopes": "[\"urn:tpm-backend:resource:country:query\",\"urn:tpm-backend:resource:country:read\",\"urn:tpm-backend:resource:country:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-translator",
-            "description": "Any user with the translator role",
-            "type": "role",
+            "name": "Admins and project managers have full access to industries",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"translator\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:industry\"]",
+              "scopes": "[\"urn:tpm-backend:resource:industry:query\",\"urn:tpm-backend:resource:industry:create\",\"urn:tpm-backend:resource:industry:export\",\"urn:tpm-backend:resource:industry:update\",\"urn:tpm-backend:resource:industry:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:any-user",
-            "description": "Any user with the user role",
-            "type": "role",
+            "name": "Admins and project managers have full access to clients",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"user\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:client\"]",
+              "scopes": "[\"urn:tpm-backend:resource:client:update\",\"urn:tpm-backend:resource:client:create\",\"urn:tpm-backend:resource:client:export\",\"urn:tpm-backend:resource:client:query\",\"urn:tpm-backend:resource:client:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
             }
           },
           {
-            "name": "urn:tpm-backend:policy:has-any-role",
-            "description": "",
-            "type": "role",
+            "name": "Admins have full access to expenses",
+            "type": "scope",
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "roles": "[{\"id\":\"subject-matter-expert\",\"required\":false},{\"id\":\"translator\",\"required\":false},{\"id\":\"publisher\",\"required\":false},{\"id\":\"editor\",\"required\":false},{\"id\":\"proofreader\",\"required\":false},{\"id\":\"project-manager\",\"required\":false},{\"id\":\"observer\",\"required\":false},{\"id\":\"user\",\"required\":false},{\"id\":\"admin\",\"required\":false}]"
+              "resources": "[\"urn:tpm-backend:resource:expense\"]",
+              "scopes": "[\"urn:tpm-backend:resource:expense:export\",\"urn:tpm-backend:resource:expense:delete\",\"urn:tpm-backend:resource:expense:read\",\"urn:tpm-backend:resource:expense:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins and project managers have full access to priorities",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:priority\"]",
+              "scopes": "[\"urn:tpm-backend:resource:priority:read\",\"urn:tpm-backend:resource:priority:export\",\"urn:tpm-backend:resource:priority:create\",\"urn:tpm-backend:resource:priority:query\",\"urn:tpm-backend:resource:priority:update\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to files",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:file\"]",
+              "scopes": "[\"urn:tpm-backend:resource:file:delete\",\"urn:tpm-backend:resource:file:query\",\"urn:tpm-backend:resource:file:download\",\"urn:tpm-backend:resource:file:read\",\"urn:tpm-backend:resource:file:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to projects",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:project\"]",
+              "scopes": "[\"urn:tpm-backend:resource:project:update\",\"urn:tpm-backend:resource:project:manage\",\"urn:tpm-backend:resource:project:query\",\"urn:tpm-backend:resource:project:export\",\"urn:tpm-backend:resource:project:read\",\"urn:tpm-backend:resource:project:create\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to replies",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:reply\"]",
+              "scopes": "[\"urn:tpm-backend:resource:reply:create\",\"urn:tpm-backend:resource:reply:update\",\"urn:tpm-backend:resource:reply:interact\",\"urn:tpm-backend:resource:reply:read\",\"urn:tpm-backend:resource:reply:delete\",\"urn:tpm-backend:resource:reply:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins and project managers have full access to service types",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:service-type\"]",
+              "scopes": "[\"urn:tpm-backend:resource:service-type:read\",\"urn:tpm-backend:resource:service-type:create\",\"urn:tpm-backend:resource:service-type:query\",\"urn:tpm-backend:resource:service-type:update\",\"urn:tpm-backend:resource:service-type:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to tasks",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:task\"]",
+              "scopes": "[\"urn:tpm-backend:resource:task:update\",\"urn:tpm-backend:resource:task:export\",\"urn:tpm-backend:resource:task:query\",\"urn:tpm-backend:resource:task:read\",\"urn:tpm-backend:resource:task:manage\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins and project managers have full access to translation units",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:unit\"]",
+              "scopes": "[\"urn:tpm-backend:resource:unit:update\",\"urn:tpm-backend:resource:unit:read\",\"urn:tpm-backend:resource:unit:query\",\"urn:tpm-backend:resource:unit:export\",\"urn:tpm-backend:resource:unit:create\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to threads",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:thread\"]",
+              "scopes": "[\"urn:tpm-backend:resource:thread:create\",\"urn:tpm-backend:resource:thread:interact\",\"urn:tpm-backend:resource:thread:query\",\"urn:tpm-backend:resource:thread:manage\",\"urn:tpm-backend:resource:thread:update\",\"urn:tpm-backend:resource:thread:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Admins have full access to users",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:user\"]",
+              "scopes": "[\"urn:tpm-backend:resource:user:self\",\"urn:tpm-backend:resource:user:read\",\"urn:tpm-backend:resource:user:query\",\"urn:tpm-backend:resource:user:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query accuracies",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:accuracy\"]",
+              "scopes": "[\"urn:tpm-backend:resource:accuracy:export\",\"urn:tpm-backend:resource:accuracy:read\",\"urn:tpm-backend:resource:accuracy:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query countries",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:country\"]",
+              "scopes": "[\"urn:tpm-backend:resource:country:query\",\"urn:tpm-backend:resource:country:read\",\"urn:tpm-backend:resource:country:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query industries",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:industry\"]",
+              "scopes": "[\"urn:tpm-backend:resource:industry:query\",\"urn:tpm-backend:resource:industry:export\",\"urn:tpm-backend:resource:industry:update\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query languages",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:language\"]",
+              "scopes": "[\"urn:tpm-backend:resource:language:query\",\"urn:tpm-backend:resource:language:export\",\"urn:tpm-backend:resource:language:read\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query service types",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:service-type\"]",
+              "scopes": "[\"urn:tpm-backend:resource:service-type:read\",\"urn:tpm-backend:resource:service-type:query\",\"urn:tpm-backend:resource:service-type:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query priorities",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:priority\"]",
+              "scopes": "[\"urn:tpm-backend:resource:priority:read\",\"urn:tpm-backend:resource:priority:export\",\"urn:tpm-backend:resource:priority:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can export and query tasks",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:task\"]",
+              "scopes": "[\"urn:tpm-backend:resource:task:export\",\"urn:tpm-backend:resource:task:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query users",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:user\"]",
+              "scopes": "[\"urn:tpm-backend:resource:user:self\",\"urn:tpm-backend:resource:user:read\",\"urn:tpm-backend:resource:user:query\",\"urn:tpm-backend:resource:user:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, export and query translation units",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:unit\"]",
+              "scopes": "[\"urn:tpm-backend:resource:unit:read\",\"urn:tpm-backend:resource:unit:query\",\"urn:tpm-backend:resource:unit:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Anyone can access information about self",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:user\"]",
+              "scopes": "[\"urn:tpm-backend:resource:user:self\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:anyone\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can query threads",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:thread\"]",
+              "scopes": "[\"urn:tpm-backend:resource:thread:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can query replies",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:reply\"]",
+              "scopes": "[\"urn:tpm-backend:resource:reply:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can export and query projects",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:project\"]",
+              "scopes": "[\"urn:tpm-backend:resource:project:query\",\"urn:tpm-backend:resource:project:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project management has full access to expense categories",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:expense-category\"]",
+              "scopes": "[\"urn:tpm-backend:resource:expense-category:read\",\"urn:tpm-backend:resource:expense-category:query\",\"urn:tpm-backend:resource:expense-category:update\",\"urn:tpm-backend:resource:expense-category:export\",\"urn:tpm-backend:resource:expense-category:create\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-project-management-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can read, downlaod, export and query files",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:file\"]",
+              "scopes": "[\"urn:tpm-backend:resource:file:query\",\"urn:tpm-backend:resource:file:download\",\"urn:tpm-backend:resource:file:read\",\"urn:tpm-backend:resource:file:export\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project related role can upload files",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:file\"]",
+              "scopes": "[\"urn:tpm-backend:resource:file:create\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Any admin or project manager can delete files",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:file\"]",
+              "scopes": "[\"urn:tpm-backend:resource:file:delete\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-user-with-project-role\"]"
+            }
+          },
+          {
+            "name": "Admins and project managers have full access to expense categories",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:expense-category\"]",
+              "scopes": "[\"urn:tpm-backend:resource:expense-category:read\",\"urn:tpm-backend:resource:expense-category:query\",\"urn:tpm-backend:resource:expense-category:update\",\"urn:tpm-backend:resource:expense-category:export\",\"urn:tpm-backend:resource:expense-category:create\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
+            }
+          },
+          {
+            "name": "Admins and project managers have full access to accuracies",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:accuracy\"]",
+              "scopes": "[\"urn:tpm-backend:resource:accuracy:create\",\"urn:tpm-backend:resource:accuracy:export\",\"urn:tpm-backend:resource:accuracy:read\",\"urn:tpm-backend:resource:accuracy:update\",\"urn:tpm-backend:resource:accuracy:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-admin-or-project-manager\"]"
+            }
+          },
+          {
+            "name": "Any user with project management role can read, export and query expenses",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:expense\"]",
+              "scopes": "[\"urn:tpm-backend:resource:expense:export\",\"urn:tpm-backend:resource:expense:read\",\"urn:tpm-backend:resource:expense:query\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-project-management-role\"]"
+            }
+          },
+          {
+            "name": "Any user with project management role can create and delete expenses",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"urn:tpm-backend:resource:expense\"]",
+              "scopes": "[\"urn:tpm-backend:resource:expense:create\",\"urn:tpm-backend:resource:expense:delete\"]",
+              "applyPolicies": "[\"urn:tpm-backend:policy:any-project-management-role\"]"
             }
           }
         ],
         "scopes": [
+          {
+            "name": "urn:tpm-backend:resource:expense:create"
+          },
+          {
+            "name": "urn:tpm-backend:resource:file:create"
+          },
           {
             "name": "urn:tpm-backend:resource:accuracy:create"
           },
@@ -1006,7 +1387,6 @@
   ],
   "users": [
     {
-      "id": "9081eb57-4d4d-4f06-abd7-457507b321f6",
       "createdTimestamp": 1692724740744,
       "username": "service-account-tpm-backend",
       "enabled": true,

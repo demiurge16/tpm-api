@@ -52,7 +52,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:task:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:read")
                     }
                 )
             },
@@ -61,11 +61,11 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:task:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:read")
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:task:write")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:write")
                     }
                 )
             },
@@ -74,7 +74,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -83,7 +83,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             }
@@ -98,7 +98,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -107,7 +107,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             }
@@ -122,7 +122,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             }
@@ -137,7 +137,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:task:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:read")
                     }
                 )
             }
@@ -152,7 +152,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -161,7 +161,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -170,7 +170,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -179,7 +179,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -188,7 +188,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -197,7 +197,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             },
@@ -206,7 +206,7 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:task:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
                     }
                 )
             }
