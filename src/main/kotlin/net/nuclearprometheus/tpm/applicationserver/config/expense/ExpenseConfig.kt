@@ -45,7 +45,16 @@ class ExpenseConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense:read")
+                        scopes = mutableListOf("tpm-backend:expense:query")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/expense/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:expense:export")
                     }
                 )
             },

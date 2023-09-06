@@ -23,11 +23,20 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client-type:read")
+                        scopes = mutableListOf("tpm-backend:client-type:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:client-type:write")
+                        scopes = mutableListOf("tpm-backend:client-type:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/client-type/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:client-type:export")
                     }
                 )
             },
@@ -40,7 +49,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:client-type:write")
+                        scopes = mutableListOf("tpm-backend:client-type:update")
                     }
                 )
             },
@@ -49,7 +58,7 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:client-type:write")
+                        scopes = mutableListOf("tpm-backend:client-type:update")
                     }
                 )
             }

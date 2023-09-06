@@ -27,11 +27,20 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:service-type:read")
+                        scopes = mutableListOf("tpm-backend:service-type:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:service-type:write")
+                        scopes = mutableListOf("tpm-backend:service-type:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/service-type/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:service-type:export")
                     }
                 )
             },
@@ -44,7 +53,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:service-type:write")
+                        scopes = mutableListOf("tpm-backend:service-type:update")
                     }
                 )
             },
@@ -53,7 +62,7 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:service-type:write")
+                        scopes = mutableListOf("tpm-backend:service-type:update")
                     }
                 )
             }

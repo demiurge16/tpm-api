@@ -24,11 +24,20 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:unit:read")
+                        scopes = mutableListOf("tpm-backend:unit:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:unit:write")
+                        scopes = mutableListOf("tpm-backend:unit:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/unit/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:unit:export")
                     }
                 )
             },
@@ -41,7 +50,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:unit:write")
+                        scopes = mutableListOf("tpm-backend:unit:update")
                     }
                 )
             },
@@ -50,7 +59,7 @@ class UnitConfig(private val unitRepository: UnitRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:unit:write")
+                        scopes = mutableListOf("tpm-backend:unit:update")
                     }
                 )
             }

@@ -38,7 +38,16 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:read")
+                        scopes = mutableListOf("tpm-backend:file:query")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/file/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:file:export")
                     }
                 )
             },
@@ -60,7 +69,7 @@ class FileConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:read")
+                        scopes = mutableListOf("tpm-backend:file:download")
                     }
                 )
             }

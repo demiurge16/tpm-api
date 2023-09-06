@@ -35,11 +35,20 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:client:read")
+                        scopes = mutableListOf("tpm-backend:client:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:client:write")
+                        scopes = mutableListOf("tpm-backend:client:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/client/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:client:export")
                     }
                 )
             },
@@ -52,7 +61,7 @@ class ClientConfig(
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:client:write")
+                        scopes = mutableListOf("tpm-backend:client:update")
                     }
                 )
             },
@@ -61,7 +70,7 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:client:write")
+                        scopes = mutableListOf("tpm-backend:client:update")
                     }
                 )
             }

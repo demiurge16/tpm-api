@@ -27,11 +27,20 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:industry:read")
+                        scopes = mutableListOf("tpm-backend:industry:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:industry:write")
+                        scopes = mutableListOf("tpm-backend:industry:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/industry/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:industry:export")
                     }
                 )
             },
@@ -44,7 +53,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:industry:write")
+                        scopes = mutableListOf("tpm-backend:industry:update")
                     }
                 )
             },
@@ -53,7 +62,7 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:industry:write")
+                        scopes = mutableListOf("tpm-backend:industry:update")
                     }
                 )
             }

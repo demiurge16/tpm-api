@@ -27,11 +27,20 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense-category:read")
+                        scopes = mutableListOf("tpm-backend:expense-category:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:expense-category:write")
+                        scopes = mutableListOf("tpm-backend:expense-category:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/expense-category/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:expense-category:export")
                     }
                 )
             },
@@ -44,7 +53,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:expense-category:write")
+                        scopes = mutableListOf("tpm-backend:expense-category:update")
                     }
                 )
             },
@@ -53,7 +62,7 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:expense-category:write")
+                        scopes = mutableListOf("tpm-backend:expense-category:update")
                     }
                 )
             },

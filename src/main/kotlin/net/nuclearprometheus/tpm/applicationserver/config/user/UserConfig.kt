@@ -78,7 +78,16 @@ class UserConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:user:read")
+                        scopes = mutableListOf("tpm-backend:user:query")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/user/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:user:export")
                     }
                 )
             },

@@ -856,10 +856,16 @@
             "name": "urn:tpm-backend:resource:project:update"
           },
           {
+            "name": "urn:tpm-backend:resource:reply:create"
+          },
+          {
             "name": "urn:tpm-backend:resource:reply:delete"
           },
           {
             "name": "urn:tpm-backend:resource:reply:interact"
+          },
+          {
+            "name": "urn:tpm-backend:resource:reply:query"
           },
           {
             "name": "urn:tpm-backend:resource:reply:read"

@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.config.dictionaries
 import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
 import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -17,7 +18,25 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read")
+                        scopes = mutableListOf("tpm-backend:language:query")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/language/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:language:export")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/language/name/{name}"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:language:query")
                     }
                 )
             },
@@ -31,20 +50,12 @@ class LanguageConfig {
                 )
             },
             pathConfig {
-                path = "/api/v1/language/name/{name}"
-                methods = mutableListOf(
-                    methodConfig {
-                        method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read")
-                    }
-                )
-            },
-            pathConfig {
                 path = "/api/v1/language/refdata/scope"
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read")
+                        scopes = mutableListOf("tpm-backend:language:read", "tpm-backend:language:query")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             },
@@ -53,7 +64,8 @@ class LanguageConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:language:read")
+                        scopes = mutableListOf("tpm-backend:language:read", "tpm-backend:language:query")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             }

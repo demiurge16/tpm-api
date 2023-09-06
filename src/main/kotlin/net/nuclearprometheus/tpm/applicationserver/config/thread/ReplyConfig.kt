@@ -54,7 +54,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:write")
+                        scopes = mutableListOf("tpm-backend:reply:interact")
                     }
                 )
             },
@@ -63,7 +63,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:write")
+                        scopes = mutableListOf("tpm-backend:reply:interact")
                     }
                 )
             },
@@ -72,7 +72,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:write")
+                        scopes = mutableListOf("tpm-backend:reply:interact")
                     }
                 )
             },
@@ -81,7 +81,7 @@ class ReplyConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:reply:write")
+                        scopes = mutableListOf("tpm-backend:reply:interact")
                     }
                 )
             },

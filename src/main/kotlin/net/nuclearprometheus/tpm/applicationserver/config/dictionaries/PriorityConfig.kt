@@ -27,11 +27,20 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:priority:read")
+                        scopes = mutableListOf("tpm-backend:priority:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:priority:write")
+                        scopes = mutableListOf("tpm-backend:priority:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/priority/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:priority:export")
                     }
                 )
             },
@@ -44,7 +53,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:priority:write")
+                        scopes = mutableListOf("tpm-backend:priority:update")
                     }
                 )
             },
@@ -53,7 +62,7 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:priority:write")
+                        scopes = mutableListOf("tpm-backend:priority:update")
                     }
                 )
             }

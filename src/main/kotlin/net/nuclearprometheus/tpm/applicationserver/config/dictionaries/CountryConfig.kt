@@ -17,7 +17,16 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:read")
+                        scopes = mutableListOf("tpm-backend:country:query")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/country/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:country:export")
                     }
                 )
             },
@@ -35,7 +44,7 @@ class CountryConfig {
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:country:read")
+                        scopes = mutableListOf("tpm-backend:country:query")
                     }
                 )
             }

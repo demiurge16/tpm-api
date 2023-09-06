@@ -48,11 +48,20 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:project:read")
+                        scopes = mutableListOf("tpm-backend:project:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:project:write")
+                        scopes = mutableListOf("tpm-backend:project:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/project/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("tpm-backend:project:export")
                     }
                 )
             },
@@ -65,7 +74,7 @@ class ProjectConfig(
                     },
                     methodConfig {
                         method = "PUT"
-                        scopes = mutableListOf("tpm-backend:project:write")
+                        scopes = mutableListOf("tpm-backend:project:update")
                     }
                 )
             },
@@ -74,7 +83,7 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:project:manage")
+                        scopes = mutableListOf("tpm-backend:project:update")
                     }
                 )
             },
@@ -83,7 +92,7 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
-                        scopes = mutableListOf("tpm-backend:project:manage")
+                        scopes = mutableListOf("tpm-backend:project:update")
                     }
                 )
             }
@@ -98,11 +107,11 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:expense:read")
+                        scopes = mutableListOf("tpm-backend:expense:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:expense:write")
+                        scopes = mutableListOf("tpm-backend:expense:create")
                     }
                 )
             }
@@ -117,11 +126,11 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:file:read")
+                        scopes = mutableListOf("tpm-backend:file:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:file:write")
+                        scopes = mutableListOf("tpm-backend:file:create")
                     }
                 )
             }
@@ -136,7 +145,8 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:project:read")
+                        scopes = mutableListOf("tpm-backend:project:read", "tpm-backend:project:query")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             },
@@ -145,7 +155,8 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:project:read")
+                        scopes = mutableListOf("tpm-backend:project:read", "tpm-backend:project:query")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             }
@@ -274,12 +285,11 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:task:read")
+                        scopes = mutableListOf("tpm-backend:task:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:task:write")
-                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
+                        scopes = mutableListOf("tpm-backend:task:create")
                     }
                 )
             }
@@ -322,11 +332,11 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("tpm-backend:thread:read")
+                        scopes = mutableListOf("tpm-backend:thread:query")
                     },
                     methodConfig {
                         method = "POST"
-                        scopes = mutableListOf("tpm-backend:thread:write")
+                        scopes = mutableListOf("tpm-backend:thread:create")
                     }
                 )
             }
