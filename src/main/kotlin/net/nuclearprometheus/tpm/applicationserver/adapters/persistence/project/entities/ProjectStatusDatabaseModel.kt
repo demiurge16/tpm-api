@@ -5,6 +5,7 @@ enum class ProjectStatusDatabaseModel {
     READY_TO_START,
     ACTIVE,
     ON_HOLD,
+    REVIEW,
     READY_TO_DELIVER,
     DELIVERED,
     CANCELLED,

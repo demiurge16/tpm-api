@@ -5,6 +5,7 @@ enum class ProjectStatus(val title: String, val description: String) {
     READY_TO_START("Ready to Start", "The project has been approved and ready to start."),
     ACTIVE("Active", "The project is currently in progress."),
     ON_HOLD("On Hold", "The project is temporarily on hold due to some issue or delay."),
+    REVIEW("Review", "The project is currently in review."),
     READY_TO_DELIVER("Ready to Deliver", "The project has been completed and ready for delivery."),
     DELIVERED("Delivered", "The project has been delivered to the client."),
     CANCELLED("Cancelled", "The project has been cancelled and will not be completed."),

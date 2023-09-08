@@ -14,6 +14,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.getGrantedScopes
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -26,6 +28,7 @@ class ProjectServiceImpl(
     private val currencyRepository: CurrencyRepository,
     private val clientRepository: ClientRepository,
     private val userRepository: UserRepository,
+    private val projectPermissionService: ProjectPermissionService,
     private val logger: Logger
 ) : ProjectService {
 
@@ -84,6 +87,16 @@ class ProjectServiceImpl(
         )
 
         return projectRepository.create(project)
+            .also {
+                logger.info("Project created: ${it.id.value}")
+
+                projectPermissionService.createProjectResources(project)
+                project.teamMembers.forEach { teamMember ->
+                    teamMember.role.getGrantedScopes().forEach { scope ->
+                        projectPermissionService.grantUserProjectPermission(teamMember.user, project, scope)
+                    }
+                }
+            }
     }
 
     override fun update(
@@ -146,13 +159,18 @@ class ProjectServiceImpl(
         projectRepository.update(project)
     } ?: throw NotFoundException("Project not found")
 
-    override fun finishProgress(id: ProjectId) = projectRepository.get(id)?.let { project ->
-        project.finishProgress()
+    override fun startReview(id: ProjectId) = projectRepository.get(id)?.let { project ->
+        project.startReview()
         projectRepository.update(project)
     } ?: throw NotFoundException("Project not found")
 
-    override fun backToProgress(id: ProjectId) = projectRepository.get(id)?.let { project ->
-        project.backToProgress()
+    override fun approve(id: ProjectId) = projectRepository.get(id)?.let { project ->
+        project.approve()
+        projectRepository.update(project)
+    } ?: throw NotFoundException("Project not found")
+
+    override fun reject(id: ProjectId) = projectRepository.get(id)?.let { project ->
+        project.reject()
         projectRepository.update(project)
     } ?: throw NotFoundException("Project not found")
 

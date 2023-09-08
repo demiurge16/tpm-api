@@ -420,8 +420,9 @@
             "ownerManagedAccess": false,
             "displayName": "Replies",
             "uris": [
+              "/api/v1/reply",
               "/api/v1/reply/*",
-              "/api/v1/reply"
+              "/api/v1/thread/{threadId}/reply"
             ],
             "scopes": [
               {
@@ -505,7 +506,9 @@
             "displayName": "Threads",
             "uris": [
               "/api/v1/thread",
-              "/api/v1/thread/*"
+              "/api/v1/thread/export",
+              "/api/v1/thread/{threadId}",
+              "/api/v1/thread/{threadId}/*"
             ],
             "scopes": [
               {

@@ -12,11 +12,14 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.getGrantedScopes
 
 class TeamMemberServiceImpl(
     private val teamMemberRepository: TeamMemberRepository,
     private val userRepository: UserRepository,
     private val projectRepository: ProjectRepository,
+    private val projectPermissionService: ProjectPermissionService,
     private val logger: Logger
 ) : TeamMemberService {
 
@@ -35,22 +38,35 @@ class TeamMemberServiceImpl(
             projectId = projectId
         )
 
+        role.getGrantedScopes().forEach {
+            val result = projectPermissionService.grantUserProjectPermission(teamMember.user, project, it)
+            if (result.isFailure) {
+                throw result.exceptionOrNull()!!
+            }
+        }
+
         return teamMemberRepository.create(teamMember)
     }
 
     override fun delete(id: TeamMemberId) {
-        teamMemberRepository.delete(id)
-    }
+        val teamMember = teamMemberRepository.get(id) ?: return
+        val project = projectRepository.get(teamMember.projectId) ?: return
 
-    override fun changeRole(id: TeamMemberId, role: TeamMemberRole) {
-        val teamMember = teamMemberRepository.get(id) ?: throw NotFoundException("Team member does not exist")
-        val project = projectRepository.get(teamMember.projectId) ?: throw NotFoundException("Project does not exist")
+        val permissionsToRevoke = teamMember.role.getGrantedScopes().toMutableSet()
 
-        if (project.teamMembers.any { it.user.id == teamMember.user.id && it.role == role }) {
-            throw ProjectTeamMemberAlreadyAssignedRoleException("Team member already has this role")
+        project.teamMembers.forEach {
+            if (it.user.id == teamMember.user.id) {
+                permissionsToRevoke.removeAll(it.role.getGrantedScopes())
+            }
         }
 
-        teamMember.changeRole(role)
-        teamMemberRepository.update(teamMember)
+        permissionsToRevoke.forEach {
+            val result = projectPermissionService.revokeUserProjectPermission(teamMember.user, project, it)
+            if (result.isFailure) {
+                throw result.exceptionOrNull()!!
+            }
+        }
+
+        teamMemberRepository.delete(id)
     }
 }

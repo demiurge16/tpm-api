@@ -253,6 +253,7 @@ class ProjectRepositoryImpl(
             ProjectStatusDatabaseModel.READY_TO_START -> ProjectStatus.READY_TO_START
             ProjectStatusDatabaseModel.ACTIVE -> ProjectStatus.ACTIVE
             ProjectStatusDatabaseModel.ON_HOLD -> ProjectStatus.ON_HOLD
+            ProjectStatusDatabaseModel.REVIEW -> ProjectStatus.REVIEW
             ProjectStatusDatabaseModel.READY_TO_DELIVER -> ProjectStatus.READY_TO_DELIVER
             ProjectStatusDatabaseModel.DELIVERED -> ProjectStatus.DELIVERED
             ProjectStatusDatabaseModel.CANCELLED -> ProjectStatus.CANCELLED
@@ -265,6 +266,7 @@ class ProjectRepositoryImpl(
             ProjectStatus.READY_TO_START -> ProjectStatusDatabaseModel.READY_TO_START
             ProjectStatus.ACTIVE -> ProjectStatusDatabaseModel.ACTIVE
             ProjectStatus.ON_HOLD -> ProjectStatusDatabaseModel.ON_HOLD
+            ProjectStatus.REVIEW -> ProjectStatusDatabaseModel.REVIEW
             ProjectStatus.READY_TO_DELIVER -> ProjectStatusDatabaseModel.READY_TO_DELIVER
             ProjectStatus.DELIVERED -> ProjectStatusDatabaseModel.DELIVERED
             ProjectStatus.CANCELLED -> ProjectStatusDatabaseModel.CANCELLED

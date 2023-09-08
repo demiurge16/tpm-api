@@ -157,15 +157,22 @@ class Project(
         status = ProjectStatus.ACTIVE
     }
 
-    fun finishProgress() {
+    fun startReview() {
         if (status != ProjectStatus.ACTIVE) {
             throw ProjectStatusChangeException("Project must be in progress status")
+        }
+        status = ProjectStatus.REVIEW
+    }
+
+    fun approve() {
+        if (status != ProjectStatus.REVIEW) {
+            throw ProjectStatusChangeException("Project must be in review status")
         }
         status = ProjectStatus.READY_TO_DELIVER
     }
 
-    fun backToProgress() {
-        if (status != ProjectStatus.READY_TO_DELIVER) {
+    fun reject() {
+        if (status != ProjectStatus.REVIEW) {
             throw ProjectStatusChangeException("Project must be in ready to deliver status")
         }
         status = ProjectStatus.ACTIVE
@@ -193,9 +200,11 @@ class Project(
     }
 
     fun putOnHold() {
-        if (status !in listOf(
+        if (
+            status !in listOf(
                 ProjectStatus.READY_TO_START,
                 ProjectStatus.ACTIVE,
+                ProjectStatus.REVIEW,
                 ProjectStatus.READY_TO_DELIVER
             )
         ) {
@@ -212,11 +221,13 @@ class Project(
     }
 
     fun cancel() {
-        if (status !in listOf(
+        if (
+            status !in listOf(
                 ProjectStatus.DRAFT,
                 ProjectStatus.READY_TO_START,
                 ProjectStatus.ACTIVE,
                 ProjectStatus.ON_HOLD,
+                ProjectStatus.REVIEW,
                 ProjectStatus.READY_TO_DELIVER
             )
         ) {

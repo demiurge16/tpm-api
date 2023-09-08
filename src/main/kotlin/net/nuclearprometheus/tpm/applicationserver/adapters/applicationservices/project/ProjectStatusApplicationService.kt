@@ -32,16 +32,22 @@ class ProjectStatusApplicationService(
         service.startProgress(ProjectId(id)).toProjectStatusResponse()
     }
 
-    fun finishProgress(id: UUID) = with(logger) {
+    fun startReview(id: UUID) = with(logger) {
         info("finishProgress($id)")
 
-        service.finishProgress(ProjectId(id)).toProjectStatusResponse()
+        service.startReview(ProjectId(id)).toProjectStatusResponse()
     }
 
-    fun backToProgress(id: UUID) = with(logger) {
-        info("backToProgress($id)")
+    fun approve(id: UUID) = with(logger) {
+        info("approve($id)")
 
-        service.backToProgress(ProjectId(id)).toProjectStatusResponse()
+        service.approve(ProjectId(id)).toProjectStatusResponse()
+    }
+
+    fun reject(id: UUID) = with(logger) {
+        info("reject($id)")
+
+        service.reject(ProjectId(id)).toProjectStatusResponse()
     }
 
     fun deliver(id: UUID) = with(logger) {

@@ -1,11 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security
 
-import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 
 interface ProjectPermissionService {
 
-    fun createProjectResources(projectId: ProjectId): Result<Unit>
-    fun addUserProjectPermission(userId: UserId, projectId: ProjectId): Result<Unit>
-    fun removeUserProjectPermission(userId: UserId, projectId: ProjectId): Result<Unit>
+    fun createProjectResources(project: Project): Result<Unit>
+    fun grantUserProjectPermission(user: User, project: Project, scope: ProjectScope): Result<Unit>
+    fun revokeUserProjectPermission(user: User, project: Project, scope: ProjectScope): Result<Unit>
 }

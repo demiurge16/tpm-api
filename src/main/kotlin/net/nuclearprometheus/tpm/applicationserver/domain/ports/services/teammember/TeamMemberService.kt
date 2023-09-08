@@ -9,5 +9,4 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 interface TeamMemberService {
     fun create(userId: UserId, role: TeamMemberRole, projectId: ProjectId): TeamMember
     fun delete(id: TeamMemberId)
-    fun changeRole(id: TeamMemberId, role: TeamMemberRole)
 }

@@ -48,8 +48,9 @@ interface ProjectService {
     fun finishDraft(id: ProjectId): Project
     fun backToDraft(id: ProjectId): Project
     fun startProgress(id: ProjectId): Project
-    fun finishProgress(id: ProjectId): Project
-    fun backToProgress(id: ProjectId): Project
+    fun startReview(id: ProjectId): Project
+    fun approve(id: ProjectId): Project
+    fun reject(id: ProjectId): Project
     fun deliver(id: ProjectId): Project
     fun invoice(id: ProjectId): Project
     fun pay(id: ProjectId): Project

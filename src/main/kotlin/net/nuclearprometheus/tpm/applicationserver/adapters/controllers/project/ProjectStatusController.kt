@@ -38,18 +38,25 @@ class ProjectStatusController(
         ResponseEntity.ok().body(service.startProgress(id))
     }
 
-    @PatchMapping("/finish-progress")
+    @PatchMapping("/start-review")
     fun finishProgress(@PathVariable(name = "projectId") id: UUID) = with(logger) {
-        info("PATCH /api/v1/project/$id/finish-progress")
+        info("PATCH /api/v1/project/$id/start-review")
 
-        ResponseEntity.ok().body(service.finishProgress(id))
+        ResponseEntity.ok().body(service.startReview(id))
     }
 
-    @PatchMapping("/back-to-progress")
+    @PatchMapping("/approve")
     fun backToProgress(@PathVariable(name = "projectId") id: UUID) = with(logger) {
         info("PATCH /api/v1/project/$id/back-to-progress")
 
-        ResponseEntity.ok().body(service.backToProgress(id))
+        ResponseEntity.ok().body(service.approve(id))
+    }
+
+    @PatchMapping("/reject")
+    fun reject(@PathVariable(name = "projectId") id: UUID) = with(logger) {
+        info("PATCH /api/v1/project/$id/reject")
+
+        ResponseEntity.ok().body(service.reject(id))
     }
 
     @PatchMapping("/deliver")

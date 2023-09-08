@@ -9,6 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectServiceImpl
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
@@ -22,8 +23,9 @@ class ProjectConfig(
     private val industryRepository: IndustryRepository,
     private val unitRepository: UnitRepository,
     private val currencyRepository: CurrencyRepository,
+    private val clientRepository: ClientRepository,
     private val userRepository: UserRepository,
-    private val clientRepository: ClientRepository
+    private val projectPermissionService: ProjectPermissionService,
 ) {
 
     @Bean
@@ -37,6 +39,7 @@ class ProjectConfig(
             currencyRepository,
             clientRepository,
             userRepository,
+            projectPermissionService,
             loggerFor(ProjectService::class.java)
         )
 
@@ -194,7 +197,25 @@ class ProjectConfig(
                 )
             },
             pathConfig {
-                path = "/api/v1/project/{projectId}/finish-progress"
+                path = "/api/v1/project/{projectId}/start-review"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:project:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/project/{projectId}/approve"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:project:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/project/{projectId}/reject"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
