@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.nonFilt
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.unsorted
 
-class Query<TEntity : Any>(
+data class Query<TEntity : Any>(
     val page: Int? = null,
     val size: Int? = null,
     val sort: List<Sort> = unsorted(),

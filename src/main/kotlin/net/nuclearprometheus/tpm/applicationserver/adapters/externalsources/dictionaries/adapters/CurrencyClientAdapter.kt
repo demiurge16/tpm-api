@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cur
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
@@ -16,17 +17,21 @@ class CurrencyClientAdapter(
     private val currencyQueryExecutor: CurrencyQueryExecutor
 ) : CurrencyRepository {
 
+    @Cacheable("currencies-client-cache")
     override fun getAll() = client.getSymbols()
         .symbols
         .map { Currency(CurrencyCode(it.key), it.value.description) }
 
+    @Cacheable("currencies-client-cache")
     override fun get(query: Query<Currency>) = currencyQueryExecutor.execute(query) { getAll() }
 
+    @Cacheable("currencies-client-cache")
     override fun get(code: CurrencyCode) = client.getSymbols()
         .symbols
         .filterKeys { it == code.value.uppercase() }
         .map { Currency(CurrencyCode(it.key), it.value.description) }
         .firstOrNull()
 
+    @Cacheable("currencies-client-cache")
     override fun getExchangeRates(code: CurrencyCode, amount: BigDecimal) = client.getLatest(code.value, amount).toDomain(amount)
 }

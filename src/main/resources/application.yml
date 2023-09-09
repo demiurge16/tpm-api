@@ -11,21 +11,22 @@ app:
       names-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3_Name_Index.tab
       macrolanguages-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3-macrolanguages.tab
       retirements-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3_Retirements.tab
-  cache:
-    countries:
-      name: countries-cache
+  cache-configurations:
+    - name: countries-client-cache
       ttl: 86400
-    languages:
-      name: languages-cache
+    - name: countries-cache
       ttl: 86400
-    currencies:
-      name: currencies-cache
+    - name: languages-client-cache
       ttl: 86400
-    client-types:
-      name: client-types-cache
+    - name: languages-cache
       ttl: 86400
-    clients:
-      name: clients-cache
+    - name: currencies-client-cache
+      ttl: 86400
+    - name: currencies-cache
+      ttl: 86400
+    - name: client-types-cache
+      ttl: 86400
+    - name: clients-cache
       ttl: 86400
 
 keycloak:

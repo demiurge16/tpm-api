@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,34 +17,22 @@ import org.springframework.data.redis.serializer.RedisSerializationContext.Seria
 import java.time.Duration
 
 @Configuration
-class RedisCacheConfig {
+class RedisCacheConfig(private val cacheProperties: RedisCacheProperties) {
+
+    private val logger = loggerFor(this::class.java)
 
     @Bean
     fun cacheConfiguration() = RedisCacheConfiguration.defaultCacheConfig()
 
     @Bean
-    fun redisCacheManagerBuilderCustomizer(properties: RedisCacheProperties) = RedisCacheManagerBuilderCustomizer { builder ->
-
-        properties.countries.let { (ttl, name) ->
-            builder.defaultFor(name, ttl)
+    fun redisCacheManagerBuilderCustomizer() =
+        RedisCacheManagerBuilderCustomizer { builder ->
+            logger.info("Configuring Redis cache manager")
+            cacheProperties.caches.forEach { (ttl, name) ->
+                logger.info("Configuring Redis cache: $name with TTL: $ttl")
+                builder.defaultFor(name, ttl)
+            }
         }
-
-        properties.languages.let { (ttl, name) ->
-            builder.defaultFor(name, ttl)
-        }
-
-        properties.currencies.let { (ttl, name) ->
-            builder.defaultFor(name, ttl)
-        }
-
-        properties.clientTypes.let { (ttl, name) ->
-            builder.defaultFor(name, ttl)
-        }
-
-        properties.clients.let { (ttl, name) ->
-            builder.defaultFor(name, ttl)
-        }
-    }
 
     private val kotlinModule = KotlinModule.Builder()
         .withReflectionCacheSize(512)
