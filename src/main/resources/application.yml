@@ -63,6 +63,7 @@ spring:
     properties:
       hibernate:
         default_schema: application
+    open-in-view: false
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
     default-schema: application
