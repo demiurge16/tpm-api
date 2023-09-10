@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 007-initial-schema-team-member
+      id: 009-initial-schema-team-member
       author: oleh-shatskyi
       changes:
         - createTable:

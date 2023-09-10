@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 010-initial-schema-expense
+      id: 011-initial-schema-expense
       author: oleh-shatskyi
       changes:
         - createTable:

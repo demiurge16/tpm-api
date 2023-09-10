@@ -6,9 +6,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ThreadStatusApplicationService(private val service: ThreadService) {
 
     private val logger = loggerFor(ThreadStatusApplicationService::class.java)

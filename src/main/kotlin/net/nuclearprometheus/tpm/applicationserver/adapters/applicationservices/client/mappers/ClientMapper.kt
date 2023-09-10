@@ -18,7 +18,7 @@ object ClientMapper {
         zip = zip,
         country = Country(
             code = country.id.value,
-            name = country.name
+            name = country.name.official
         ),
         vat = vat,
         notes = notes,

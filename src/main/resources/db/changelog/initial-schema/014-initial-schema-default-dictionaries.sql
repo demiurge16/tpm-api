@@ -38,12 +38,6 @@ INSERT INTO service_type (id, name, description, active) VALUES
 (uuid_generate_v4(), 'TE', 'TE service', true),
 (uuid_generate_v4(), 'NS proofreading', 'NS proofreading service', true),
 (uuid_generate_v4(), 'TP', 'TP service', true),
-(uuid_generate_v4(), 'Good Choice', 'Good Choice service', true),
-(uuid_generate_v4(), 'Smart Choice', 'Smart Choice service', true),
-(uuid_generate_v4(), 'Smart Choice+', 'Smart Choice+ service', true),
-(uuid_generate_v4(), 'Perfect Choice', 'Perfect Choice service', true),
-(uuid_generate_v4(), 'Top Choice', 'Top Choice service', true),
-(uuid_generate_v4(), 'Unique Choice', 'Unique Choice service', true),
 (uuid_generate_v4(), 'Post-editing', 'Post-editing service', true),
 (uuid_generate_v4(), 'Machine translation', 'Machine translation service', true),
 (uuid_generate_v4(), 'LQA', 'LQA service', true),
@@ -59,14 +53,14 @@ INSERT INTO expense_category (id, name, description, active) VALUES
 
 INSERT INTO unit (id, name, description, volume, measurement, active) VALUES
 (uuid_generate_v4(), 'Minute', 'Minute unit', 1, 'POINTS', true),
-(uuid_generate_v4(), 'Act (10 minutes)', 'Act (10 minutes) unit', 2, 'POINTS', true),
+(uuid_generate_v4(), 'Act', 'Act (10 minutes) unit', 2, 'POINTS', true),
 (uuid_generate_v4(), 'Hour', 'Hour unit', 1, 'HOURS', true),
-(uuid_generate_v4(), 'Page (1,800 chars, incl. spaces)', 'Page (1,800 chars, incl. spaces) unit', 1800, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Page (1500 chars incl. spaces)', 'Page (1500 chars incl. spaces) unit', 1500, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Certified page (1,125 chars, incl. spaces)', 'Certified page (1,125 chars, incl. spaces) unit', 1125, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Sheet (200,000 chars, incl. spaces)', 'Sheet (200,000 chars, incl. spaces) unit', 200000, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Verse (60 chars, incl. spaces)', 'Verse (60 chars, incl. spaces) unit', 60, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Word (6 chars, incl. spaces)', 'Word (6 chars, incl. spaces) unit', 6, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Page', 'Page unit', 1800, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Short page', 'Short page unit', 1500, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Certified page', 'Certified page unit', 1125, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Sheet', 'Sheet unit', 200000, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Verse', 'Verse unit', 60, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Word', 'Word unit', 6, 'CHARACTERS', true),
 (uuid_generate_v4(), 'Character', 'Character unit', 1, 'CHARACTERS', true);
 
 INSERT INTO priority (id, name, description, emoji, value, active) VALUES

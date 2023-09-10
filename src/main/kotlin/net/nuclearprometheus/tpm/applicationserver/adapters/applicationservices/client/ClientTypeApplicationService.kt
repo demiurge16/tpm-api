@@ -13,9 +13,12 @@ import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ClientTypeApplicationService(
     private val service: ClientTypeService,
     private val repository: ClientTypeRepository

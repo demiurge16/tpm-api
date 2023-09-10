@@ -5,9 +5,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ProjectStatusApplicationService(
     private val service: ProjectService
 ) {

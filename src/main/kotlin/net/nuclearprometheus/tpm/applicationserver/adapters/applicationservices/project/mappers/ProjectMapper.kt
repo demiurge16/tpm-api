@@ -36,6 +36,13 @@ object ProjectMapper {
             name = unit.name,
             description = unit.description
         ),
+        serviceTypes = serviceTypes.map {
+            ServiceType(
+                id = it.id.value,
+                name = it.name,
+                description = it.description
+            )
+        },
         amount = amount,
         expectedStart = expectedStart,
         internalDeadline = internalDeadline,

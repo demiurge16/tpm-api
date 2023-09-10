@@ -13,9 +13,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.tas
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class TaskApplicationService(private val service: TaskService, private val repository: TaskRepository) {
 
     private val logger = loggerFor(TaskApplicationService::class.java)

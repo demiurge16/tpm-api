@@ -16,24 +16,29 @@ class LanguageClientAdapter(
     private val languageQueryExecutor: LanguageQueryExecutor
 ) : LanguageRepository {
 
-    @Cacheable("languages-client-cache")
+
+    @Cacheable(value = ["languages-client-cache"], key = "'all'")
     override fun getAll() = client.iso6393CodeSet().map { it.toDomain() }
 
-    @Cacheable("languages-client-cache")
+
+    @Cacheable(value = ["languages-client-cache"], key = "'query:' + #query.toString()")
     override fun get(query: Query<Language>) = languageQueryExecutor.execute(query) { getAll() }
 
-    @Cacheable("languages-client-cache")
+
+    @Cacheable(value = ["languages-client-cache"], key = "'code:' + #code.value")
     override fun get(code: LanguageCode) = client.iso6393CodeSet()
         .filter { it.id == code.value }
         .map { it.toDomain() }
         .firstOrNull()
 
-    @Cacheable("languages-client-cache")
+
+    @Cacheable(value = ["languages-client-cache"], key = "'codes:' + #codes")
     override fun get(codes: List<LanguageCode>) = client.iso6393CodeSet()
         .filter { it.id in codes.map { it.value } }
         .map { it.toDomain() }
 
-    @Cacheable("languages-client-cache")
+
+    @Cacheable(value = ["languages-client-cache"], key = "'name:' + #name")
     override fun getByNameLike(name: String) = client.iso6393CodeSet()
         .filter { it.referenceName.contains(other = name, ignoreCase = true) }
         .map { it.toDomain() }

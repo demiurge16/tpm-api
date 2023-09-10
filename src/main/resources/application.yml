@@ -13,17 +13,14 @@ app:
       retirements-url: https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3_Retirements.tab
   cache-configurations:
     - name: countries-client-cache
-      ttl: 86400
-    - name: countries-cache
-      ttl: 86400
+      ttl: 7
+      unit: DAYS
     - name: languages-client-cache
-      ttl: 86400
-    - name: languages-cache
-      ttl: 86400
+      ttl: 7
+      unit: DAYS
     - name: currencies-client-cache
-      ttl: 86400
-    - name: currencies-cache
-      ttl: 86400
+      ttl: 1
+      unit: DAYS
     - name: client-types-cache
       ttl: 86400
     - name: clients-cache

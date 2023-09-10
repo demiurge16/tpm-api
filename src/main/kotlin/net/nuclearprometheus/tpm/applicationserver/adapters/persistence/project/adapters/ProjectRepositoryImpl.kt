@@ -7,6 +7,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.AccuracyRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.IndustryRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.IndustryRepositoryImpl.Mappers.toDomain
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ServiceTypeRepositoryImpl.Mappers.toDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ServiceTypeRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectDatabaseModel
@@ -128,6 +130,7 @@ class ProjectRepositoryImpl(
             accuracy = project.accuracy.toDomain(),
             industry = project.industry.toDomain(),
             unit = project.unit.toDomain(),
+            serviceTypes = project.serviceTypes.map { it.toDomain() },
             amount = project.amount,
             expectedStart = project.expectedStart,
             internalDeadline = project.internalDeadline,
@@ -162,6 +165,7 @@ class ProjectRepositoryImpl(
             accuracy = project.accuracy.toDomain(),
             industry = project.industry.toDomain(),
             unit = project.unit.toDomain(),
+            serviceTypes = project.serviceTypes.map { it.toDomain() },
             amount = project.amount,
             expectedStart = project.expectedStart,
             internalDeadline = project.internalDeadline,
@@ -206,21 +210,20 @@ class ProjectRepositoryImpl(
             id = ProjectId(id),
             title = title,
             description = description,
-            sourceLanguage = LanguageCode(sourceLanguage)
-                .let { languageRepository.get(it) ?: UnknownLanguage(it) },
+            sourceLanguage = LanguageCode(sourceLanguage).let { languageRepository.get(it) ?: UnknownLanguage(it) },
             targetLanguages = targetLanguages
                 .map { LanguageCode(it) }
                 .map { languageRepository.get(it) ?: UnknownLanguage(it) },
             accuracy = accuracy.toDomain(),
             industry = industry.toDomain(),
             unit = unit.toDomain(),
+            serviceTypes = serviceTypes.map { it.toDomain() },
             amount = amount,
             expectedStart = expectedStart,
             internalDeadline = internalDeadline,
             externalDeadline = externalDeadline,
             budget = budget,
-            currency = CurrencyCode(currency)
-                .let { currencyRepository.get(it) ?: UnknownCurrency(it) },
+            currency = CurrencyCode(currency).let { currencyRepository.get(it) ?: UnknownCurrency(it) },
             status = status.toDomain(),
             teamMembers = teamMemberRepository.getAllByProjectId(ProjectId(id)),
             tasks = taskRepository.getAllByProjectId(ProjectId(id)),
@@ -238,6 +241,7 @@ class ProjectRepositoryImpl(
             accuracy = accuracy.toDatabaseModel(),
             industry = industry.toDatabaseModel(),
             unit = unit.toDatabaseModel(),
+            serviceTypes = serviceTypes.map { it.toDatabaseModel() }.toMutableList(),
             amount = amount,
             expectedStart = expectedStart,
             internalDeadline = internalDeadline,

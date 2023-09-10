@@ -16,21 +16,18 @@ class CurrencyApplicationService(private val repository: CurrencyRepository) {
 
     private val logger = loggerFor(this::class.java)
 
-    @Cacheable("currencies-cache")
     fun getCurrencies(query: FilteredRequest<Currency>) =
         with(logger) {
             info("getCurrencies($query)")
             repository.get(query.toQuery()).map { it.toView() }
         }
 
-    @Cacheable("currencies-cache")
     fun getCurrencyByCode(code: String) =
         with(logger) {
             info("getCurrencyByCode($code)")
             repository.get(CurrencyCode(code))?.toView() ?: throw NotFoundException("Currency with code $code not found")
         }
 
-    @Cacheable("currencies-cache")
     fun getExchangeRates(code: String, amount: BigDecimal) =
         with(logger) {
             info("getExchangeRates($code, $amount)")

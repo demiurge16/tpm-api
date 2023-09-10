@@ -23,6 +23,7 @@ class Project(
     accuracy: Accuracy,
     industry: Industry,
     unit: Unit,
+    serviceTypes: List<ServiceType>,
     amount: Int,
     expectedStart: ZonedDateTime,
     internalDeadline: ZonedDateTime,
@@ -45,6 +46,7 @@ class Project(
     var accuracy = accuracy; private set
     var industry = industry; private set
     var unit = unit; private set
+    var serviceTypes = serviceTypes; private set
     var amount = amount; private set
     var expectedStart = expectedStart; private set
     var internalDeadline = internalDeadline; private set
@@ -101,6 +103,7 @@ class Project(
         accuracy: Accuracy,
         industry: Industry,
         unit: Unit,
+        serviceTypes: List<ServiceType>,
         amount: Int,
         budget: BigDecimal,
         currency: Currency,
@@ -113,6 +116,7 @@ class Project(
         this.accuracy = accuracy
         this.industry = industry
         this.unit = unit
+        this.serviceTypes = serviceTypes
         this.amount = amount
         this.budget = budget
         this.currency = currency

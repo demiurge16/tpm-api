@@ -18,21 +18,18 @@ class LanguageApplicationService(private val repository: LanguageRepository) {
 
     private val logger = loggerFor(this::class.java)
 
-    @Cacheable("languages-cache")
     fun getLanguages(query: FilteredRequest<Language>) =
         with(logger) {
             info("getLanguages($query)")
             repository.get(query.toQuery()).map { it.toView() }
         }
 
-    @Cacheable("languages-cache")
     fun getLanguage(code: String) =
         with(logger) {
             info("getLanguage($code)")
             repository.get(LanguageCode(code))?.toView() ?: throw NotFoundException("Language with code $code not found")
         }
 
-    @Cacheable("languages-cache")
     fun getLanguageByNameLike(name: String) =
         with(logger) {
             info("getLanguageByNameLike($name)")

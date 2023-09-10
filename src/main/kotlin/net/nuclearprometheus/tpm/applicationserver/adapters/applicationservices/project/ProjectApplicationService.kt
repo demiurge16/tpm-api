@@ -16,9 +16,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ProjectApplicationService(
     private val service: ProjectService,
     private val repository: ProjectRepository,
@@ -48,6 +51,7 @@ class ProjectApplicationService(
             accuracyId = AccuracyId(request.accuracyId),
             industryId = IndustryId(request.industryId),
             unitId = UnitId(request.unitId),
+            serviceTypeIds = request.serviceTypeIds.map { ServiceTypeId(it) },
             amount = request.amount,
             expectedStart = request.expectedStart,
             internalDeadline = request.internalDeadline,
@@ -70,6 +74,7 @@ class ProjectApplicationService(
             accuracyId = AccuracyId(request.accuracyId),
             industryId = IndustryId(request.industryId),
             unitId = UnitId(request.unitId),
+            serviceTypeIds = request.serviceTypeIds.map { ServiceTypeId(it) },
             amount = request.amount,
             budget = request.budget,
             currencyCode = CurrencyCode(request.currencyCode),

@@ -18,5 +18,5 @@ open class ClientDatabaseModel(
     @Column(nullable = false, length = 64) open var vat: String,
     @Column(nullable = false, length = 512) open var notes: String,
     @Column(nullable = false) open var active: Boolean,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var type: ClientTypeDatabaseModel
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST]) @JoinColumn(nullable = false) open var type: ClientTypeDatabaseModel
 )

@@ -19,9 +19,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.Us
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ThreadApplicationService(
     private val service: ThreadService,
     private val repository: ThreadRepository,

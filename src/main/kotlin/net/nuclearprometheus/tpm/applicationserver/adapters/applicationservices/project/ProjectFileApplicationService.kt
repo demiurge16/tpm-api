@@ -15,10 +15,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Pag
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ProjectFileApplicationService(
     private val fileRepository: FileRepository,
     private val fileService: FileService,

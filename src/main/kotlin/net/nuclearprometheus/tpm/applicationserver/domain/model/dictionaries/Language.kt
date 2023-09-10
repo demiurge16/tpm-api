@@ -17,7 +17,7 @@ data class UnknownLanguage(override val code: LanguageCode) : Language(
     iso6392T = null,
     iso6392B = null,
     iso6391 = null,
-    scope = LanguageScope.INDIVIDUAL,
-    type = LanguageType.LIVING,
+    scope = LanguageScope.SPECIAL,
+    type = LanguageType.SPECIAL,
     name = "Unknown"
 )

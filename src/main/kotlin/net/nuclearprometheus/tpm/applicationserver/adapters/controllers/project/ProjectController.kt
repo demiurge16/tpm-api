@@ -4,6 +4,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -91,5 +92,11 @@ class ProjectController(private val service: ProjectApplicationService) {
     fun moveDeadline(@PathVariable(name = "projectId") id: UUID, @RequestBody request: ProjectRequest.MoveDeadline) = with(logger) {
         info("PATCH /api/v1/project/$id/move-deadline")
         ResponseEntity.ok().body(service.moveProjectDeadline(id, request))
+    }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
+        logger.warn("NotFoundException: ${e.message}")
+        return ResponseEntity.notFound().build()
     }
 }

@@ -14,21 +14,18 @@ class CountryApplicationService(private val repository: CountryRepository) {
 
     private val logger = loggerFor(this::class.java)
 
-    @Cacheable("countries-cache")
     fun getCountries(query: FilteredRequest<Country>) =
         with(logger) {
             info("getCountries($query)")
             repository.get(query.toQuery()).map { it.toView() }
         }
 
-    @Cacheable("countries-cache")
     fun getCountry(code: String) =
         with(logger) {
             info("getCountry($code)")
             repository.getByCode(code)?.toView() ?: throw NotFoundException("Country with code $code not found")
         }
 
-    @Cacheable("countries-cache")
     fun getCountriesByNameLike(name: String) =
         with(logger) {
             info("getCountriesByNameLike($name)")

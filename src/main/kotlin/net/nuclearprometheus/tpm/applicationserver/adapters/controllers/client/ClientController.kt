@@ -4,7 +4,9 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientResponse
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -105,4 +107,10 @@ class ClientController(private val service: ClientApplicationService) {
 
             ResponseEntity.ok().body(service.deactivateClient(id))
         }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
+        logger.warn("NotFoundException: ${e.message}")
+        return ResponseEntity.notFound().build()
+    }
 }

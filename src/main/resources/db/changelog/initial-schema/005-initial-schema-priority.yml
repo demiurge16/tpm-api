@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 008-initial-schema-priority
+      id: 005-initial-schema-priority
       author: oleh-shatskyi
       changes:
         - createTable:

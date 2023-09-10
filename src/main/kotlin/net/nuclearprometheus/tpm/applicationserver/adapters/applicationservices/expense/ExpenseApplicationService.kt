@@ -12,9 +12,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 class ExpenseApplicationService(
     private val repository: ExpenseRepository,
     private val service: ExpenseService,

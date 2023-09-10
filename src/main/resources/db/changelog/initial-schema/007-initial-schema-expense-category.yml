@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 014-initial-schema-service-type
+      id: 007-initial-schema-expense-category
       author: oleh-shatskyi
       changes:
         - createTable:
-            tableName: service_type
+            tableName: expense_category
             columns:
               - column:
                   name: id
@@ -12,7 +12,7 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-                    primaryKeyName: service_typePK
+                    primaryKeyName: expense_categoryPK
               - column:
                   name: name
                   type: VARCHAR(255)

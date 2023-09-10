@@ -9,7 +9,7 @@ class CountryQueryExecutor : InMemoryQueryExecutor<Country>() {
 
     override val querySorters: Map<String, Comparator<Country>> = mapOf(
         "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-        "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
+        "name" to Comparator { o1, o2 -> o1.name.official.compareTo(o2.name.official, ignoreCase = true) }
     )
 
     override val queryFilters: Map<String, Map<String, FilterExecutor<Country>>> = mapOf(

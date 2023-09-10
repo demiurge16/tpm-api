@@ -25,6 +25,7 @@ class ProjectServiceImpl(
     private val accuracyRepository: AccuracyRepository,
     private val industryRepository: IndustryRepository,
     private val unitRepository: UnitRepository,
+    private val serviceTypeRepository: ServiceTypeRepository,
     private val currencyRepository: CurrencyRepository,
     private val clientRepository: ClientRepository,
     private val userRepository: UserRepository,
@@ -40,6 +41,7 @@ class ProjectServiceImpl(
         accuracyId: AccuracyId,
         industryId: IndustryId,
         unitId: UnitId,
+        serviceTypeIds: List<ServiceTypeId>,
         amount: Int,
         expectedStart: ZonedDateTime,
         internalDeadline: ZonedDateTime,
@@ -62,6 +64,9 @@ class ProjectServiceImpl(
             accuracy = accuracyRepository.get(accuracyId) ?: throw NotFoundException("Accuracy not found"),
             industry = industryRepository.get(industryId) ?: throw NotFoundException("Industry not found"),
             unit = unitRepository.get(unitId) ?: throw NotFoundException("Unit not found"),
+            serviceTypes = serviceTypeIds.map { serviceTypeId ->
+                serviceTypeRepository.get(serviceTypeId) ?: throw NotFoundException("Service type not found")
+            },
             amount = amount,
             expectedStart = expectedStart,
             internalDeadline = internalDeadline,
@@ -108,6 +113,7 @@ class ProjectServiceImpl(
         accuracyId: AccuracyId,
         industryId: IndustryId,
         unitId: UnitId,
+        serviceTypeIds: List<ServiceTypeId>,
         amount: Int,
         budget: BigDecimal,
         currencyCode: CurrencyCode,
@@ -124,6 +130,9 @@ class ProjectServiceImpl(
             accuracy = accuracyRepository.get(accuracyId) ?: throw NotFoundException("Accuracy not found"),
             industry = industryRepository.get(industryId) ?: throw NotFoundException("Industry not found"),
             unit = unitRepository.get(unitId) ?: throw NotFoundException("Unit not found"),
+            serviceTypes = serviceTypeIds.map { serviceTypeId ->
+                serviceTypeRepository.get(serviceTypeId) ?: throw NotFoundException("Service type not found")
+            },
             amount = amount,
             budget = budget,
             currency = currencyRepository.get(currencyCode) ?: throw NotFoundException("Currency not found"),

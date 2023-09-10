@@ -16,6 +16,7 @@ sealed class ProjectResponse {
         val accuracy: Accuracy,
         val industry: Industry,
         val unit: Unit,
+        val serviceTypes: List<ServiceType>,
         val amount: Int,
         val expectedStart: ZonedDateTime,
         val internalDeadline: ZonedDateTime,
