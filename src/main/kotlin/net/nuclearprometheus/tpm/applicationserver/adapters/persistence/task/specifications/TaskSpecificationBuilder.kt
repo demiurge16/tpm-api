@@ -2,6 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.sp
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
@@ -88,52 +92,64 @@ class TaskSpecificationBuilder : SpecificationBuilder<Task, TaskDatabaseModel>()
         field("accuracyId") {
             eq { criteriaBuilder, _, root, value ->
                 val accuracyId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("accuracy.id"), accuracyId)
+                val accuracy = root.join<TaskDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.equal(accuracy.get<UUID>("id"), accuracyId)
             }
             any { criteriaBuilder, _, root, value ->
                 val accuracyIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("accuracy.id").`in`(accuracyIds)
+                val accuracy = root.join<TaskDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                accuracy.get<UUID>("id").`in`(accuracyIds)
             }
             none { criteriaBuilder, _, root, value ->
                 val accuracyIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("accuracy.id").`in`(accuracyIds))
+                val accuracy = root.join<TaskDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.not(accuracy.get<UUID>("id").`in`(accuracyIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("accuracy.id"))
+                val accuracy = root.join<TaskDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.isNull(accuracy.get<UUID>("id"))
             }
         }
         field("industryId") {
             eq { criteriaBuilder, _, root, value ->
                 val industryId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("industry.id"), industryId)
+                val industry = root.join<TaskDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.equal(industry.get<UUID>("id"), industryId)
             }
             any { criteriaBuilder, _, root, value ->
                 val industryIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("industry.id").`in`(industryIds)
+                val industry = root.join<TaskDatabaseModel, IndustryDatabaseModel>("industry")
+                industry.get<UUID>("id").`in`(industryIds)
             }
             none { criteriaBuilder, _, root, value ->
                 val industryIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("industry.id").`in`(industryIds))
+                val industry = root.join<TaskDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.not(industry.get<UUID>("id").`in`(industryIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("industry.id"))
+                val industry = root.join<TaskDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.isNull(industry.get<UUID>("id"))
             }
         }
         field("unitId") {
             eq { criteriaBuilder, _, root, value ->
                 val unitId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("unit.id"), unitId)
+                val unit = root.join<TaskDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.equal(unit.get<UUID>("id"), unitId)
             }
             any { criteriaBuilder, _, root, value ->
                 val unitIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("unit.id").`in`(unitIds)
+                val unit = root.join<TaskDatabaseModel, UnitDatabaseModel>("unit")
+                unit.get<UUID>("id").`in`(unitIds)
             }
             none { criteriaBuilder, _, root, value ->
                 val unitIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("unit.id").`in`(unitIds))
+                val unit = root.join<TaskDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.not(unit.get<UUID>("id").`in`(unitIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("unit.id"))
+                val unit = root.join<TaskDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.isNull(unit.get<UUID>("id"))
             }
         }
         field("amount") {
@@ -295,18 +311,22 @@ class TaskSpecificationBuilder : SpecificationBuilder<Task, TaskDatabaseModel>()
         field("priorityId") {
             eq { criteriaBuilder, _, root, value ->
                 val priorityId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("priority.id"), priorityId)
+                val priority = root.join<TaskDatabaseModel, PriorityDatabaseModel>("priority")
+                criteriaBuilder.equal(priority.get<UUID>("id"), priorityId)
             }
             any { criteriaBuilder, _, root, value ->
                 val priorityIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("priority.id").`in`(priorityIds)
+                val priority = root.join<TaskDatabaseModel, PriorityDatabaseModel>("priority")
+                priority.get<UUID>("id").`in`(priorityIds)
             }
             none { criteriaBuilder, _, root, value ->
                 val priorityIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("priority.id").`in`(priorityIds))
+                val priority = root.join<TaskDatabaseModel, PriorityDatabaseModel>("priority")
+                criteriaBuilder.not(priority.get<UUID>("id").`in`(priorityIds))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("priority.id"))
+                val priority = root.join<TaskDatabaseModel, PriorityDatabaseModel>("priority")
+                criteriaBuilder.isNull(priority.get<UUID>("id"))
             }
         }
         field("assigneeId") {

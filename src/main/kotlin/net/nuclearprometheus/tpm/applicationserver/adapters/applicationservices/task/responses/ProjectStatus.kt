@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses
+package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
 

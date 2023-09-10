@@ -14,6 +14,7 @@ sealed class TaskResponse {
         val accuracy: Accuracy,
         val industry: Industry,
         val unit: Unit,
+        val serviceType: ServiceType,
         val amount: Int,
         val expectedStart: ZonedDateTime,
         val deadline: ZonedDateTime,
@@ -22,9 +23,10 @@ sealed class TaskResponse {
         val status: Status,
         val priority: Priority,
         val assignee: Assignee?,
-        val projectId: UUID
+        val project: ProjectShortView
     ) : TaskResponse()
 
     data class StartMoved(val taskId: UUID, val start: ZonedDateTime) : TaskResponse()
     data class DeadlineMoved(val taskId: UUID, val deadline: ZonedDateTime) : TaskResponse()
 }
+

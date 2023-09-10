@@ -4,6 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskStatus
 
 data class Status(
     val status: TaskStatus,
-    val name: String,
+    val title: String,
     val description: String,
 )

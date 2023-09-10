@@ -7,6 +7,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.IndustryRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.PriorityRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.PriorityRepositoryImpl.Mappers.toDomain
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ServiceTypeRepositoryImpl.Mappers.toDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ServiceTypeRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.UnitRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskDatabaseModel
@@ -102,6 +104,7 @@ class TaskRepositoryImpl(
             accuracy = accuracy.toDomain(),
             industry = industry.toDomain(),
             unit = unit.toDomain(),
+            serviceType = serviceType.toDomain(),
             amount = amount,
             expectedStart = expectedStart,
             deadline = deadline,
@@ -126,6 +129,7 @@ class TaskRepositoryImpl(
             accuracy = accuracy.toDatabaseModel(),
             industry = industry.toDatabaseModel(),
             unit = unit.toDatabaseModel(),
+            serviceType = serviceType.toDatabaseModel(),
             amount = amount,
             expectedStart = expectedStart,
             deadline = deadline,

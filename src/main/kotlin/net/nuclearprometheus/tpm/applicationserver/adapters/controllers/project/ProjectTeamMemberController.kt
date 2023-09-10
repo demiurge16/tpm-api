@@ -72,7 +72,7 @@ class ProjectTeamMemberController(
     @ExceptionHandler(IllegalStateException::class)
     fun handleIllegalStateException(e: IllegalStateException) = with(logger) {
         warn("IllegalStateException: ${e.message}")
-        ResponseEntity.badRequest().body(
+        ResponseEntity.internalServerError().body(
             ErrorResponse(e.message ?: "Illegal state")
         )
     }

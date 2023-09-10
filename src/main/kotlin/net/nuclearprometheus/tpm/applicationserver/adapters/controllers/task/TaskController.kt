@@ -4,6 +4,8 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -90,5 +92,19 @@ class TaskController(private val service: TaskApplicationService) {
             info("PATCH /api/v1/task/$taskId/move-deadline")
             ResponseEntity.ok().body(service.moveDeadline(taskId, request))
         }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException) = with(logger) {
+        warn("NotFoundException: ${e.message}")
+        ResponseEntity.notFound().build<Unit>()
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException) = with(logger) {
+        warn("IllegalStateException: ${e.message}")
+        ResponseEntity.internalServerError().body(
+            ErrorResponse(e.message ?: "Illegal state")
+        )
+    }
 }
 

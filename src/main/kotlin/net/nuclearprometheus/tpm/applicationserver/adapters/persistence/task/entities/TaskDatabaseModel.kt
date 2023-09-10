@@ -1,10 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities
 
 import jakarta.persistence.*
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.*
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.*
@@ -20,6 +17,7 @@ open class TaskDatabaseModel(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var accuracy: AccuracyDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var industry: IndustryDatabaseModel,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var unit: UnitDatabaseModel,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) open var serviceType: ServiceTypeDatabaseModel,
     @Column(nullable = false) open var amount: Int,
     @Column(nullable = false) open var expectedStart: ZonedDateTime,
     @Column(nullable = false) open var deadline: ZonedDateTime,

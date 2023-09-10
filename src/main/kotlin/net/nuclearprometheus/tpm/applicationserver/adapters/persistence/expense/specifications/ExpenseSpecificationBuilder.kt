@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.entities.ExpenseDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import org.springframework.stereotype.Component
@@ -113,18 +114,22 @@ class ExpenseSpecificationBuilder : SpecificationBuilder<Expense, ExpenseDatabas
         field("categoryId") {
             eq { criteriaBuilder, _, root, value ->
                 val uuid = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("category.id"), uuid)
+                val category = root.join<ExpenseDatabaseModel, ExpenseCategoryDatabaseModel>("category")
+                criteriaBuilder.equal(category.get<UUID>("id"), uuid)
             }
             any { criteriaBuilder, _, root, value ->
                 val list = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("category.id").`in`(list)
+                val category = root.join<ExpenseDatabaseModel, ExpenseCategoryDatabaseModel>("category")
+                category.get<UUID>("id").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
                 val list = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("category.id").`in`(list))
+                val category = root.join<ExpenseDatabaseModel, ExpenseCategoryDatabaseModel>("category")
+                criteriaBuilder.not(category.get<UUID>("id").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("category.id"))
+                val category = root.join<ExpenseDatabaseModel, ExpenseCategoryDatabaseModel>("category")
+                criteriaBuilder.isNull(category.get<UUID>("id"))
             }
         }
         field("spenderId") {

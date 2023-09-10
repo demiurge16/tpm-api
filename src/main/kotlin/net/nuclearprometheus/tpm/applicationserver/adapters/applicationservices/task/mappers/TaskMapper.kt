@@ -2,10 +2,12 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.*
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Unit
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 
 object TaskMapper {
-    fun Task.toView() = TaskResponse.Task(
+
+    fun Task.toView(project: Project) = TaskResponse.Task(
         id = id.value,
         title = title,
         description = description,
@@ -32,6 +34,11 @@ object TaskMapper {
             name = unit.name,
             description = unit.description
         ),
+        serviceType = ServiceType(
+            id = serviceType.id.value,
+            name = serviceType.name,
+            description = serviceType.description
+        ),
         amount = amount,
         expectedStart = expectedStart,
         deadline = deadline,
@@ -42,7 +49,7 @@ object TaskMapper {
         ),
         status = Status(
             status = status,
-            name = status.name,
+            title = status.title,
             description = status.description
         ),
         priority = Priority(
@@ -60,7 +67,15 @@ object TaskMapper {
                 email = it.email
             )
         },
-        projectId = projectId.value
+        project = ProjectShortView(
+            id = project.id.value,
+            title = project.title,
+            status = ProjectStatus(
+                status = project.status,
+                title = project.status.title,
+                description = project.status.description
+            ),
+        )
     )
 
     fun Task.toStartMoved() = TaskResponse.StartMoved(taskId = id.value, start = expectedStart)

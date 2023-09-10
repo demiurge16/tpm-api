@@ -1,7 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications
 
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
@@ -104,52 +108,64 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         field("accuracyId") {
             eq { criteriaBuilder, _, root, value ->
                 val id = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("accuracy.id"), id)
+                val accuracy = root.join<ProjectDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.equal(accuracy.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("accuracy.id").`in`(ids)
+                val accuracy = root.join<ProjectDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                accuracy.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("accuracy.id").`in`(ids))
+                val accuracy = root.join<ProjectDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.not(accuracy.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("accuracy.id"))
+                val accuracy = root.join<ProjectDatabaseModel, AccuracyDatabaseModel>("accuracy")
+                criteriaBuilder.isNull(accuracy.get<UUID>("id"))
             }
         }
         field("industryId") {
             eq { criteriaBuilder, _, root, value ->
                 val id = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("industry.id"), id)
+                val industry = root.join<ProjectDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.equal(industry.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("industry.id").`in`(ids)
+                val industry = root.join<ProjectDatabaseModel, IndustryDatabaseModel>("industry")
+                industry.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("industry.id").`in`(ids))
+                val industry = root.join<ProjectDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.not(industry.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("industry.id"))
+                val industry = root.join<ProjectDatabaseModel, IndustryDatabaseModel>("industry")
+                criteriaBuilder.isNull(industry.get<UUID>("id"))
             }
         }
         field("unitId") {
             eq { criteriaBuilder, _, root, value ->
                 val id = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("unit.id"), id)
+                val unit = root.join<ProjectDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.equal(unit.get<UUID>("id"), id)
             }
             any { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("unit.id").`in`(ids)
+                val unit = root.join<ProjectDatabaseModel, UnitDatabaseModel>("unit")
+                unit.get<UUID>("id").`in`(ids)
             }
             none { criteriaBuilder, _, root, value ->
                 val ids = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("unit.id").`in`(ids))
+                val unit = root.join<ProjectDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.not(unit.get<UUID>("id").`in`(ids))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("unit.id"))
+                val unit = root.join<ProjectDatabaseModel, UnitDatabaseModel>("unit")
+                criteriaBuilder.isNull(unit.get<UUID>("id"))
             }
         }
         field("amount") {
@@ -346,18 +362,22 @@ class ProjectSpecificationBuilder : SpecificationBuilder<Project, ProjectDatabas
         field("clientId") {
             eq { criteriaBuilder, _, root, value ->
                 val clientId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("client.id"), clientId)
+                val client = root.join<ProjectDatabaseModel, ClientDatabaseModel>("client")
+                criteriaBuilder.equal(client.get<UUID>("id"), clientId)
             }
             any { criteriaBuilder, _, root, value ->
                 val list = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("client.id").`in`(list)
+                val client = root.join<ProjectDatabaseModel, ClientDatabaseModel>("client")
+                client.get<UUID>("id").`in`(list)
             }
             none { criteriaBuilder, _, root, value ->
                 val list = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("client.id").`in`(list))
+                val client = root.join<ProjectDatabaseModel, ClientDatabaseModel>("client")
+                criteriaBuilder.not(client.get<UUID>("id").`in`(list))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("client.id"))
+                val client = root.join<ProjectDatabaseModel, ClientDatabaseModel>("client")
+                criteriaBuilder.isNull(client.get<UUID>("id"))
             }
         }
     }

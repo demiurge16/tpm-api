@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientTypeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
@@ -218,16 +219,20 @@ class ClientSpecificationBuilder : SpecificationBuilder<Client, ClientDatabaseMo
         }
         field("clientTypeId") {
             eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<UUID>("type.id"), value)
+                val clientType = root.join<ClientDatabaseModel, ClientTypeDatabaseModel>("type")
+                criteriaBuilder.equal(clientType.get<UUID>("id"), value)
             }
             any{ criteriaBuilder, _, root, value ->
-                root.get<UUID>("type").`in`(value)
+                val clientType = root.join<ClientDatabaseModel, ClientTypeDatabaseModel>("type")
+                clientType.get<UUID>("id").`in`(value)
             }
             none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<UUID>("type").`in`(value))
+                val clientType = root.join<ClientDatabaseModel, ClientTypeDatabaseModel>("type")
+                criteriaBuilder.not(clientType.get<UUID>("id").`in`(value))
             }
             isNull { criteriaBuilder, _, root, value ->
-                criteriaBuilder.isNull(root.get<UUID>("type"))
+                val clientType = root.join<ClientDatabaseModel, ClientTypeDatabaseModel>("type")
+                criteriaBuilder.isNull(clientType.get<UUID>("id"))
             }
         }
     }

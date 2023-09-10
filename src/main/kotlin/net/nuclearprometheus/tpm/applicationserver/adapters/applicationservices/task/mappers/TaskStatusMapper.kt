@@ -10,7 +10,7 @@ object TaskStatusMapper {
         taskId = id.value,
         status = Status(
             status = status,
-            name = status.name,
+            title = status.title,
             description = status.description
         )
     )

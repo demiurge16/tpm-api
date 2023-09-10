@@ -2,9 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import java.util.*
 
-data class Accuracy(
+data class ProjectShortView(
     val id: UUID,
-    val name: String,
-    val description: String,
+    val title: String,
+    val status: ProjectStatus
 )
-

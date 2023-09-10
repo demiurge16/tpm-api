@@ -28,6 +28,7 @@ sealed class TaskRequest {
         val accuracy: UUID,
         val industry: UUID,
         val unit: UUID,
+        val serviceType: UUID,
         val amount: Int,
         val budget: BigDecimal,
         val currency: String,

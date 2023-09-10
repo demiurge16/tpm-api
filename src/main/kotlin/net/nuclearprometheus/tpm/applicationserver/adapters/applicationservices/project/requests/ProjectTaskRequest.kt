@@ -13,6 +13,7 @@ sealed class ProjectTaskRequest {
         val accuracyId: UUID,
         val industryId: UUID,
         val unitId: UUID,
+        val serviceTypeId: UUID,
         val amount: Int,
         val expectedStart: ZonedDateTime,
         val deadline: ZonedDateTime,

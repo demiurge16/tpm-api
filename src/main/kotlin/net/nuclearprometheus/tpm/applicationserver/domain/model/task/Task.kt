@@ -18,6 +18,7 @@ class Task(
     accuracy: Accuracy,
     industry: Industry,
     unit: Unit,
+    serviceType: ServiceType,
     amount: Int,
     expectedStart: ZonedDateTime,
     deadline: ZonedDateTime,
@@ -36,6 +37,7 @@ class Task(
     var accuracy = accuracy; private set
     var industry = industry; private set
     var unit = unit; private set
+    var serviceType = serviceType; private set
     var amount = amount; private set
     var expectedStart = expectedStart; private set
     var deadline = deadline; private set
@@ -85,6 +87,7 @@ class Task(
         accuracy: Accuracy,
         industry: Industry,
         unit: Unit,
+        serviceType: ServiceType,
         amount: Int,
         budget: BigDecimal,
         currency: Currency,
@@ -96,6 +99,7 @@ class Task(
         this.accuracy = accuracy
         this.industry = industry
         this.unit = unit
+        this.serviceType = serviceType
         this.amount = amount
         this.budget = budget
         this.currency = currency
