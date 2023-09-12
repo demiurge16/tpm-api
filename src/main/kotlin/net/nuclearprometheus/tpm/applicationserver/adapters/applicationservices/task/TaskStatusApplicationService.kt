@@ -21,28 +21,40 @@ class TaskStatusApplicationService(private val service: TaskService) {
         service.start(TaskId(taskId)).toTaskStatusResponse()
     }
 
-    fun complete(taskId: UUID) = with(logger) {
+    fun startReview(taskId: UUID) = with(logger) {
         info("complete($taskId)")
 
-        service.complete(TaskId(taskId)).toTaskStatusResponse()
+        service.startReview(TaskId(taskId)).toTaskStatusResponse()
     }
 
-    fun requestRevisions(taskId: UUID) = with(logger) {
+    fun reject(taskId: UUID) = with(logger) {
         info("requestRevisions($taskId)")
 
-        service.requestRevisions(TaskId(taskId)).toTaskStatusResponse()
+        service.reject(TaskId(taskId)).toTaskStatusResponse()
     }
 
-    fun completeRevisions(taskId: UUID) = with(logger) {
+    fun approve(taskId: UUID) = with(logger) {
         info("completeRevisions($taskId)")
 
-        service.completeRevisions(TaskId(taskId)).toTaskStatusResponse()
+        service.approve(TaskId(taskId)).toTaskStatusResponse()
     }
 
-    fun deliver(taskId: UUID) = with(logger) {
+    fun putOnHold(taskId: UUID) = with(logger) {
+        info("putOnHold($taskId)")
+
+        service.putOnHold(TaskId(taskId)).toTaskStatusResponse()
+    }
+
+    fun resume(taskId: UUID) = with(logger) {
+        info("resume($taskId)")
+
+        service.resume(TaskId(taskId)).toTaskStatusResponse()
+    }
+
+    fun complete(taskId: UUID) = with(logger) {
         info("deliver($taskId)")
 
-        service.deliver(TaskId(taskId)).toTaskStatusResponse()
+        service.complete(TaskId(taskId)).toTaskStatusResponse()
     }
 
     fun cancel(taskId: UUID) = with(logger) {

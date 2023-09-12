@@ -22,32 +22,46 @@ class TaskStatusController(private val service: TaskStatusApplicationService) {
         ResponseEntity.ok().body(service.start(taskId))
     }
 
-    @PatchMapping("/complete")
+    @PatchMapping("/start-review")
     fun complete(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
+        info("PATCH /api/v1/task/$taskId/start-review")
+
+        ResponseEntity.ok().body(service.startReview(taskId))
+    }
+
+    @PatchMapping("/reject")
+    fun requestRevisions(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
+        info("PATCH /api/v1/task/$taskId/reject")
+
+        ResponseEntity.ok().body(service.reject(taskId))
+    }
+
+    @PatchMapping("/approve")
+    fun completeRevisions(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
+        info("PATCH /api/v1/task/$taskId/approve")
+
+        ResponseEntity.ok().body(service.approve(taskId))
+    }
+
+    @PatchMapping("/put-on-hold")
+    fun putOnHold(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
+        info("PATCH /api/v1/task/$taskId/put-on-hold")
+
+        ResponseEntity.ok().body(service.putOnHold(taskId))
+    }
+
+    @PatchMapping("/resume")
+    fun resume(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
+        info("PATCH /api/v1/task/$taskId/resume")
+
+        ResponseEntity.ok().body(service.resume(taskId))
+    }
+
+    @PatchMapping("/complete")
+    fun deliver(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
         info("PATCH /api/v1/task/$taskId/complete")
 
         ResponseEntity.ok().body(service.complete(taskId))
-    }
-
-    @PatchMapping("/request-revisions")
-    fun requestRevisions(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
-        info("PATCH /api/v1/task/$taskId/request-revisions")
-
-        ResponseEntity.ok().body(service.requestRevisions(taskId))
-    }
-
-    @PatchMapping("/complete-revisions")
-    fun completeRevisions(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
-        info("PATCH /api/v1/task/$taskId/complete-revisions")
-
-        ResponseEntity.ok().body(service.completeRevisions(taskId))
-    }
-
-    @PatchMapping("/deliver")
-    fun deliver(@PathVariable(name = "taskId") taskId: UUID) = with(logger) {
-        info("PATCH /api/v1/task/$taskId/deliver")
-
-        ResponseEntity.ok().body(service.deliver(taskId))
     }
 
     @PatchMapping("/cancel")

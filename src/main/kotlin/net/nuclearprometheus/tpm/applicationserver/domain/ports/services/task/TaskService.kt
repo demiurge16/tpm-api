@@ -49,10 +49,12 @@ interface TaskService {
     fun assign(id: TaskId, assigneeId: UserId): Task
     fun unassign(id: TaskId): Task
     fun start(id: TaskId): Task
+    fun startReview(id: TaskId): Task
+    fun reject(id: TaskId): Task
+    fun approve(id: TaskId): Task
+    fun putOnHold(id: TaskId): Task
+    fun resume(id: TaskId): Task
     fun complete(id: TaskId): Task
-    fun requestRevisions(id: TaskId): Task
-    fun completeRevisions(id: TaskId): Task
-    fun deliver(id: TaskId): Task
     fun cancel(id: TaskId): Task
     fun reopen(id: TaskId): Task
 }

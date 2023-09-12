@@ -145,8 +145,9 @@ class TaskRepositoryImpl(
             TaskStatusDatabaseModel.DRAFT -> TaskStatus.DRAFT
             TaskStatusDatabaseModel.ASSIGNED -> TaskStatus.ASSIGNED
             TaskStatusDatabaseModel.IN_PROGRESS -> TaskStatus.IN_PROGRESS
-            TaskStatusDatabaseModel.NEEDS_REVIEW -> TaskStatus.NEEDS_REVIEW
-            TaskStatusDatabaseModel.REVISIONS_NEEDED -> TaskStatus.REVISIONS_NEEDED
+            TaskStatusDatabaseModel.IN_REVIEW -> TaskStatus.IN_REVIEW
+            TaskStatusDatabaseModel.ON_HOLD -> TaskStatus.ON_HOLD
+            TaskStatusDatabaseModel.READY_TO_DELIVER -> TaskStatus.READY_TO_DELIVER
             TaskStatusDatabaseModel.COMPLETED -> TaskStatus.COMPLETED
             TaskStatusDatabaseModel.CANCELLED -> TaskStatus.CANCELLED
         }
@@ -155,8 +156,9 @@ class TaskRepositoryImpl(
             TaskStatus.DRAFT -> TaskStatusDatabaseModel.DRAFT
             TaskStatus.ASSIGNED -> TaskStatusDatabaseModel.ASSIGNED
             TaskStatus.IN_PROGRESS -> TaskStatusDatabaseModel.IN_PROGRESS
-            TaskStatus.NEEDS_REVIEW -> TaskStatusDatabaseModel.NEEDS_REVIEW
-            TaskStatus.REVISIONS_NEEDED -> TaskStatusDatabaseModel.REVISIONS_NEEDED
+            TaskStatus.IN_REVIEW -> TaskStatusDatabaseModel.IN_REVIEW
+            TaskStatus.ON_HOLD -> TaskStatusDatabaseModel.ON_HOLD
+            TaskStatus.READY_TO_DELIVER -> TaskStatusDatabaseModel.READY_TO_DELIVER
             TaskStatus.COMPLETED -> TaskStatusDatabaseModel.COMPLETED
             TaskStatus.CANCELLED -> TaskStatusDatabaseModel.CANCELLED
         }

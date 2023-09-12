@@ -138,23 +138,33 @@ class TaskServiceImpl(
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 
+    override fun startReview(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.startReview()
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
+    override fun reject(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.reject()
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
+    override fun approve(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.approve()
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
+    override fun putOnHold(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.putOnHold()
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
+    override fun resume(id: TaskId) = taskRepository.get(id)?.let { task ->
+        task.resume()
+        taskRepository.update(task)
+    } ?: throw NotFoundException("Task not found")
+
     override fun complete(id: TaskId) = taskRepository.get(id)?.let { task ->
         task.complete()
-        taskRepository.update(task)
-    } ?: throw NotFoundException("Task not found")
-
-    override fun requestRevisions(id: TaskId) = taskRepository.get(id)?.let { task ->
-        task.requestRevisions()
-        taskRepository.update(task)
-    } ?: throw NotFoundException("Task not found")
-
-    override fun completeRevisions(id: TaskId) = taskRepository.get(id)?.let { task ->
-        task.completeRevisions()
-        taskRepository.update(task)
-    } ?: throw NotFoundException("Task not found")
-
-    override fun deliver(id: TaskId) = taskRepository.get(id)?.let { task ->
-        task.deliver()
         taskRepository.update(task)
     } ?: throw NotFoundException("Task not found")
 

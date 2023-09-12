@@ -4,8 +4,9 @@ enum class TaskStatusDatabaseModel {
     DRAFT,
     ASSIGNED,
     IN_PROGRESS,
-    NEEDS_REVIEW,
-    REVISIONS_NEEDED,
+    IN_REVIEW,
+    ON_HOLD,
+    READY_TO_DELIVER,
     COMPLETED,
     CANCELLED
 }

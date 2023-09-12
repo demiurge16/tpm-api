@@ -143,32 +143,46 @@ class Task(
         status = TaskStatus.IN_PROGRESS
     }
 
-    fun complete() {
+    fun startReview() {
         if (status != TaskStatus.IN_PROGRESS) {
             throw TaskValidationException("Task must be in progress to complete")
         }
-        status = TaskStatus.NEEDS_REVIEW
+        status = TaskStatus.IN_REVIEW
     }
 
-    fun requestRevisions() {
-        if (status != TaskStatus.NEEDS_REVIEW) {
+    fun reject() {
+        if (status != TaskStatus.IN_REVIEW) {
             throw TaskValidationException("Task must be in needs review to request revisions")
         }
-        status = TaskStatus.REVISIONS_NEEDED
+        status = TaskStatus.IN_PROGRESS
     }
 
-    fun completeRevisions() {
-        if (status != TaskStatus.REVISIONS_NEEDED) {
-            throw TaskValidationException("Task must be in revisions needed to complete revisions")
+    fun approve() {
+        if (status != TaskStatus.IN_REVIEW) {
+            throw TaskValidationException("Task must be in review to complete revisions")
         }
-        status = TaskStatus.NEEDS_REVIEW
+        status = TaskStatus.READY_TO_DELIVER
     }
 
-    fun deliver() {
-        if (status != TaskStatus.NEEDS_REVIEW) {
+    fun complete() {
+        if (status != TaskStatus.READY_TO_DELIVER) {
             throw TaskValidationException("Task must be in needs review to deliver")
         }
         status = TaskStatus.COMPLETED
+    }
+
+    fun putOnHold() {
+        if (status !in listOf(TaskStatus.ASSIGNED, TaskStatus.IN_PROGRESS)) {
+            throw TaskValidationException("Task must be in progress to put on hold")
+        }
+        status = TaskStatus.ON_HOLD
+    }
+
+    fun resume() {
+        if (status != TaskStatus.ON_HOLD) {
+            throw TaskValidationException("Task must be on hold to resume")
+        }
+        status = TaskStatus.IN_PROGRESS
     }
 
     fun cancel() {
@@ -176,6 +190,7 @@ class Task(
             throw TaskValidationException("Task cannot be cancelled once it has been completed")
         }
         status = TaskStatus.CANCELLED
+        assignee = null
     }
 
     fun reopen() {
@@ -183,5 +198,6 @@ class Task(
             throw TaskValidationException("Task can only be reopened if it has been cancelled")
         }
         status = TaskStatus.DRAFT
+        assignee = null
     }
 }

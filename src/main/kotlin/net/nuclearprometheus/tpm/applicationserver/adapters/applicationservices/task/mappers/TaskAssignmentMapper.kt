@@ -14,6 +14,6 @@ object TaskAssignmentMapper {
                 lastName = it.lastName,
                 email = it.email
             )
-        } ?: throw IllegalStateException("Assignment to task $id was not successful.")
+        }
     )
 }

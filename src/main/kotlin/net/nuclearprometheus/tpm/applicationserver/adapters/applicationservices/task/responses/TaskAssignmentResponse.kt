@@ -3,5 +3,5 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 sealed class TaskAssignmentResponse {
-    data class Assigned(val taskId: UUID, val newAssignee: Assignee) : TaskAssignmentResponse()
+    data class Assigned(val taskId: UUID, val newAssignee: Assignee?) : TaskAssignmentResponse()
 }

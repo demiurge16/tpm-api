@@ -159,34 +159,52 @@ class TaskConfig(
                 )
             },
             pathConfig {
+                path = "/api/v1/task/{taskId}/start-review"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/reject"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/approve"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/put-on-hold"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/resume"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "PATCH"
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            },
+            pathConfig {
                 path = "/api/v1/task/{taskId}/complete"
-                methods = mutableListOf(
-                    methodConfig {
-                        method = "PATCH"
-                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
-                    }
-                )
-            },
-            pathConfig {
-                path = "/api/v1/task/{taskId}/request-revisions"
-                methods = mutableListOf(
-                    methodConfig {
-                        method = "PATCH"
-                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
-                    }
-                )
-            },
-            pathConfig {
-                path = "/api/v1/task/{taskId}/complete-revisions"
-                methods = mutableListOf(
-                    methodConfig {
-                        method = "PATCH"
-                        scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
-                    }
-                )
-            },
-            pathConfig {
-                path = "/api/v1/task/{taskId}/deliver"
                 methods = mutableListOf(
                     methodConfig {
                         method = "PATCH"
