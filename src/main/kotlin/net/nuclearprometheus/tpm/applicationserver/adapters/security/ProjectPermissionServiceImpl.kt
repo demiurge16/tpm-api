@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.security
 
+import net.nuclearprometheus.tpm.applicationserver.config.security.KeycloakProperties
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
@@ -14,16 +15,19 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class ProjectPermissionServiceImpl(
-    @Value("\${keycloak.auth-server-url}") private val authServerUrl: String,
-    @Value("\${keycloak.realm}") private val realm: String,
-    @Value("\${keycloak.resource}") private val clientId: String,
-    @Value("\${keycloak.credentials.secret}") private val secret: String
-) : ProjectPermissionService {
+class ProjectPermissionServiceImpl(keycloakProperties: KeycloakProperties) : ProjectPermissionService {
 
     private val logger = loggerFor(ProjectPermissionService::class.java)
     private val keycloakAuthzClient = AuthzClient.create(
-        Configuration(authServerUrl, realm, clientId, mapOf("secret" to secret), null)
+        Configuration(
+            keycloakProperties.authServerUrl,
+            keycloakProperties.realm,
+            keycloakProperties.resource,
+            mapOf(
+                "secret" to keycloakProperties.credentials.secret
+            ),
+            null
+        )
     )
 
     override fun createProjectResources(project: Project): Result<Unit> {

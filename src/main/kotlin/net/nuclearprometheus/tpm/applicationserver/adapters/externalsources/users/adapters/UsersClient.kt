@@ -16,7 +16,7 @@ import java.util.*
 @Repository
 class UsersClient(
     private val keycloakClient: Keycloak,
-    @Value("\${keycloak.realm}") private val realm: String
+    @Value("\${app.keycloak.realm}") private val realm: String
 ) : UserRepository {
 
     private val logger = loggerFor(this::class.java)

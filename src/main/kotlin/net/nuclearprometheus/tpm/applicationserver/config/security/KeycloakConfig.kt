@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class KeycloakConfig(
-    @Value("\${keycloak.auth-server-url}") private val authServerUrl: String,
-    @Value("\${keycloak.realm}") private val realm: String,
-    @Value("\${keycloak.resource}") private val clientId: String,
-    @Value("\${keycloak.credentials.secret}") private val secret: String
+    @Value("\${app.keycloak.auth-server-url}") private val authServerUrl: String,
+    @Value("\${app.keycloak.realm}") private val realm: String,
+    @Value("\${app.keycloak.resource}") private val clientId: String,
+    @Value("\${app.keycloak.credentials.secret}") private val secret: String
 ) {
 
     @Bean

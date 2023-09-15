@@ -24,8 +24,8 @@ services:
       context: ./infrastructure/auth-server
       dockerfile: ./keycloak.Dockerfile
     ports:
-      - "8081:80"
-      - "8082:443"
+      - "8081:8080"
+      - "8082:8443"
     networks:
       - tpm-network
     depends_on:

@@ -67,7 +67,7 @@ class ProjectFileController(
             .body(resource)
     }
 
-    @PostMapping("")
+    @PostMapping("", consumes = ["multipart/form-data"])
     fun addFile(@PathVariable(name = "projectId") projectId: UUID, @RequestParam(name = "file") request: MultipartFile) =
         with(logger) {
             info("POST /api/v1/project/$projectId/file")

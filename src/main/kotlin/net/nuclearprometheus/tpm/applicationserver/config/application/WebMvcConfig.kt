@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.config
+package net.nuclearprometheus.tpm.applicationserver.config.application
 
 import net.nuclearprometheus.tpm.applicationserver.config.logging.CorrelationIdInterceptor
 import org.springframework.context.annotation.Configuration

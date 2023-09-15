@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.config.security
 
 import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnforcerFilter
-import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,11 +13,11 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
     private val policyEnforcerPathsProviders: List<PolicyEnforcerPathsProvider>,
+    private val keycloakProperties: KeycloakProperties,
     @Value("\${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") private val jwkSetUri: String
 ) {
 
@@ -39,9 +38,11 @@ class SecurityConfiguration(
                 "http://localhost:3000",
                 "http://localhost:8080",
                 "http://localhost:8081",
+                "http://localhost:8082",
                 "http://26.44.49.6:3000",
                 "http://26.44.49.6:8080",
-                "http://26.44.49.6:8081"
+                "http://26.44.49.6:8081",
+                "http://26.44.49.6:8082"
             )
             allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
@@ -51,11 +52,11 @@ class SecurityConfiguration(
     private fun createPolicyEnforcerFilter() =
         ServletPolicyEnforcerFilter {
             policyEnforcerConfig {
-                realm = "tpm"
-                authServerUrl = "http://26.44.49.6:8081"
-                resource = "tpm-backend"
+                realm = keycloakProperties.realm
+                authServerUrl = keycloakProperties.authServerUrl
+                resource = keycloakProperties.resource
                 credentials = mapOf(
-                    "secret" to "euRH66K7xvH2xkVtYE91GBAUG7J0KFfc"
+                    "secret" to keycloakProperties.credentials.secret
                 )
                 paths = policyEnforcerPathsProviders.flatMap { it.paths }
             }
