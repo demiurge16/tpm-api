@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotF
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.math.BigDecimal

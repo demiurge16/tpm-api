@@ -4,7 +4,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientTypeApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientTypeRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientTypeResponse
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType

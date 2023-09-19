@@ -1,10 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security
 
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.ProjectRole
 
-fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
+fun ProjectRole.getGrantedScopes(): Set<ProjectScope> {
     return when (this) {
-        TeamMemberRole.PROJECT_MANAGER -> setOf(
+        ProjectRole.PROJECT_MANAGER -> setOf(
             ProjectScope.READ,
             ProjectScope.UPDATE,
             ProjectScope.MANAGE,
@@ -20,7 +20,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.TRANSLATOR -> setOf(
+        ProjectRole.TRANSLATOR -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_FILES,
             ProjectScope.EXPORT_FILES,
@@ -31,7 +31,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.EDITOR -> setOf(
+        ProjectRole.EDITOR -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_FILES,
             ProjectScope.EXPORT_FILES,
@@ -42,7 +42,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.PROOFREADER -> setOf(
+        ProjectRole.PROOFREADER -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_FILES,
             ProjectScope.EXPORT_FILES,
@@ -53,7 +53,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.SUBJECT_MATTER_EXPERT -> setOf(
+        ProjectRole.SUBJECT_MATTER_EXPERT -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_FILES,
             ProjectScope.EXPORT_FILES,
@@ -64,7 +64,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.PUBLISHER -> setOf(
+        ProjectRole.PUBLISHER -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_FILES,
             ProjectScope.EXPORT_FILES,
@@ -75,7 +75,7 @@ fun TeamMemberRole.getGrantedScopes(): Set<ProjectScope> {
             ProjectScope.QUERY_THREADS,
             ProjectScope.CREATE_THREADS
         )
-        TeamMemberRole.OBSERVER -> setOf(
+        ProjectRole.OBSERVER -> setOf(
             ProjectScope.READ,
             ProjectScope.QUERY_EXPENSES,
             ProjectScope.EXPORT_EXPENSES,

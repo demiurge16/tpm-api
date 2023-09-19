@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectRefdataMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.ProjectRole
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -23,6 +23,6 @@ class ProjectRefdataApplicationService {
     fun getTeamMemberRoles() = with(logger) {
         info("getTeamMemberRoles")
 
-        TeamMemberRole.values().map { it.toView() }
+        ProjectRole.values().map { it.toView() }
     }
 }

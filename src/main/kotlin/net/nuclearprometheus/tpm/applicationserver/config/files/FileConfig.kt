@@ -9,7 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.tea
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileServiceImpl
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

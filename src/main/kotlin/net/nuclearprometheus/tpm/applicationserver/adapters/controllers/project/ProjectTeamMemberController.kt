@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.Err
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAddedException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAssignedRoleException
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -33,7 +33,7 @@ class ProjectTeamMemberController(
     ) = with(logger) {
         info("POST /api/v1/project/$projectId/team-member")
 
-        ResponseEntity.ok().body(service.addTeamMember(projectId, request))
+        ResponseEntity.ok().body(service.giveRoleToUser(projectId, request))
     }
 
     @DeleteMapping("/{teamMemberId}")
@@ -43,7 +43,7 @@ class ProjectTeamMemberController(
     ) = with(logger) {
         info("DELETE /api/v1/project/$projectId/team-member/$teamMemberId")
 
-        service.removeTeamMember(projectId, teamMemberId)
+        service.removeRoleFromUser(projectId, teamMemberId)
         ResponseEntity.noContent().build<Void>()
     }
 

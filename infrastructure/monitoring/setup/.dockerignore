@@ -1,8 +1,0 @@
-Dockerfile
-.dockerignore
-
-**/.DS_Store
-
-.gitignore
-
-state/

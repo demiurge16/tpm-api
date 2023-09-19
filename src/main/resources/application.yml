@@ -27,7 +27,7 @@ app:
       ttl: 86400
   keycloak:
     realm: tpm
-    auth-server-url: https://localhost:8082
+    auth-server-url: http://localhost:8081
     resource: tpm-backend
     credentials:
       secret: euRH66K7xvH2xkVtYE91GBAUG7J0KFfc
@@ -67,7 +67,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://localhost:8082/realms/tpm/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
   servlet:
     multipart:
       enabled: true

@@ -6,13 +6,15 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember.TeamMemberService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammember.TeamMemberServiceImpl
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRoleRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 
 @Configuration
 class TeamMemberConfig(
+    private val teamMemberRoleRepository: TeamMemberRoleRepository,
     private val teamMemberRepository: TeamMemberRepository,
     private val userRepository: UserRepository,
     private val projectRepository: ProjectRepository,
@@ -21,6 +23,7 @@ class TeamMemberConfig(
 
     @Bean
     fun teamMemberService(): TeamMemberService = TeamMemberServiceImpl(
+        teamMemberRoleRepository,
         teamMemberRepository,
         userRepository,
         projectRepository,

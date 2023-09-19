@@ -6,6 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.ProjectRole
 import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
@@ -77,7 +78,13 @@ class ProjectServiceImpl(
             teamMembers = listOf(
                 TeamMember(
                     user = createdByUser,
-                    role = TeamMemberRole.PROJECT_MANAGER,
+                    roles = listOf(
+                        TeamMemberRole(
+                            role = ProjectRole.PROJECT_MANAGER,
+                            userId = createdByUser.id,
+                            projectId = projectId
+                        )
+                    ),
                     projectId = projectId
                 )
             ),
@@ -97,8 +104,10 @@ class ProjectServiceImpl(
 
                 projectPermissionService.createProjectResources(project)
                 project.teamMembers.forEach { teamMember ->
-                    teamMember.role.getGrantedScopes().forEach { scope ->
-                        projectPermissionService.grantUserProjectPermission(teamMember.user, project, scope)
+                    teamMember.roles.forEach { role ->
+                        role.role.getGrantedScopes().forEach { scope ->
+                            projectPermissionService.grantUserProjectPermission(teamMember.user, project, scope)
+                        }
                     }
                 }
             }

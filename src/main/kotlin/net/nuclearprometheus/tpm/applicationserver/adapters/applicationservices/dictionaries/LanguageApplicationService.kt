@@ -9,7 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageType
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 

@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskStatusApplicationService
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable

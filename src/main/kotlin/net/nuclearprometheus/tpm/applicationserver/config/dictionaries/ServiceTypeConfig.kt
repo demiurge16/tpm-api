@@ -6,7 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ServiceTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeServiceImpl
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

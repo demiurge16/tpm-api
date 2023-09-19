@@ -4,7 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTeamMemberRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.TeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
@@ -12,7 +11,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.teammem
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.emptyPage
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRoleId
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -40,9 +40,9 @@ class ProjectTeamMemberApplicationService(
         return singlePage(teamMemberRepository.getAllByProjectId(ProjectId(projectId))).map { it.toView(project) }
     }
 
-    fun addTeamMember(projectId: UUID, request: ProjectTeamMemberRequest.Create): TeamMember {
-        logger.info("addTeamMember($projectId, $request)")
-        return teamMemberService.create(UserId(request.userId), request.role, ProjectId(projectId))
+    fun giveRoleToUser(projectId: UUID, request: ProjectTeamMemberRequest.Create): TeamMember {
+        logger.info("giveRoleToUser($projectId, $request)")
+        return teamMemberService.giveRoleToUser(UserId(request.userId), request.role, ProjectId(projectId))
             .let {
                 val project = projectRepository.get(ProjectId(projectId))
 
@@ -55,8 +55,8 @@ class ProjectTeamMemberApplicationService(
             }
     }
 
-    fun removeTeamMember(projectId: UUID, teamMemberId: UUID) {
-        logger.info("removeTeamMember($projectId, $teamMemberId)")
-        teamMemberService.delete(TeamMemberId(projectId))
+    fun removeRoleFromUser(projectId: UUID, teamMemberRoleId: UUID) {
+        logger.info("removeRoleFromUser($projectId, $teamMemberRoleId)")
+        teamMemberService.removeRoleFromUser(TeamMemberRoleId(projectId))
     }
 }

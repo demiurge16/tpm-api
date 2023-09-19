@@ -10,7 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Acc
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.AccuracyId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.AccuracyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.AccuracyService
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional

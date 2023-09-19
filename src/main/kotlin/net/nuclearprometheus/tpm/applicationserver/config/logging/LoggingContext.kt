@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.logging
+package net.nuclearprometheus.tpm.applicationserver.config.logging
 
 import org.apache.logging.log4j.ThreadContext
 import java.util.*

@@ -9,7 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Pri
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.PriorityRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.PriorityService
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional

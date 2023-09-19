@@ -10,7 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.fil
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional

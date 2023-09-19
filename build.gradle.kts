@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "net.nuclearprometheus.tpm"
-version = "0.1.0"
+version = "1.0.0-BETA"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {

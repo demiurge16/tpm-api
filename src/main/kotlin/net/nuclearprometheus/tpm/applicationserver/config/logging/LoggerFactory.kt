@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.logging
+package net.nuclearprometheus.tpm.applicationserver.config.logging
 
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import org.slf4j.LoggerFactory

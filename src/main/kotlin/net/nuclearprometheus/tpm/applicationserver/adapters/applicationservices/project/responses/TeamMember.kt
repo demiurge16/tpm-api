@@ -3,11 +3,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import java.util.*
 
 data class TeamMember(
-    val id: UUID,
     val userId: UUID,
     val firstName: String,
     val lastName: String,
     val email: String,
-    val role: Role,
+    val roles: List<TeamMemberProjectRole>,
     val project: ProjectShortView
 )

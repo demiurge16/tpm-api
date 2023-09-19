@@ -15,6 +15,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class ClientRepositoryImpl(
@@ -29,6 +30,7 @@ class ClientRepositoryImpl(
 
     override fun get(query: Query<Client>): Page<Client> {
         val page = jpaRepository.findAll(clientSpecificationBuilder.build(query), query.toPageable())
+
         return Page(
             items = page.content.map { it.toDomain(countryRepository) },
             currentPage = page.number,

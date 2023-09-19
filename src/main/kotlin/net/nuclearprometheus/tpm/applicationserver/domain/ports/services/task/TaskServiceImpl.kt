@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskTimeframeException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
@@ -47,8 +48,7 @@ class TaskServiceImpl(
         priorityId: PriorityId,
         projectId: ProjectId
     ): Task {
-        projectRepository.get(projectId) ?: throw NotFoundException("Project not found")
-
+        val project = projectRepository.get(projectId) ?: throw NotFoundException("Project not found")
 
         val task = Task(
             title = title,

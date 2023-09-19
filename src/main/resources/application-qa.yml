@@ -3,7 +3,7 @@ app:
     minio:
       endpoint: http://26.44.49.6:9000
   keycloak:
-    auth-server-url: https://26.44.49.6:8082
+    auth-server-url: http://26.44.49.6:8081
 
 spring:
   datasource:
@@ -15,7 +15,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://26.44.49.6:8082/realms/tpm/protocol/openid-connect/certs
+          jwk-set-uri: http://26.44.49.6:8081/realms/tpm/protocol/openid-connect/certs
 
 server:
   address: 0.0.0.0

@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectScope
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.keycloak.authorization.client.AuthzClient
 import org.keycloak.authorization.client.Configuration
 import org.keycloak.representations.idm.authorization.*

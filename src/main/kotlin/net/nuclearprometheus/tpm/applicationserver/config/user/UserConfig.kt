@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserRole
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.keycloak.KeycloakPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

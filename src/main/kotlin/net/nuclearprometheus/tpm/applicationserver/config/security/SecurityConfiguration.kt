@@ -53,7 +53,7 @@ class SecurityConfiguration(
         ServletPolicyEnforcerFilter {
             policyEnforcerConfig {
                 realm = keycloakProperties.realm
-                authServerUrl = keycloakProperties.authServerUrl
+                authServerUrl = "http://26.44.49.6:8081"
                 resource = keycloakProperties.resource
                 credentials = mapOf(
                     "secret" to keycloakProperties.credentials.secret
@@ -65,3 +65,4 @@ class SecurityConfiguration(
     @Bean
     fun jwtDecoder(): JwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
 }
+

@@ -3,18 +3,15 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.teammember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 
 class TeamMember(
-    id: TeamMemberId = TeamMemberId(),
     user: User,
-    role: TeamMemberRole,
+    roles: List<TeamMemberRole>,
     projectId: ProjectId
-) : Entity<TeamMemberId>(id) {
-    var user = user; private set
-    var role = role; private set
-    var projectId = projectId; private set
+) : Entity<TeamMemberId>(TeamMemberId(user.id.value)) {
 
-    fun changeRole(role: TeamMemberRole) {
-        this.role = role
-    }
+    var user = user; private set
+    var roles = roles; private set
+    var projectId = projectId; private set
 }

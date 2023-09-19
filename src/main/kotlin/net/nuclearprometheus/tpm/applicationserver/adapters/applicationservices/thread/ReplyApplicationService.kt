@@ -12,7 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ReplyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional

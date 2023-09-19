@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders

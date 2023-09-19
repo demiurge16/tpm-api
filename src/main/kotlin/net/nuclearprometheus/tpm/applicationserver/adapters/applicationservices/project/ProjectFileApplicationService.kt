@@ -12,7 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.Fi
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
-import net.nuclearprometheus.tpm.applicationserver.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation

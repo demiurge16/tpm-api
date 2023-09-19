@@ -2,16 +2,16 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammem
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.TeamMemberRoleDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.teammember.entities.ProjectRoleDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMemberRole
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemberDatabaseModel>() {
+class TeamMemberRoleSpecificationBuilder : SpecificationBuilder<TeamMemberRole, TeamMemberRoleDatabaseModel>() {
 
-    override val filterPredicates = filterPredicates<TeamMemberDatabaseModel> {
+    override val filterPredicates = filterPredicates<TeamMemberRoleDatabaseModel> {
         field("id") {
             eq { criteriaBuilder, _, root, value ->
                 val id = UUID.fromString(value as String)
@@ -31,19 +31,19 @@ class TeamMemberSpecificationBuilder : SpecificationBuilder<TeamMember, TeamMemb
         }
         field("role") {
             eq { criteriaBuilder, _, root, value ->
-                val role = TeamMemberRoleDatabaseModel.valueOf(value as String)
-                criteriaBuilder.equal(root.get<TeamMemberRoleDatabaseModel>("role"), role)
+                val role = ProjectRoleDatabaseModel.valueOf(value as String)
+                criteriaBuilder.equal(root.get<ProjectRoleDatabaseModel>("role"), role)
             }
             any { criteriaBuilder, _, root, value ->
-                val roles = (value as List<String>).map { TeamMemberRoleDatabaseModel.valueOf(it) }
-                root.get<TeamMemberRoleDatabaseModel>("role").`in`(roles)
+                val roles = (value as List<String>).map { ProjectRoleDatabaseModel.valueOf(it) }
+                root.get<ProjectRoleDatabaseModel>("role").`in`(roles)
             }
             none { criteriaBuilder, _, root, value ->
-                val roles = (value as List<String>).map { TeamMemberRoleDatabaseModel.valueOf(it) }
-                criteriaBuilder.not(root.get<TeamMemberRoleDatabaseModel>("role").`in`(roles))
+                val roles = (value as List<String>).map { ProjectRoleDatabaseModel.valueOf(it) }
+                criteriaBuilder.not(root.get<ProjectRoleDatabaseModel>("role").`in`(roles))
             }
             isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<TeamMemberRoleDatabaseModel>("role"))
+                criteriaBuilder.isNull(root.get<ProjectRoleDatabaseModel>("role"))
             }
         }
         field("userId") {
