@@ -2,8 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.PriorityMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.PriorityMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.PriorityRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreatePriority
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdatePriority
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Priority
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
@@ -34,13 +35,13 @@ class PriorityApplicationService(
         repository.get(PriorityId(id))?.toView() ?: throw NotFoundException("Priority with id $id not found")
     }
 
-    fun createPriority(request: PriorityRequest.Create) = with(logger) {
+    fun createPriority(request: CreatePriority) = with(logger) {
         info("createPriority($request)")
 
         service.create(request.name, request.description, request.emoji, request.value).toView()
     }
 
-    fun updatePriority(id: UUID, request: PriorityRequest.Update) = with(logger) {
+    fun updatePriority(id: UUID, request: UpdatePriority) = with(logger) {
         info("updatePriority($id, $request)")
 
         service.update(PriorityId(id), request.name, request.description, request.emoji, request.value).toView()

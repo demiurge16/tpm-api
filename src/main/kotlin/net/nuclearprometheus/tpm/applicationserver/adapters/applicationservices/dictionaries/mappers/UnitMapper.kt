@@ -1,12 +1,13 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitMeasurement
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Unit as UnitResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitStatus
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 
 object UnitMapper {
 
-    fun Unit.toView() = UnitResponse.Unit(
+    fun Unit.toView() = UnitResponse(
         id = id.value,
         name = name,
         description = description,
@@ -19,7 +20,7 @@ object UnitMapper {
         active = active
     )
 
-    fun Unit.toActivityStatus() = UnitResponse.Status(
+    fun Unit.toActivityStatus() = UnitStatus(
         id = id.value,
         active = active
     )

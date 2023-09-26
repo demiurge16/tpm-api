@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.user
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.UserApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.requests.UserRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.responses.UserResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.requests.ListUsers
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.responses.User as UserResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -29,13 +29,13 @@ class UserController(
     private val logger = loggerFor(UserController::class.java)
 
     @GetMapping("")
-    fun getUsers(query: UserRequest.List) = with(logger) {
+    fun getUsers(query: ListUsers) = with(logger) {
         info("GET /api/v1/user")
         ResponseEntity.ok().body(service.getUsers(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: UserRequest.List) = with(logger) {
+    fun export(query: ListUsers) = with(logger) {
         info("GET /api/v1/project/export")
 
         val files = service.getUsers(query)
@@ -45,7 +45,7 @@ class UserController(
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<UserResponse.User>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<UserResponse>(writer).build()
             beanToCsv.write(files.items)
             writer.flush()
             writer.close()

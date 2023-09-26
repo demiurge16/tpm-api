@@ -9,8 +9,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Uni
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.TeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -245,5 +245,17 @@ class Project(
             throw ProjectStatusChangeException("Project must be in cancelled status")
         }
         status = ProjectStatus.DRAFT
+    }
+
+    fun hasTeamMember(userId: UserId): Boolean {
+        return teamMembers.any { it.user.id == userId }
+    }
+
+    fun hasTeamMemberWithRole(userId: UserId, role: ProjectRole): Boolean {
+        return teamMembers.any { it.user.id == userId && it.hasRole(role) }
+    }
+
+    fun hasTeamMemberWithAnyRole(userId: UserId, roles: List<ProjectRole>): Boolean {
+        return teamMembers.any { it.user.id == userId && it.hasAnyRole(roles) }
     }
 }

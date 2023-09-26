@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileServiceImpl

@@ -2,9 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitMeasurement
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateUnit
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateUnit
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
@@ -36,13 +37,13 @@ class UnitApplicationService(
         repository.get(UnitId(id))?.toView() ?: throw NotFoundException("Unit with id $id not found")
     }
 
-    fun createUnit(request: UnitRequest.Create) = with(logger) {
+    fun createUnit(request: CreateUnit) = with(logger) {
         info("createUnit($request)")
 
         service.create(request.name, request.description, request.volume, request.measurement).toView()
     }
 
-    fun updateUnit(id: UUID, request: UnitRequest.Update) = with(logger) {
+    fun updateUnit(id: UUID, request: UpdateUnit) = with(logger) {
         info("updateUnit($id, $request)")
 
         service.update(UnitId(id), request.name, request.description, request.volume, request.measurement).toView()

@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskTimeframeException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
@@ -10,7 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import java.math.BigDecimal

@@ -2,9 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.expense
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.ExpenseApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.requests.ExpenseRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.ExpenseResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.Expense as ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.requests.ListExpenses
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -26,13 +26,13 @@ class ExpenseController(private val service: ExpenseApplicationService) {
     private val logger = loggerFor(ExpenseController::class.java)
 
     @GetMapping("")
-    fun getExpenses(query: ExpenseRequest.List) = with(logger) {
+    fun getExpenses(query: ListExpenses) = with(logger) {
         info("GET /api/v1/expense")
         ResponseEntity.ok().body(service.getExpenses(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ExpenseRequest.List) = with(logger) {
+    fun export(query: ListExpenses) = with(logger) {
         info("GET /api/v1/expense/export")
 
         val expenses = service.getExpenses(query)
@@ -42,7 +42,7 @@ class ExpenseController(private val service: ExpenseApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseResponse.Expense>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseResponse>(writer).build()
             beanToCsv.write(expenses.items)
             writer.flush()
             writer.close()

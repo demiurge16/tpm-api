@@ -1,9 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.ExpenseResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectExpenseMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectExpenseRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.Expense as ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.mappers.ExpenseMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateExpense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
@@ -30,7 +30,7 @@ class ProjectExpenseApplicationService(
 
     private val logger = loggerFor(ProjectExpenseApplicationService::class.java)
 
-    fun getExpensesForProject(projectId: UUID, request: FilteredRequest<Expense>): Page<ExpenseResponse.Expense> {
+    fun getExpensesForProject(projectId: UUID, request: FilteredRequest<Expense>): Page<ExpenseResponse> {
         logger.info("getExpensesForProject($projectId)")
 
         val project = projectRepository.get(ProjectId(projectId))
@@ -50,7 +50,7 @@ class ProjectExpenseApplicationService(
         }
     }
 
-    fun createExpense(projectId: UUID, request: ProjectExpenseRequest.Create): ExpenseResponse.Expense {
+    fun createExpense(projectId: UUID, request: CreateExpense): ExpenseResponse {
         logger.info("createExpense($projectId, $request)")
 
         return expenseService.create(

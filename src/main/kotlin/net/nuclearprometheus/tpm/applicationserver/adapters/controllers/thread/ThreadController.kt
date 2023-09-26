@@ -1,7 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.thread
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.ThreadApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ThreadRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ListThreads
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.UpdateThread
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +15,7 @@ class ThreadController(private val service: ThreadApplicationService) {
     private val logger = loggerFor(ThreadController::class.java)
 
     @GetMapping("")
-    fun getThreads(query: ThreadRequest.List) = with(logger) {
+    fun getThreads(query: ListThreads) = with(logger) {
         info("GET /api/v1/thread")
         ResponseEntity.ok().body(service.getThreads(query))
     }
@@ -26,7 +27,7 @@ class ThreadController(private val service: ThreadApplicationService) {
     }
 
     @PutMapping("/{threadId}")
-    fun updateThread(@PathVariable(name = "threadId") id: UUID, @RequestBody request: ThreadRequest.Update) = with(logger) {
+    fun updateThread(@PathVariable(name = "threadId") id: UUID, @RequestBody request: UpdateThread) = with(logger) {
         info("PUT /api/v1/thread/$id")
         ResponseEntity.ok().body(service.updateThread(id, request))
     }

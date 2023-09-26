@@ -7,11 +7,11 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 
 interface ReplyService {
 
-    fun create(content: String, authorId: UserId, threadId: ThreadId, parentReplyId: ReplyId? = null): Reply
+    fun create(content: String, threadId: ThreadId, parentReplyId: ReplyId? = null): Reply
     fun update(id: ReplyId, content: String): Reply
-    fun like(id: ReplyId, authorId: UserId): Reply
-    fun unlike(id: ReplyId, authorId: UserId): Reply
-    fun dislike(id: ReplyId, authorId: UserId): Reply
-    fun undislike(id: ReplyId, authorId: UserId): Reply
+    fun like(id: ReplyId): Reply
+    fun unlike(id: ReplyId): Reply
+    fun dislike(id: ReplyId): Reply
+    fun undislike(id: ReplyId): Reply
     fun delete(id: ReplyId)
 }

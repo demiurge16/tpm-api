@@ -2,10 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectTaskApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.ListTasks
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Task as TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateTask
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -29,14 +29,14 @@ class ProjectTaskController(
     private val logger = loggerFor(ProjectTaskController::class.java)
 
     @GetMapping("")
-    fun getTasks(@PathVariable(name = "projectId") projectId: UUID, query: TaskRequest.List) = with(logger) {
+    fun getTasks(@PathVariable(name = "projectId") projectId: UUID, query: ListTasks) = with(logger) {
         info("GET /api/v1/project/$projectId/task")
 
         ResponseEntity.ok().body(service.getTasksForProject(projectId, query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(@PathVariable(name = "projectId") projectId: UUID, query: TaskRequest.List) = with(logger) {
+    fun export(@PathVariable(name = "projectId") projectId: UUID, query: ListTasks) = with(logger) {
         info("GET /api/v1/project/$projectId/task/export")
 
         val files = service.getTasksForProject(projectId, query)
@@ -46,7 +46,7 @@ class ProjectTaskController(
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<TaskResponse.Task>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<TaskResponse>(writer).build()
             beanToCsv.write(files.items)
             writer.flush()
             writer.close()
@@ -70,7 +70,7 @@ class ProjectTaskController(
     }
 
     @PostMapping("")
-    fun createTask(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: ProjectTaskRequest.Create) =
+    fun createTask(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: CreateTask) =
         with(logger) {
             info("POST /api/v1/project/$projectId/task")
 

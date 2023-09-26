@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskPriorityApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskPriorityRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskChangePriority
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,7 +16,7 @@ class TaskPriorityController(private val service: TaskPriorityApplicationService
     @PatchMapping("/change-priority")
     fun changePriority(
         @PathVariable(name = "taskId") taskId: UUID,
-        @RequestBody request: TaskPriorityRequest.ChangePriority
+        @RequestBody request: TaskChangePriority
     ) = with(logger) {
         info("PATCH /api/v1/task/$taskId/change-priority")
 

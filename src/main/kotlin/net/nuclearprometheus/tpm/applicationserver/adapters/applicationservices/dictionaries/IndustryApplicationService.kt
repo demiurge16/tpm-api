@@ -2,8 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.IndustryMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.IndustryMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.IndustryRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateIndustry
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateIndustry
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.IndustryId
@@ -34,13 +35,13 @@ class IndustryApplicationService(
         repository.get(IndustryId(id))?.toView() ?: throw NotFoundException("Industry with id $id not found")
     }
 
-    fun createIndustry(request: IndustryRequest.Create) = with(logger) {
+    fun createIndustry(request: CreateIndustry) = with(logger) {
         info("createIndustry($request)")
 
         service.create(request.name, request.description).toView()
     }
 
-    fun updateIndustry(id: UUID, request: IndustryRequest.Update) = with(logger) {
+    fun updateIndustry(id: UUID, request: UpdateIndustry) = with(logger) {
         info("updateIndustry($id, $request)")
 
         service.update(IndustryId(id), request.name, request.description).toView()

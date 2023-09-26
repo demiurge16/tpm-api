@@ -15,13 +15,17 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.repositories.ProjectJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectUserSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.adapters.TeamMemberRepositoryImpl.Mappers.toDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.adapters.TeamMemberRepositoryImpl.Mappers.toTeamMembers
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownLanguage
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency.UnknownCurrency
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language.UnknownLanguage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CountryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
@@ -29,8 +33,9 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.exp
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
@@ -39,6 +44,7 @@ import org.springframework.stereotype.Repository
 class ProjectRepositoryImpl(
     private val jpaRepository: ProjectJpaRepository,
     private val specificationBuilder: ProjectSpecificationBuilder,
+    private val userSpecificationBuilder: ProjectUserSpecificationBuilder,
     private val languageRepository: LanguageRepository,
     private val currencyRepository: CurrencyRepository,
     private val countryRepository: CountryRepository,
@@ -46,6 +52,7 @@ class ProjectRepositoryImpl(
     private val taskRepository: TaskRepository,
     private val expenseRepository: ExpenseRepository,
     private val fileRepository: FileRepository,
+    private val userRepository: UserRepository,
     private val threadRepository: ThreadRepository
 ) : ProjectRepository {
 
@@ -110,9 +117,31 @@ class ProjectRepositoryImpl(
         )
     }
 
+    override fun getProjectsForUser(userId: UserId, query: Query<Project>): Page<Project> {
+        val specification = specificationBuilder.build(query)
+            .and(userSpecificationBuilder.build(userId))
+        val page = jpaRepository.findAll(specification, query.toPageable())
+        return Page(
+            items = page.content
+                .map {
+                    it.toDomain(
+                        languageRepository,
+                        currencyRepository,
+                        countryRepository,
+                        teamMemberRepository,
+                        taskRepository,
+                        expenseRepository,
+                        fileRepository,
+                    )
+                },
+            currentPage = page.number,
+            totalPages = page.totalPages,
+            totalItems = page.totalElements
+        )
+    }
+
     override fun create(entity: Project): Project {
         val project = jpaRepository.save(entity.toDatabaseModel())
-        val teamMembers = teamMemberRepository.createAll(entity.teamMembers)
         val tasks = taskRepository.createAll(entity.tasks)
         val expenses = expenseRepository.createAll(entity.expenses)
         val files = fileRepository.createAll(entity.files)
@@ -139,7 +168,7 @@ class ProjectRepositoryImpl(
             currency = CurrencyCode(project.currency)
                 .let { currencyRepository.get(it) ?: UnknownCurrency(it) },
             status = project.status.toDomain(),
-            teamMembers = teamMembers,
+            teamMembers = project.teamMembers.toTeamMembers(userRepository),
             tasks = tasks,
             expenses = expenses,
             files = files,
@@ -249,6 +278,7 @@ class ProjectRepositoryImpl(
             budget = budget,
             currency = currency.id.value,
             status = status.toDatabaseModel(),
+            teamMembers = teamMembers.flatMap { it.toDatabaseModel() }.toMutableList(),
             client = client.toDatabaseModel()
         )
 

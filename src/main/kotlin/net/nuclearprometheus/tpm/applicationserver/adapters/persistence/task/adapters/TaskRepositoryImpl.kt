@@ -17,8 +17,8 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.rep
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TaskSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownLanguage
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency.UnknownCurrency
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Language.UnknownLanguage
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId

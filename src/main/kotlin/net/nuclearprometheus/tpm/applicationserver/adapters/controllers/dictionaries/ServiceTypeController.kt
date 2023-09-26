@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.ServiceTypeApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ServiceTypeRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ServiceTypeResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateServiceTypes
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListServiceTypes
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateServiceTypes
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ServiceType as ServiceTypeResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,13 +26,13 @@ class ServiceTypeController(private val service: ServiceTypeApplicationService) 
     private val logger = loggerFor(ServiceTypeController::class.java)
 
     @GetMapping("")
-    fun getAll(query: ServiceTypeRequest.List) = with(logger) {
+    fun getAll(query: ListServiceTypes) = with(logger) {
         info("GET /api/v1/service-type")
         ResponseEntity.ok().body(service.getServiceTypes(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ServiceTypeRequest.List) = with(logger) {
+    fun export(query: ListServiceTypes) = with(logger) {
         info("GET /api/v1/service-type/export")
 
         val serviceTypes = service.getServiceTypes(query)
@@ -40,7 +42,7 @@ class ServiceTypeController(private val service: ServiceTypeApplicationService) 
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ServiceTypeResponse.ServiceType>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ServiceTypeResponse>(writer).build()
             beanToCsv.write(serviceTypes.items)
             writer.flush()
             writer.close()
@@ -70,13 +72,13 @@ class ServiceTypeController(private val service: ServiceTypeApplicationService) 
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: ServiceTypeRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreateServiceTypes) = with(logger) {
         info("POST /api/v1/service-type")
         ResponseEntity.ok().body(service.createServiceType(request))
     }
 
     @PutMapping("/{serviceTypeId}")
-    fun update(@PathVariable(name = "serviceTypeId") id: UUID, @RequestBody request: ServiceTypeRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "serviceTypeId") id: UUID, @RequestBody request: UpdateServiceTypes) = with(logger) {
         info("PUT /api/v1/service-type/$id")
         ResponseEntity.ok().body(service.updateServiceType(id, request))
     }

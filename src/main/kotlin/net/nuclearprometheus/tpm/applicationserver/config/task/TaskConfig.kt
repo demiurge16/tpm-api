@@ -6,11 +6,12 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -139,7 +140,8 @@ class TaskConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("urn:tpm-backend:resource:task:read")
+                        scopes = mutableListOf("urn:tpm-backend:resource:task:read", "urn:tpm-backend:resource:task:query")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     }
                 )
             }

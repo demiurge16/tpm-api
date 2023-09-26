@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.CurrencyApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CurrencyRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.CurrencyResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListCurrencies
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Currency as CurrencyResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -27,7 +27,7 @@ class CurrencyController(private val service: CurrencyApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getAll(query: CurrencyRequest.List) =
+    fun getAll(query: ListCurrencies) =
         with(logger) {
             info("GET /api/v1/currency")
 
@@ -35,7 +35,7 @@ class CurrencyController(private val service: CurrencyApplicationService) {
         }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun exportCountries(query: CurrencyRequest.List) = with(logger) {
+    fun exportCountries(query: ListCurrencies) = with(logger) {
         info("GET /api/v1/currency/export")
 
         val currencies = service.getCurrencies(query)
@@ -45,7 +45,7 @@ class CurrencyController(private val service: CurrencyApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<CurrencyResponse.Currency>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<CurrencyResponse>(writer).build()
             beanToCsv.write(currencies.items)
             writer.flush()
             writer.close()

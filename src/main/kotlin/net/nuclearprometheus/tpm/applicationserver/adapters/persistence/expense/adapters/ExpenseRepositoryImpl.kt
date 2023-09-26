@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.repositories.ExpenseJpaRepository
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications.ExpenseSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCurrency
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency.UnknownCurrency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.ExpenseId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId

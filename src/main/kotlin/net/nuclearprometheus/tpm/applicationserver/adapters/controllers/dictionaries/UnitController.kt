@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.UnitApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UnitRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.UnitResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateUnit
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListUnits
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateUnit
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Unit as UnitResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,13 +26,13 @@ class UnitController(private val service: UnitApplicationService) {
     private val logger = loggerFor(UnitController::class.java)
 
     @GetMapping("")
-    fun getAll(query: UnitRequest.List) = with(logger) {
+    fun getAll(query: ListUnits) = with(logger) {
         info("GET /api/v1/unit")
         ResponseEntity.ok().body(service.getUnits(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: UnitRequest.List) = with(logger) {
+    fun export(query: ListUnits) = with(logger) {
         info("GET /api/v1/unit/export")
 
         val units = service.getUnits(query)
@@ -40,7 +42,7 @@ class UnitController(private val service: UnitApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<UnitResponse.Unit>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<UnitResponse>(writer).build()
             beanToCsv.write(units.items)
             writer.flush()
             writer.close()
@@ -70,13 +72,13 @@ class UnitController(private val service: UnitApplicationService) {
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: UnitRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreateUnit) = with(logger) {
         info("POST /api/v1/unit")
         ResponseEntity.ok().body(service.createUnit(request))
     }
 
     @PutMapping("/{unitId}")
-    fun update(@PathVariable(name = "unitId") id: UUID, @RequestBody request: UnitRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "unitId") id: UUID, @RequestBody request: UpdateUnit) = with(logger) {
         info("PUT /api/v1/unit/$id")
         ResponseEntity.ok().body(service.updateUnit(id, request))
     }

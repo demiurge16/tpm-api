@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.AccuracyApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.AccuracyRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.AccuracyResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateAccuracy
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListAccuracies
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateAccuracy
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Accuracy as AccuracyResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -25,14 +27,14 @@ class AccuracyController(private val service: AccuracyApplicationService) {
     private val logger = loggerFor(AccuracyController::class.java)
 
     @GetMapping("")
-    fun getAll(query: AccuracyRequest.List) = with(logger) {
+    fun getAll(query: ListAccuracies) = with(logger) {
         info("GET /api/v1/accuracy")
 
         ResponseEntity.ok().body(service.getAccuracies(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: AccuracyRequest.List) = with(logger) {
+    fun export(query: ListAccuracies) = with(logger) {
         info("GET /api/v1/accuracy/export")
 
         val accuracies = service.getAccuracies(query)
@@ -42,7 +44,7 @@ class AccuracyController(private val service: AccuracyApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<AccuracyResponse.Accuracy>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<AccuracyResponse>(writer).build()
             beanToCsv.write(accuracies.items)
             writer.flush()
             writer.close()
@@ -73,14 +75,14 @@ class AccuracyController(private val service: AccuracyApplicationService) {
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: AccuracyRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreateAccuracy) = with(logger) {
         info("POST /api/v1/accuracy")
 
         ResponseEntity.ok().body(service.createAccuracy(request))
     }
 
     @PutMapping("/{accuracyId}")
-    fun update(@PathVariable(name = "accuracyId") id: UUID, @RequestBody request: AccuracyRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "accuracyId") id: UUID, @RequestBody request: UpdateAccuracy) = with(logger) {
         info("PUT /api/v1/accuracy/$id")
 
         ResponseEntity.ok().body(service.updateAccuracy(id, request))

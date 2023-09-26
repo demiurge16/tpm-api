@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskAssignmentMapper.toAssignee
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignmentRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignTeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.TaskId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
@@ -17,7 +17,7 @@ class TaskAssignmentApplicationService(private val taskService: TaskService) {
 
     private val logger = loggerFor(TaskAssignmentApplicationService::class.java)
 
-    fun assignTeamMember(taskId: UUID, request: TaskAssignmentRequest.Assign) = with(logger) {
+    fun assignTeamMember(taskId: UUID, request: TaskAssignTeamMember) = with(logger) {
         info("assignTeamMember($taskId, $request)")
 
         taskService.assign(TaskId(taskId), UserId(request.userId)).toAssignee()

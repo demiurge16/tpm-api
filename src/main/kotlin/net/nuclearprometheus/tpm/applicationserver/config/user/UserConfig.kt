@@ -37,15 +37,13 @@ class UserConfig {
                     )
                 }
                 is Jwt -> {
-                    logger.info("JWT principal: ${principal.claims}")
-
                     return User(
                         id = UserId(UUID.fromString(principal.subject)),
                         firstName = principal.claims["given_name"] as String,
                         lastName = principal.claims["family_name"] as String,
                         email = principal.claims["email"] as String,
                         username = principal.claims["preferred_username"] as String,
-                        roles = listOf()
+                        roles = ((principal.claims["realm_access"] as Map<*, *>)["roles"] as List<*>).mapNotNull { (it as String).toUserRole() }
                     )
                 }
                 else -> {

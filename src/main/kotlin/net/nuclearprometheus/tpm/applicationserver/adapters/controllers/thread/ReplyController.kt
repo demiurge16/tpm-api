@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.thread
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.ReplyApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ReplyRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.UpdateReply
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,7 +21,7 @@ class ReplyController(private val service: ReplyApplicationService) {
     }
 
     @PutMapping("/{replyId}")
-    fun updateReply(@PathVariable(name = "replyId") replyId: UUID, @RequestBody request: ReplyRequest.Update) = with(logger) {
+    fun updateReply(@PathVariable(name = "replyId") replyId: UUID, @RequestBody request: UpdateReply) = with(logger) {
         info("PUT /api/v1/reply/$replyId")
 
         ResponseEntity.ok().body(service.updateReply(replyId, request))

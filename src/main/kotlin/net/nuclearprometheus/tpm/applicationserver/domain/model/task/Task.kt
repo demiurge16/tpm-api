@@ -27,7 +27,8 @@ class Task(
     status: TaskStatus = TaskStatus.DRAFT,
     priority: Priority,
     assignee: User? = null,
-    projectId: ProjectId
+    projectId: ProjectId,
+    timeEntries: List<TimeEntry> = mutableListOf(),
 ) : Entity<TaskId>(id) {
 
     var title = title; private set
@@ -47,6 +48,7 @@ class Task(
     var priority = priority; private set
     var assignee = assignee; private set
     var projectId = projectId; private set
+    var timeEntries = timeEntries; private set
 
     init {
         validateTitle()
@@ -201,3 +203,4 @@ class Task(
         assignee = null
     }
 }
+

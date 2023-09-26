@@ -4,7 +4,6 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforce
 import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadDislikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadLikeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
@@ -12,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -20,8 +20,8 @@ class ThreadConfig(
     private val threadRepository: ThreadRepository,
     private val threadLikeRepository: ThreadLikeRepository,
     private val threadDislikeRepository: ThreadDislikeRepository,
-    private val teamMemberRepository: TeamMemberRepository,
     private val userRepository: UserRepository,
+    private val userContextProvider: UserContextProvider,
     private val projectRepository: ProjectRepository
 ) {
 
@@ -30,8 +30,8 @@ class ThreadConfig(
         repository = threadRepository,
         threadLikeRepository = threadLikeRepository,
         threadDislikeRepository = threadDislikeRepository,
-        teamMemberRepository = teamMemberRepository,
         userRepository = userRepository,
+        userContextProvider = userContextProvider,
         projectRepository = projectRepository,
         logger = loggerFor(ThreadService::class.java)
     )

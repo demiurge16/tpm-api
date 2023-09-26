@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.thread
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.ThreadReplyApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ReplyRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.CreateReply
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,7 +21,7 @@ class ThreadReplyController(private val service: ThreadReplyApplicationService) 
     }
 
     @PostMapping("/{threadId}/reply")
-    fun addReply(@PathVariable(name = "threadId") id: UUID, @RequestBody request: ReplyRequest.Create) = with(logger) {
+    fun addReply(@PathVariable(name = "threadId") id: UUID, @RequestBody request: CreateReply) = with(logger) {
         info("POST /api/v1/thread/$id/reply")
 
         ResponseEntity.ok().body(service.addReplyToThread(id, request))

@@ -6,6 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ServiceTypeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.TeamMemberRoleDatabaseModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.*
@@ -71,6 +72,10 @@ open class ProjectDatabaseModel(
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     open var status: ProjectStatusDatabaseModel,
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "projectId")
+    open var teamMembers: MutableList<TeamMemberRoleDatabaseModel>,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
     @JoinColumn(nullable = false)

@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.ExpenseCategoryApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ExpenseCategoryRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ExpenseCategoryResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateExpenseCategory
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListExpenseCategories
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateExpenseCategory
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ExpenseCategory as ExpenseCategoryResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,14 +26,14 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
     private val logger = loggerFor(ExpenseCategoryController::class.java)
 
     @GetMapping("")
-    fun getAll(query: ExpenseCategoryRequest.List) = with(logger) {
+    fun getAll(query: ListExpenseCategories) = with(logger) {
         info("GET /api/v1/expense-category")
 
         ResponseEntity.ok().body(service.getExpenseCategories(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ExpenseCategoryRequest.List) = with(logger) {
+    fun export(query: ListExpenseCategories) = with(logger) {
         info("GET /api/v1/expense-category/export")
 
         val expenseCategories = service.getExpenseCategories(query)
@@ -41,7 +43,7 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseCategoryResponse.ExpenseCategory>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseCategoryResponse>(writer).build()
             beanToCsv.write(expenseCategories.items)
             writer.flush()
             writer.close()
@@ -72,14 +74,14 @@ class ExpenseCategoryController(private val service: ExpenseCategoryApplicationS
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: ExpenseCategoryRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreateExpenseCategory) = with(logger) {
         info("POST /api/v1/expense-category")
 
         ResponseEntity.ok().body(service.createExpenseCategory(request))
     }
 
     @PutMapping("/{expenseCategoryId}")
-    fun update(@PathVariable(name = "expenseCategoryId") id: UUID, @RequestBody request: ExpenseCategoryRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "expenseCategoryId") id: UUID, @RequestBody request: UpdateExpenseCategory) = with(logger) {
         info("PUT /api/v1/expense-category/$id")
 
         ResponseEntity.ok().body(service.updateExpenseCategory(id, request))

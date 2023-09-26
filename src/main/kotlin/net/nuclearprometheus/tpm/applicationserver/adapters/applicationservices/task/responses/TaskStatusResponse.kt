@@ -4,5 +4,5 @@ import java.util.*
 
 sealed class TaskStatusResponse {
 
-    data class NewStatus(val taskId: UUID, val status: Status) : TaskStatusResponse()
+    data class NewStatus(val taskId: UUID, val status: TaskStatus) : TaskStatusResponse()
 }

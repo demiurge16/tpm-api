@@ -11,6 +11,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -20,7 +22,8 @@ class ReplyConfig(
     private val replyLikeRepository: ReplyLikeRepository,
     private val replyDislikeRepository: ReplyDislikeRepository,
     private val threadRepository: ThreadRepository,
-    private val userRepository: UserRepository
+    private val projectRepository: ProjectRepository,
+    private val userContextProvider: UserContextProvider
 ) {
 
     @Bean
@@ -29,7 +32,8 @@ class ReplyConfig(
         replyLikeRepository = replyLikeRepository,
         replyDislikeRepository = replyDislikeRepository,
         threadRepository = threadRepository,
-        userRepository = userRepository,
+        projectRepository = projectRepository,
+        userContextProvider = userContextProvider,
         logger = loggerFor(ReplyService::class.java)
     )
 

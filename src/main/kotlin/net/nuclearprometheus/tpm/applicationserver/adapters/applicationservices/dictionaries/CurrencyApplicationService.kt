@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.CurrencyMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode

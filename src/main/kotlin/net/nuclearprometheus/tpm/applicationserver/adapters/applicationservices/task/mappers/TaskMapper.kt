@@ -1,85 +1,50 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.*
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Unit
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.AccuracyMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.CurrencyMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.IndustryMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.LanguageMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.PriorityMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ServiceTypeMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.UnitMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toShortView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskDeadlineMoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskStartMoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskStatus
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.mappers.UserMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Task as TaskResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 
 object TaskMapper {
 
-    fun Task.toView(project: Project) = TaskResponse.Task(
+    fun Task.toView(project: Project) = TaskResponse(
         id = id.value,
         title = title,
         description = description,
-        sourceLanguage = Language(
-            code = sourceLanguage.id.value,
-            name = sourceLanguage.name
-        ),
-        targetLanguage = Language(
-            code = targetLanguage.id.value,
-            name = targetLanguage.name
-        ),
-        accuracy = Accuracy(
-            id = accuracy.id.value,
-            name = accuracy.name,
-            description = accuracy.description
-        ),
-        industry = Industry(
-            id = industry.id.value,
-            name = industry.name,
-            description = industry.description
-        ),
-        unit = Unit(
-            id = unit.id.value,
-            name = unit.name,
-            description = unit.description
-        ),
-        serviceType = ServiceType(
-            id = serviceType.id.value,
-            name = serviceType.name,
-            description = serviceType.description
-        ),
+        sourceLanguage = sourceLanguage.toView(),
+        targetLanguage = targetLanguage.toView(),
+        accuracy = accuracy.toView(),
+        industry = industry.toView(),
+        unit = unit.toView(),
+        serviceType = serviceType.toView(),
         amount = amount,
         expectedStart = expectedStart,
         deadline = deadline,
         budget = budget,
-        currency = Currency(
-            code = currency.id.value,
-            name = currency.name
-        ),
-        status = Status(
+        currency = currency.toView(),
+        status = TaskStatus(
             status = status,
             title = status.title,
             description = status.description
         ),
-        priority = Priority(
-            id = priority.id.value,
-            name = priority.name,
-            description = priority.description,
-            emoji = priority.emoji,
-            value = priority.value
-        ),
-        assignee = assignee?.let {
-            Assignee(
-                userId = it.id.value,
-                firstName = it.firstName,
-                lastName = it.lastName,
-                email = it.email
-            )
-        },
-        project = ProjectShortView(
-            id = project.id.value,
-            title = project.title,
-            status = ProjectStatus(
-                status = project.status,
-                title = project.status.title,
-                description = project.status.description
-            ),
-        )
+        priority = priority.toView(),
+        assignee = assignee?.toView(),
+        project = project.toShortView()
     )
 
-    fun Task.toStartMoved() = TaskResponse.StartMoved(taskId = id.value, start = expectedStart)
+    fun Task.toStartMoved() = TaskStartMoved(taskId = id.value, start = expectedStart)
 
-    fun Task.toDeadlineMoved() = TaskResponse.DeadlineMoved(taskId = id.value, deadline = deadline)
+    fun Task.toDeadlineMoved() = TaskDeadlineMoved(taskId = id.value, deadline = deadline)
 
 }

@@ -1,9 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTaskRequest
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Task as TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateTask
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
@@ -28,14 +28,14 @@ class ProjectTaskApplicationService(
 
     private val logger = loggerFor(ProjectTaskApplicationService::class.java)
 
-    fun getTasksForProject(projectId: UUID, query: FilteredRequest<Task>): Page<TaskResponse.Task> {
+    fun getTasksForProject(projectId: UUID, query: FilteredRequest<Task>): Page<TaskResponse> {
         logger.info("getTasksForProject($projectId)")
 
         val project = projectRepository.get(ProjectId(projectId)) ?: return emptyPage()
         return taskRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery()).map { it.toView(project) }
     }
 
-    fun createTask(projectId: UUID, request: ProjectTaskRequest.Create): TaskResponse.Task {
+    fun createTask(projectId: UUID, request: CreateTask): TaskResponse {
         logger.info("createTask($projectId, $request)")
 
         val project = projectRepository.get(ProjectId(projectId)) ?: throw IllegalArgumentException("Project with id $projectId not found")

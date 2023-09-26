@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.IndustryApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.IndustryRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.IndustryResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateIndustry
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListIndustries
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateIndustry
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Industry as IndustryResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,13 +26,13 @@ class IndustryController(private val service: IndustryApplicationService) {
     private val logger = loggerFor(IndustryController::class.java)
 
     @GetMapping("")
-    fun getAll(query: IndustryRequest.List) = with(logger) {
+    fun getAll(query: ListIndustries) = with(logger) {
         info("GET /api/v1/industry")
         ResponseEntity.ok().body(service.getIndustries(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: IndustryRequest.List) = with(logger) {
+    fun export(query: ListIndustries) = with(logger) {
         info("GET /api/v1/industry/export")
 
         val industries = service.getIndustries(query)
@@ -40,7 +42,7 @@ class IndustryController(private val service: IndustryApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<IndustryResponse.Industry>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<IndustryResponse>(writer).build()
             beanToCsv.write(industries.items)
             writer.flush()
             writer.close()
@@ -70,13 +72,13 @@ class IndustryController(private val service: IndustryApplicationService) {
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: IndustryRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreateIndustry) = with(logger) {
         info("POST /api/v1/industry")
         ResponseEntity.ok().body(service.createIndustry(request))
     }
 
     @PutMapping("/{industryId}")
-    fun update(@PathVariable(name = "industryId") id: UUID, @RequestBody request: IndustryRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "industryId") id: UUID, @RequestBody request: UpdateIndustry) = with(logger) {
         info("PUT /api/v1/industry/$id")
         ResponseEntity.ok().body(service.updateIndustry(id, request))
     }

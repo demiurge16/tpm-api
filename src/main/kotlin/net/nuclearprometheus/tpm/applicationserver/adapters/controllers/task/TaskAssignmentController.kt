@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskAssignmentApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignmentRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskAssignTeamMember
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,7 +16,7 @@ class TaskAssignmentController(private val taskAssignmentApplicationService: Tas
     @PatchMapping("/assign-team-member")
     fun assignTeamMember(
         @PathVariable(name = "taskId") taskId: UUID,
-        @RequestBody request: TaskAssignmentRequest.Assign
+        @RequestBody request: TaskAssignTeamMember
     ) = with(logger) {
         info("PATCH /api/v1/task/$taskId/assign-team-member")
 

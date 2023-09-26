@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.CountryApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CountryRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.CountryResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListCountries
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Country as CountryResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -26,7 +26,7 @@ class CountryController(private val service: CountryApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getCountries(query: CountryRequest.List) =
+    fun getCountries(query: ListCountries) =
         with(logger) {
             info("GET /api/v1/country")
 
@@ -34,7 +34,7 @@ class CountryController(private val service: CountryApplicationService) {
         }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun exportCountries(query: CountryRequest.List) = with(logger) {
+    fun exportCountries(query: ListCountries) = with(logger) {
         info("GET /api/v1/country/export")
 
         val countries = service.getCountries(query)
@@ -44,7 +44,7 @@ class CountryController(private val service: CountryApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<CountryResponse.Country>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<CountryResponse>(writer).build()
             beanToCsv.write(countries.items)
             writer.flush()
             writer.close()

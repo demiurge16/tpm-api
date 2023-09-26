@@ -18,6 +18,21 @@ open class Country(
     val postalCode: PostalCodeInfo
 ) : Entity<CountryCode>(cca3) {
 
+    class UnknownCountry(code: CountryCode) : Country(
+        code,"xxx",
+        "xxx",
+        Name("Unknown", "Unknown", mapOf()),
+        listOf(),
+        mapOf(),
+        InternationalDirectDialing("", listOf()),
+        listOf(),
+        listOf(),
+        listOf(),
+        mapOf(),
+        "❌",
+        PostalCodeInfo("", "")
+    )
+
     data class Name(
         val common: String,
         val official: String,
@@ -49,18 +64,3 @@ open class Country(
         val regex: String
     )
 }
-
-class UnknownCountry(code: CountryCode) : Country(
-    code,"xxx",
-    "xxx",
-    Name("Unknown", "Unknown", mapOf()),
-    listOf(),
-    mapOf(),
-    InternationalDirectDialing("", listOf()),
-    listOf(),
-    listOf(),
-    listOf(),
-    mapOf(),
-    "❌",
-    PostalCodeInfo("", "")
-)

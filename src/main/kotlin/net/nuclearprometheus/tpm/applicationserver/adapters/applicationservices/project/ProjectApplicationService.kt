@@ -3,9 +3,14 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toDeadlineMovedResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toStartMovedResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.Project as ProjectResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateProject
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.MoveProjectDeadline
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.MoveProjectStart
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.UpdateProject
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectDeadlineMoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectStartMoved
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
@@ -15,6 +20,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserRole
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -30,9 +37,15 @@ class ProjectApplicationService(
 
     private val logger = loggerFor(ProjectApplicationService::class.java)
 
-    fun getProjects(query: FilteredRequest<Project>) = with(logger) {
-        info("getProjects($query)")
-        repository.get(query.toQuery()).map { it.toView() }
+    fun getProjects(query: FilteredRequest<Project>): Page<ProjectResponse> {
+        logger.info("getProjects($query)")
+        val user = userContextProvider.getCurrentUser()
+
+        return if (user.roles.contains(UserRole.ADMIN)) {
+            repository.get(query.toQuery()).map { it.toView() }
+        } else {
+            repository.getProjectsForUser(user.id, query.toQuery()).map { it.toView() }
+        }
     }
 
     fun getProject(id: UUID) = with(logger) {
@@ -41,7 +54,7 @@ class ProjectApplicationService(
         repository.get(ProjectId(id))?.toView() ?: throw NotFoundException("Project with id $id not found")
     }
 
-    fun createProject(request: ProjectRequest.Create): ProjectResponse.Project {
+    fun createProject(request: CreateProject): ProjectResponse {
         logger.info("createProject($request)")
         return service.create(
             title = request.title,
@@ -58,12 +71,11 @@ class ProjectApplicationService(
             externalDeadline = request.externalDeadline,
             budget = request.budget,
             currencyCode = CurrencyCode(request.currencyCode),
-            clientId = ClientId(request.clientId),
-            createdById = userContextProvider.getCurrentUser().id
+            clientId = ClientId(request.clientId)
         ).toView()
     }
 
-    fun updateProject(id: UUID, request: ProjectRequest.Update): ProjectResponse.Project {
+    fun updateProject(id: UUID, request: UpdateProject): ProjectResponse {
         logger.info("updateProject($id, $request)")
         return service.update(
             id = ProjectId(id),
@@ -82,12 +94,12 @@ class ProjectApplicationService(
         ).toView()
     }
 
-    fun moveProjectStart(id: UUID, request: ProjectRequest.MoveStart): ProjectResponse.StartMoved {
+    fun moveProjectStart(id: UUID, request: MoveProjectStart): ProjectStartMoved {
         logger.info("moveProjectStart($id, $request)")
         return service.moveStart(ProjectId(id), request.expectedStart).toStartMovedResponse()
     }
 
-    fun moveProjectDeadline(id: UUID, request: ProjectRequest.MoveDeadline): ProjectResponse.DeadlineMoved {
+    fun moveProjectDeadline(id: UUID, request: MoveProjectDeadline): ProjectDeadlineMoved {
         logger.info("moveProjectDeadline($id, $request)")
         return service.moveDeadlines(ProjectId(id), request.internalDeadline, request.externalDeadline)
             .toDeadlineMovedResponse()

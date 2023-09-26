@@ -5,5 +5,5 @@ import java.util.*
 data class ProjectShortView(
     val id: UUID,
     val title: String,
-    val status: Status
+    val status: ProjectStatus
 )

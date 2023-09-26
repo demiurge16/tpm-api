@@ -3,9 +3,13 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toDeadlineMoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toStartMoved
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.mappers.TaskMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Task as TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskMoveDeadline
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskMoveStart
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.UpdateTask
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskDeadlineMoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskStartMoved
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
@@ -30,7 +34,7 @@ class TaskApplicationService(
 
     private val logger = loggerFor(TaskApplicationService::class.java)
 
-    fun getTasks(query: FilteredRequest<Task>): Page<TaskResponse.Task> {
+    fun getTasks(query: FilteredRequest<Task>): Page<TaskResponse> {
         logger.info("getTasks($query)")
         return repository.get(query.toQuery()).map {
             val project = projectRepository.get(it.projectId) ?: throw IllegalStateException("Project with id ${it.projectId} not found")
@@ -38,7 +42,7 @@ class TaskApplicationService(
         }
     }
 
-    fun getTask(taskId: UUID): TaskResponse.Task {
+    fun getTask(taskId: UUID): TaskResponse {
         logger.info("getTask($taskId)")
 
         val task = repository.get(TaskId(taskId)) ?: throw NotFoundException("Task with id $taskId not found")
@@ -47,7 +51,7 @@ class TaskApplicationService(
         return task.toView(project)
     }
 
-    fun updateTask(taskId: UUID, request: TaskRequest.Update): TaskResponse.Task {
+    fun updateTask(taskId: UUID, request: UpdateTask): TaskResponse {
         logger.info("updateTask($taskId, $request)")
 
         val task = service.update(
@@ -68,12 +72,12 @@ class TaskApplicationService(
         return task.toView(project)
     }
 
-    fun moveStart(taskId: UUID, request: TaskRequest.MoveStart): TaskResponse.StartMoved {
+    fun moveStart(taskId: UUID, request: TaskMoveStart): TaskStartMoved {
         logger.info("moveStart($taskId)")
         return service.moveStart(TaskId(taskId), request.start).toStartMoved()
     }
 
-    fun moveDeadline(taskId: UUID, request: TaskRequest.MoveDeadline): TaskResponse.DeadlineMoved {
+    fun moveDeadline(taskId: UUID, request: TaskMoveDeadline): TaskDeadlineMoved {
         logger.info("moveDeadline($taskId)")
         return service.moveDeadline(TaskId(taskId), request.deadline).toDeadlineMoved()
     }

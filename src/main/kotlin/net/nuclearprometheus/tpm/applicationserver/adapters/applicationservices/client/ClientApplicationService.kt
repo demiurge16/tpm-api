@@ -2,8 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClient
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClient
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
@@ -44,7 +45,7 @@ class ClientApplicationService(
         }
 
     @CacheEvict("clients-cache", allEntries = true)
-    fun createClient(request: ClientRequest.Create) =
+    fun createClient(request: CreateClient) =
         with(logger) {
             info("createClient($request)")
 
@@ -64,7 +65,7 @@ class ClientApplicationService(
         }
 
     @CacheEvict("clients-cache", allEntries = true)
-    fun updateClient(id: UUID, request: ClientRequest.Update) =
+    fun updateClient(id: UUID, request: UpdateClient) =
         with(logger) {
             info("updateClient($id, $request)")
 

@@ -9,7 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.t
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CountryCode
-import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnknownCountry
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country.UnknownCountry
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CountryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query

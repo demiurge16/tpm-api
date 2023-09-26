@@ -1,11 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.requests.ExpenseRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.Expense as ExpenseResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectExpenseApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectExpenseRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.requests.ListExpenses
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateExpense
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -27,14 +27,14 @@ class ProjectExpenseController(private val service: ProjectExpenseApplicationSer
     private val logger = loggerFor(ProjectExpenseController::class.java)
 
     @GetMapping("")
-    fun getExpenses(@PathVariable(name = "projectId") projectId: UUID, query: ExpenseRequest.List) = with(logger) {
+    fun getExpenses(@PathVariable(name = "projectId") projectId: UUID, query: ListExpenses) = with(logger) {
         info("GET /api/v1/project/$projectId/expense")
 
         ResponseEntity.ok().body(service.getExpensesForProject(projectId, query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(@PathVariable(name = "projectId") projectId: UUID, query: ExpenseRequest.List) = with(logger) {
+    fun export(@PathVariable(name = "projectId") projectId: UUID, query: ListExpenses) = with(logger) {
         info("GET /api/v1/project/$projectId/expense/export")
 
         val expenses = service.getExpensesForProject(projectId, query)
@@ -44,7 +44,7 @@ class ProjectExpenseController(private val service: ProjectExpenseApplicationSer
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseResponse.Expense>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ExpenseResponse>(writer).build()
             beanToCsv.write(expenses.items)
             writer.flush()
             writer.close()
@@ -68,7 +68,7 @@ class ProjectExpenseController(private val service: ProjectExpenseApplicationSer
     }
 
     @PostMapping("")
-    fun createExpense(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: ProjectExpenseRequest.Create) =
+    fun createExpense(@PathVariable(name = "projectId") projectId: UUID, @RequestBody request: CreateExpense) =
         with(logger) {
             info("POST /api/v1/project/$projectId/expense")
 

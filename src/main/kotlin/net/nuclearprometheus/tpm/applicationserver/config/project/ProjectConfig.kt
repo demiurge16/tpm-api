@@ -6,11 +6,10 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectServiceImpl
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.security.ProjectPermissionService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,8 +24,7 @@ class ProjectConfig(
     private val serviceTypeRepository: ServiceTypeRepository,
     private val currencyRepository: CurrencyRepository,
     private val clientRepository: ClientRepository,
-    private val userRepository: UserRepository,
-    private val projectPermissionService: ProjectPermissionService,
+    private val userContextProvider: UserContextProvider
 ) {
 
     @Bean
@@ -40,8 +38,7 @@ class ProjectConfig(
             serviceTypeRepository,
             currencyRepository,
             clientRepository,
-            userRepository,
-            projectPermissionService,
+            userContextProvider,
             loggerFor(ProjectService::class.java)
         )
 
@@ -327,7 +324,7 @@ class ProjectConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("urn:tpm-backend:resource:project:manage")
+                        scopes = mutableListOf("urn:tpm-backend:resource:project:read")
                     },
                     methodConfig {
                         method = "POST"

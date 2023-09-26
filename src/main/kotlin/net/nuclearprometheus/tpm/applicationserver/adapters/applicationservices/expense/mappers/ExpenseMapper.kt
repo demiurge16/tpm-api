@@ -1,40 +1,24 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.CurrencyMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ExpenseCategoryResponseMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.Expense as ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectMapper.toShortView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.mappers.UserMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.Project
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 
 object ExpenseMapper {
 
-    fun Expense.toView(spender: User, project: Project) = ExpenseResponse.Expense(
+    fun Expense.toView(spender: User, project: Project) = ExpenseResponse(
         id = id.value,
         description = description,
-        category = ExpenseCategory(
-            id = category.id.value,
-            name = category.name,
-            description = category.description
-        ),
+        category = category.toView(),
         amount = amount,
-        currency = Currency(
-            code = currency.id.value,
-            name = currency.name
-        ),
+        currency = currency.toView(),
         date = date,
-        teamMember = Spender(
-            userId = spender.id.value,
-            firstName = spender.firstName,
-            lastName = spender.lastName,
-            email = spender.email
-        ),
-        project = ProjectShortView(
-            id = project.id.value,
-            title = project.title,
-            status = ProjectStatus(
-                status = project.status,
-                title = project.status.title,
-                description = project.status.description
-            ),
-        )
+        teamMember = spender.toView(),
+        project = project.toShortView()
     )
 }

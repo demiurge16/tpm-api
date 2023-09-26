@@ -2,7 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectRefdataMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectStatus
-import net.nuclearprometheus.tpm.applicationserver.domain.model.teammember.ProjectRole
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectRole
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation

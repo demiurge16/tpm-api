@@ -2,11 +2,12 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.client
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClient
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ListClients
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClient
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.Client as ClientResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
-import org.springframework.cache.annotation.CacheEvict
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -26,7 +27,7 @@ class ClientController(private val service: ClientApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getClients(query: ClientRequest.List) =
+    fun getClients(query: ListClients) =
         with(logger) {
             info("GET /api/v1/client")
 
@@ -34,7 +35,7 @@ class ClientController(private val service: ClientApplicationService) {
         }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ClientRequest.List) = with(logger) {
+    fun export(query: ListClients) = with(logger) {
         info("GET /api/v1/client/export")
 
         val accuracies = service.getClients(query)
@@ -44,7 +45,7 @@ class ClientController(private val service: ClientApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ClientResponse.Client>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ClientResponse>(writer).build()
             beanToCsv.write(accuracies.items)
             writer.flush()
             writer.close()
@@ -77,7 +78,7 @@ class ClientController(private val service: ClientApplicationService) {
         }
 
     @PostMapping("")
-    fun createClient(@RequestBody request: ClientRequest.Create) =
+    fun createClient(@RequestBody request: CreateClient) =
         with(logger) {
             info("POST /api/v1/client")
 
@@ -85,7 +86,7 @@ class ClientController(private val service: ClientApplicationService) {
         }
 
     @PutMapping("/{clientId}")
-    fun updateClient(@PathVariable(name = "clientId") id: UUID, @RequestBody request: ClientRequest.Update) =
+    fun updateClient(@PathVariable(name = "clientId") id: UUID, @RequestBody request: UpdateClient) =
         with(logger) {
             info("PUT /api/v1/client/$id")
 

@@ -1,8 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.mappers.ExpenseMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.ExpenseResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.expense.responses.Expense as ExpenseResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.ExpenseId
@@ -26,7 +26,7 @@ class ExpenseApplicationService(
 
     private val logger = loggerFor(ExpenseApplicationService::class.java)
 
-    fun getExpenses(query: FilteredRequest<Expense>): Page<ExpenseResponse.Expense> {
+    fun getExpenses(query: FilteredRequest<Expense>): Page<ExpenseResponse> {
         logger.info("getExpenses($query)")
         return repository.get(query.toQuery())
             .map {
@@ -41,7 +41,7 @@ class ExpenseApplicationService(
             }
     }
 
-    fun getExpense(expenseId: UUID): ExpenseResponse.Expense {
+    fun getExpense(expenseId: UUID): ExpenseResponse {
         logger.info("getExpense($expenseId)")
         return repository.get(ExpenseId(expenseId))
             ?.let {

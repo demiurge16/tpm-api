@@ -1,13 +1,14 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientType
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.Country
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toView
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientStatus
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.Client as ClientResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.CountryMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 
 object ClientMapper {
 
-    fun Client.toView() = ClientResponse.Client(
+    fun Client.toView() = ClientResponse(
         id = id.value,
         name = name,
         email = email,
@@ -16,22 +17,14 @@ object ClientMapper {
         city = city,
         state = state,
         zip = zip,
-        country = Country(
-            code = country.id.value,
-            name = country.name.official
-        ),
+        country = country.toView(),
         vat = vat,
         notes = notes,
-        type = ClientType(
-            id = type.id.value,
-            name = type.name,
-            description = type.description,
-            corporate = type.corporate
-        ),
+        type = type.toView(),
         active = active
     )
 
-    fun Client.toActivityStatus() = ClientResponse.Status(
+    fun Client.toActivityStatus() = ClientStatus(
         id = id.value,
         active = active
     )

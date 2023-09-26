@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.ProjectResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.responses.Project as ProjectResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -25,13 +25,13 @@ class ProjectController(private val service: ProjectApplicationService) {
     private val logger = loggerFor(ProjectController::class.java)
 
     @GetMapping("")
-    fun getProjects(query: ProjectRequest.List) = with(logger) {
+    fun getProjects(query: ListProjects) = with(logger) {
         info("GET /api/v1/project")
         ResponseEntity.ok().body(service.getProjects(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ProjectRequest.List) = with(logger) {
+    fun export(query: ListProjects) = with(logger) {
         info("GET /api/v1/project/export")
 
         val files = service.getProjects(query)
@@ -41,7 +41,7 @@ class ProjectController(private val service: ProjectApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ProjectResponse.Project>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ProjectResponse>(writer).build()
             beanToCsv.write(files.items)
             writer.flush()
             writer.close()
@@ -71,25 +71,25 @@ class ProjectController(private val service: ProjectApplicationService) {
     }
 
     @PostMapping("")
-    fun createProject(@RequestBody request: ProjectRequest.Create) = with(logger) {
+    fun createProject(@RequestBody request: CreateProject) = with(logger) {
         info("POST /api/v1/project")
         ResponseEntity.ok().body(service.createProject(request))
     }
 
     @PutMapping("/{projectId}")
-    fun updateProject(@PathVariable(name = "projectId") id: UUID, @RequestBody request: ProjectRequest.Update) = with(logger) {
+    fun updateProject(@PathVariable(name = "projectId") id: UUID, @RequestBody request: UpdateProject) = with(logger) {
         info("PUT /api/v1/project/$id")
         ResponseEntity.ok().body(service.updateProject(id, request))
     }
 
     @PatchMapping("/{projectId}/move-start")
-    fun moveStart(@PathVariable(name = "projectId") id: UUID, @RequestBody request: ProjectRequest.MoveStart) = with(logger) {
+    fun moveStart(@PathVariable(name = "projectId") id: UUID, @RequestBody request: MoveProjectStart) = with(logger) {
         info("PATCH /api/v1/project/$id/move-start")
         ResponseEntity.ok().body(service.moveProjectStart(id, request))
     }
 
     @PatchMapping("/{projectId}/move-deadline")
-    fun moveDeadline(@PathVariable(name = "projectId") id: UUID, @RequestBody request: ProjectRequest.MoveDeadline) = with(logger) {
+    fun moveDeadline(@PathVariable(name = "projectId") id: UUID, @RequestBody request: MoveProjectDeadline) = with(logger) {
         info("PATCH /api/v1/project/$id/move-deadline")
         ResponseEntity.ok().body(service.moveProjectDeadline(id, request))
     }

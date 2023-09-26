@@ -7,7 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 

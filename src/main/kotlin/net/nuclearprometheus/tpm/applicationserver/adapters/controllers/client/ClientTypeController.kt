@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.client
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientTypeApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientTypeRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientTypeResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClientType
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ListClientTypes
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClientType
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientType as ClientTypeResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,7 +26,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
     private val logger = loggerFor(this::class.java)
 
     @GetMapping("")
-    fun getClientTypes(query: ClientTypeRequest.List) =
+    fun getClientTypes(query: ListClientTypes) =
         with(logger) {
             info("GET /api/v1/client-type")
 
@@ -32,7 +34,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
         }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: ClientTypeRequest.List) = with(logger) {
+    fun export(query: ListClientTypes) = with(logger) {
         info("GET /api/v1/client-type/export")
 
         val clientTypes = service.getClientTypes(query)
@@ -42,7 +44,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<ClientTypeResponse.ClientType>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<ClientTypeResponse>(writer).build()
             beanToCsv.write(clientTypes.items)
             writer.flush()
             writer.close()
@@ -75,7 +77,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
         }
 
     @PostMapping("")
-    fun createClientType(@RequestBody request: ClientTypeRequest.Create) =
+    fun createClientType(@RequestBody request: CreateClientType) =
         with(logger) {
             info("POST /api/v1/client-type")
 
@@ -83,7 +85,7 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
         }
 
     @PutMapping("/{clientTypeId}")
-    fun updateClientType(@PathVariable(name = "clientTypeId") id: UUID, @RequestBody request: ClientTypeRequest.Update) =
+    fun updateClientType(@PathVariable(name = "clientTypeId") id: UUID, @RequestBody request: UpdateClientType) =
         with(logger) {
             info("PUT /api/v1/client-type/$id")
 

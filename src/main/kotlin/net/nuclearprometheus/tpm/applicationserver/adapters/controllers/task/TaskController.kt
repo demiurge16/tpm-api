@@ -2,9 +2,12 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.task
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.TaskApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.TaskResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.responses.Task as TaskResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.ListTasks
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskMoveDeadline
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.TaskMoveStart
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.task.requests.UpdateTask
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -26,13 +29,13 @@ class TaskController(private val service: TaskApplicationService) {
     private val logger = loggerFor(TaskController::class.java)
 
     @GetMapping("")
-    fun getTasks(query: TaskRequest.List) = with(logger) {
+    fun getTasks(query: ListTasks) = with(logger) {
         info("GET /api/v1/task")
         ResponseEntity.ok().body(service.getTasks(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: TaskRequest.List) = with(logger) {
+    fun export(query: ListTasks) = with(logger) {
         info("GET /api/v1/project/export")
 
         val files = service.getTasks(query)
@@ -42,7 +45,7 @@ class TaskController(private val service: TaskApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<TaskResponse.Task>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<TaskResponse>(writer).build()
             beanToCsv.write(files.items)
             writer.flush()
             writer.close()
@@ -73,21 +76,21 @@ class TaskController(private val service: TaskApplicationService) {
     }
 
     @PutMapping("/{taskId}")
-    fun updateTask(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: TaskRequest.Update) =
+    fun updateTask(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: UpdateTask) =
         with(logger) {
             info("PUT /api/v1/task/$taskId")
             ResponseEntity.ok().body(service.updateTask(taskId, request))
         }
 
     @PatchMapping("/{taskId}/move-start")
-    fun moveStart(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: TaskRequest.MoveStart) =
+    fun moveStart(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: TaskMoveStart) =
         with(logger) {
             info("PATCH /api/v1/task/$taskId/move-start")
             ResponseEntity.ok().body(service.moveStart(taskId, request))
         }
 
     @PatchMapping("/{taskId}/move-deadline")
-    fun moveDeadline(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: TaskRequest.MoveDeadline) =
+    fun moveDeadline(@PathVariable(name = "taskId") taskId: UUID, @RequestBody request: TaskMoveDeadline) =
         with(logger) {
             info("PATCH /api/v1/task/$taskId/move-deadline")
             ResponseEntity.ok().body(service.moveDeadline(taskId, request))

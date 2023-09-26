@@ -1,8 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.mappers.UserMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.responses.UserResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.responses.User as UserResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
@@ -21,17 +21,17 @@ class UserApplicationService(
 
     private val logger = loggerFor(UserApplicationService::class.java)
 
-    fun getUsers(query: FilteredRequest<User>): Page<UserResponse.User> {
+    fun getUsers(query: FilteredRequest<User>): Page<UserResponse> {
         logger.info("getUsers($query)")
         return userRepository.get(query.toQuery()).map { it.toView() }
     }
 
-    fun getUser(userId: UUID): UserResponse.User {
+    fun getUser(userId: UUID): UserResponse {
         logger.info("getUser($userId)")
         return userRepository.get(UserId(userId))?.toView() ?: throw NotFoundException("User with id $userId not found")
     }
 
-    fun getCurrentUser(): UserResponse.User {
+    fun getCurrentUser(): UserResponse {
         logger.info("getCurrentUser()")
         return userContextProvider.getCurrentUser().toView()
     }

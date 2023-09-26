@@ -2,8 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ExpenseCategoryResponseMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.mappers.ExpenseCategoryResponseMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ExpenseCategoryRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateExpenseCategory
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
@@ -35,7 +36,7 @@ class ExpenseCategoryApplicationService(
         repository.get(ExpenseCategoryId(id))?.toView() ?: throw NotFoundException("Expense category with id $id not found")
     }
 
-    fun createExpenseCategory(request: ExpenseCategoryRequest.Create) = with(logger) {
+    fun createExpenseCategory(request: CreateExpenseCategory) = with(logger) {
         info("createExpenseCategory($request)")
 
         service.create(
@@ -44,7 +45,7 @@ class ExpenseCategoryApplicationService(
         ).toView()
     }
 
-    fun updateExpenseCategory(id: UUID, request: ExpenseCategoryRequest.Update) = with(logger) {
+    fun updateExpenseCategory(id: UUID, request: UpdateExpenseCategory) = with(logger) {
         info("updateExpenseCategory($id, $request)")
 
         service.update(

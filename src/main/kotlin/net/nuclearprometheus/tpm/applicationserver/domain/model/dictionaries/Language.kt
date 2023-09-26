@@ -10,14 +10,16 @@ open class Language(
     val scope: LanguageScope,
     val type: LanguageType,
     val name: String
-) : Entity<LanguageCode>(code)
+) : Entity<LanguageCode>(code) {
 
-data class UnknownLanguage(override val code: LanguageCode) : Language(
-    code = code,
-    iso6392T = null,
-    iso6392B = null,
-    iso6391 = null,
-    scope = LanguageScope.SPECIAL,
-    type = LanguageType.SPECIAL,
-    name = "Unknown"
-)
+
+    data class UnknownLanguage(override val code: LanguageCode) : Language(
+        code = code,
+        iso6392T = null,
+        iso6392B = null,
+        iso6391 = null,
+        scope = LanguageScope.SPECIAL,
+        type = LanguageType.SPECIAL,
+        name = "Unknown"
+    )
+}

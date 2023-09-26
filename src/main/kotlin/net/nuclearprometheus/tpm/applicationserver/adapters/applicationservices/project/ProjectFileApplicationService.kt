@@ -1,12 +1,12 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.FileResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.mappers.ProjectFileMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.File as FileResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.mappers.FileMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
@@ -34,7 +34,7 @@ class ProjectFileApplicationService(
 
     private val logger = loggerFor(ProjectFileApplicationService::class.java)
 
-    fun getFilesForProject(projectId: UUID, query: FilteredRequest<File>): Page<FileResponse.File> {
+    fun getFilesForProject(projectId: UUID, query: FilteredRequest<File>): Page<FileResponse> {
         logger.info("getFiles($projectId)")
         return fileRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery()).map { it.toView() }
     }

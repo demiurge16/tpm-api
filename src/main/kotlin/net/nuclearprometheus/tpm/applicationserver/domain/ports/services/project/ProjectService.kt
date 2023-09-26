@@ -25,8 +25,7 @@ interface ProjectService {
         externalDeadline: ZonedDateTime,
         budget: BigDecimal,
         currencyCode: CurrencyCode,
-        clientId: ClientId,
-        createdById: UserId
+        clientId: ClientId
     ): Project
 
     fun update(

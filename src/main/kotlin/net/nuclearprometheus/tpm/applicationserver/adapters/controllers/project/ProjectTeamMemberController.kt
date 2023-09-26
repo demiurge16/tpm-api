@@ -1,11 +1,10 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectTeamMemberApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.ProjectTeamMemberRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.requests.CreateTeamMember
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAddedException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyAssignedRoleException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectTeamMemberAlreadyHasRoleException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -29,7 +28,7 @@ class ProjectTeamMemberController(
     @PostMapping("")
     fun addTeamMember(
         @PathVariable(name = "projectId") projectId: UUID,
-        @RequestBody request: ProjectTeamMemberRequest.Create
+        @RequestBody request: CreateTeamMember
     ) = with(logger) {
         info("POST /api/v1/project/$projectId/team-member")
 
@@ -53,19 +52,11 @@ class ProjectTeamMemberController(
         ResponseEntity.notFound().build<Void>()
     }
 
-    @ExceptionHandler(ProjectTeamMemberAlreadyAddedException::class)
-    fun handleProjectTeamMemberAlreadyAddedException(e: ProjectTeamMemberAlreadyAddedException) = with(logger) {
+    @ExceptionHandler(ProjectTeamMemberAlreadyHasRoleException::class)
+    fun handleProjectTeamMemberAlreadyAddedException(e: ProjectTeamMemberAlreadyHasRoleException) = with(logger) {
         warn("ProjectTeamMemberAlreadyAddedException: ${e.message}")
         ResponseEntity.badRequest().body(
-            ErrorResponse(e.message ?: "Project team member already added")
-        )
-    }
-
-    @ExceptionHandler(ProjectTeamMemberAlreadyAssignedRoleException::class)
-    fun handleProjectTeamMemberAlreadyAssignedRoleException(e: ProjectTeamMemberAlreadyAssignedRoleException) = with(logger) {
-        warn("ProjectTeamMemberAlreadyAssignedRoleException: ${e.message}")
-        ResponseEntity.badRequest().body(
-            ErrorResponse(e.message ?: "Project team member already assigned role")
+            ErrorResponse(e.message ?: "Project team member already has role")
         )
     }
 

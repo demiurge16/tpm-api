@@ -2,8 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.diction
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.PriorityApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.PriorityRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.PriorityResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreatePriority
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListPriorities
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdatePriority
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Priority as PriorityResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,14 +26,14 @@ class PriorityController(private val service: PriorityApplicationService) {
     private val logger = loggerFor(PriorityController::class.java)
 
     @GetMapping("")
-    fun getAll(query: PriorityRequest.List) = with(logger) {
+    fun getAll(query: ListPriorities) = with(logger) {
         info("GET /api/v1/priority")
 
         ResponseEntity.ok().body(service.getPriorities(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: PriorityRequest.List) = with(logger) {
+    fun export(query: ListPriorities) = with(logger) {
         info("GET /api/v1/priority/export")
 
         val priorities = service.getPriorities(query)
@@ -41,7 +43,7 @@ class PriorityController(private val service: PriorityApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<PriorityResponse.Priority>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<PriorityResponse>(writer).build()
             beanToCsv.write(priorities.items)
             writer.flush()
             writer.close()
@@ -72,14 +74,14 @@ class PriorityController(private val service: PriorityApplicationService) {
     }
 
     @PostMapping("")
-    fun create(@RequestBody request: PriorityRequest.Create) = with(logger) {
+    fun create(@RequestBody request: CreatePriority) = with(logger) {
         info("POST /api/v1/priority")
 
         ResponseEntity.ok().body(service.createPriority(request))
     }
 
     @PutMapping("/{priorityId}")
-    fun update(@PathVariable(name = "priorityId") id: UUID, @RequestBody request: PriorityRequest.Update) = with(logger) {
+    fun update(@PathVariable(name = "priorityId") id: UUID, @RequestBody request: UpdatePriority) = with(logger) {
         info("PUT /api/v1/priority/$id")
 
         ResponseEntity.ok().body(service.updatePriority(id, request))

@@ -9,4 +9,7 @@ class User(
     val username: String,
     val email: String,
     val roles: List<UserRole>
-) : Entity<UserId>(id)
+) : Entity<UserId>(id) {
+
+    fun hasRole(role: UserRole) = roles.contains(role)
+}

@@ -2,8 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toActivityStatus
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.mappers.ClientTypeMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ClientTypeRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClientType
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClientType
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTypeId
@@ -42,7 +43,7 @@ class ClientTypeApplicationService(
         }
 
     @CacheEvict(value = ["client-types-cache"], allEntries = true)
-    fun createClientType(request: ClientTypeRequest.Create) =
+    fun createClientType(request: CreateClientType) =
         with(logger) {
             info("createClientType($request)")
 
@@ -50,7 +51,7 @@ class ClientTypeApplicationService(
         }
 
     @CacheEvict(value = ["client-types-cache"], allEntries = true)
-    fun updateClientType(id: UUID, request: ClientTypeRequest.Update) =
+    fun updateClientType(id: UUID, request: UpdateClientType) =
         with(logger) {
             info("updateClientType($id, $request)")
 

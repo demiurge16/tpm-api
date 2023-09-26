@@ -1,23 +1,17 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.Author
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.Dislike
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.Like
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ReplyResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.*
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.Reply as ReplyResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.user.mappers.UserMapper.toView
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Reply
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 
 object ReplyMapper {
 
-    fun Reply.toView() = ReplyResponse.View(
+    fun Reply.toView() = ReplyResponse(
         id = id.value,
         content = content,
-        author = Author(
-            userId = author.id.value,
-            firstName = author.firstName,
-            lastName = author.lastName,
-            email = author.email
-        ),
+        author = author.toView(),
         createdAt = createdAt,
         deleted = deleted,
         parentReplyId = parentReplyId?.value,
@@ -26,73 +20,43 @@ object ReplyMapper {
             Like(
                 id = it.id.value,
                 createdAt = it.createdAt,
-                author = Author(
-                    userId = it.author.id.value,
-                    firstName = it.author.firstName,
-                    lastName = it.author.lastName,
-                    email = it.author.email
-                )
+                author = author.toView()
             )
         },
         dislikes = replyDislikes.map {
             Dislike(
                 id = it.id.value,
                 createdAt = it.createdAt,
-                author = Author(
-                    userId = it.author.id.value,
-                    firstName = it.author.firstName,
-                    lastName = it.author.lastName,
-                    email = it.author.email
-                )
+                author = author.toView()
             )
         }
     )
 
     fun Reply.toNewLike(author: User) = replyLikes.first { it.author.id == author.id }.let {
-        ReplyResponse.NewLike(
+        ReplyNewLike(
             id = it.id.value,
             createdAt = it.createdAt,
-            author = Author(
-                userId = it.author.id.value,
-                firstName = it.author.firstName,
-                lastName = it.author.lastName,
-                email = it.author.email
-            )
+            author = author.toView()
         )
     }
 
-    fun Reply.toLikeRemoved(author: User) = ReplyResponse.LikeRemoved(
+    fun Reply.toLikeRemoved(author: User) = ReplyLikeRemoved(
         id = id.value,
         createdAt = createdAt,
-        author = Author(
-            userId = author.id.value,
-            firstName = author.firstName,
-            lastName = author.lastName,
-            email = author.email
-        )
+        author = author.toView()
     )
 
     fun Reply.toNewDislike(author: User) = replyDislikes.first { it.author.id == author.id }.let {
-        ReplyResponse.NewDislike(
+        ReplyNewDislike(
             id = it.id.value,
             createdAt = it.createdAt,
-            author = Author(
-                userId = it.author.id.value,
-                firstName = it.author.firstName,
-                lastName = it.author.lastName,
-                email = it.author.email
-            )
+            author = author.toView()
         )
     }
 
-    fun Reply.toDislikeRemoved(author: User) = ReplyResponse.DislikeRemoved(
+    fun Reply.toDislikeRemoved(author: User) = ReplyDislikeRemoved(
         id = id.value,
         createdAt = createdAt,
-        author = Author(
-            userId = author.id.value,
-            firstName = author.firstName,
-            lastName = author.lastName,
-            email = author.email
-        )
+        author = author.toView()
     )
 }

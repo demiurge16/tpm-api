@@ -1,8 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.project
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.requests.FileRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.FileResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.requests.ListFiles
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.File as FileResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.project.ProjectFileApplicationService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
@@ -27,14 +27,14 @@ class ProjectFileController(
     private val logger = loggerFor(ProjectFileController::class.java)
 
     @GetMapping("")
-    fun getFiles(@PathVariable(name = "projectId") projectId: UUID, query: FileRequest.List) = with(logger) {
+    fun getFiles(@PathVariable(name = "projectId") projectId: UUID, query: ListFiles) = with(logger) {
         info("GET /api/v1/project/$projectId/file")
 
         ResponseEntity.ok().body(service.getFilesForProject(projectId, query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(@PathVariable(name = "projectId") projectId: UUID, query: FileRequest.List) = with(logger) {
+    fun export(@PathVariable(name = "projectId") projectId: UUID, query: ListFiles) = with(logger) {
         info("GET /api/v1/project/$projectId/file/export")
 
         val files = service.getFilesForProject(projectId, query)
@@ -44,7 +44,7 @@ class ProjectFileController(
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<FileResponse.File>(writer).build()
+            val beanToCsv = StatefulBeanToCsvBuilder<FileResponse>(writer).build()
             beanToCsv.write(files.items)
             writer.flush()
             writer.close()

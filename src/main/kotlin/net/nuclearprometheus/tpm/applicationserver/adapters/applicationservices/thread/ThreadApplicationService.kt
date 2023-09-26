@@ -5,14 +5,18 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toNewDislike
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toNewLike
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.mappers.ThreadMapper.toView
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.ThreadRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadResponse
-import net.nuclearprometheus.tpm.applicationserver.adapters.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.Thread as ThreadResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.requests.FilteredRequest
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.requests.UpdateThread
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadDislikeRemoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadLikeRemoved
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadNewDislike
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.thread.responses.ThreadNewLike
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.teammember.TeamMemberRepository
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.thread.ThreadRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
@@ -35,7 +39,7 @@ class ThreadApplicationService(
 
     private val logger = loggerFor(ThreadApplicationService::class.java)
 
-    fun getThreads(query: FilteredRequest<Thread>): Page<ThreadResponse.View> {
+    fun getThreads(query: FilteredRequest<Thread>): Page<ThreadResponse> {
         logger.info("getThreads($query)")
 
         return repository.get(query.toQuery())
@@ -46,7 +50,7 @@ class ThreadApplicationService(
             }
     }
 
-    fun getThread(id: UUID): ThreadResponse.View {
+    fun getThread(id: UUID): ThreadResponse {
         logger.info("getThread($id)")
 
         val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread with id $id not found")
@@ -55,7 +59,7 @@ class ThreadApplicationService(
         return thread.toView(project)
     }
 
-    fun updateThread(id: UUID, request: ThreadRequest.Update): ThreadResponse.View {
+    fun updateThread(id: UUID, request: UpdateThread): ThreadResponse {
         logger.info("updateThread($id, $request)")
 
         val updatedThread = service.update(
@@ -69,7 +73,7 @@ class ThreadApplicationService(
         return updatedThread.toView(project)
     }
 
-    fun addLike(id: UUID): ThreadResponse.NewLike {
+    fun addLike(id: UUID): ThreadNewLike {
         logger.info("addLike($id)")
 
         val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread with id $id not found")
@@ -77,41 +81,41 @@ class ThreadApplicationService(
         teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
             ?: throw IllegalStateException("User with id ${user.id} is not a member of project with id ${thread.projectId}")
 
-        return service.addLike(ThreadId(id), user.id).toNewLike(user)
+        return service.addLike(ThreadId(id)).toNewLike(user)
     }
 
-    fun removeLike(id: UUID): ThreadResponse.LikeRemoved {
+    fun removeLike(id: UUID): ThreadLikeRemoved {
         logger.info("removeLike($id)")
 
         val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread not found")
         val user = userContextProvider.getCurrentUser()
         teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
             ?: throw IllegalStateException("Team member not found")
-        val updatedThread = service.removeLike(ThreadId(id), user.id)
+        val updatedThread = service.removeLike(ThreadId(id))
 
         return updatedThread.toLikeRemoved(user)
     }
 
-    fun addDislike(id: UUID): ThreadResponse.NewDislike {
+    fun addDislike(id: UUID): ThreadNewDislike {
         logger.info("addDislike($id)")
 
         val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread not found")
         val user = userContextProvider.getCurrentUser()
         teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
             ?: throw IllegalStateException("Team member not found")
-        val updatedThread = service.addDislike(ThreadId(id), user.id)
+        val updatedThread = service.addDislike(ThreadId(id))
 
         return updatedThread.toNewDislike(user)
     }
 
-    fun removeDislike(id: UUID): ThreadResponse.DislikeRemoved {
+    fun removeDislike(id: UUID): ThreadDislikeRemoved {
         logger.info("removeDislike($id)")
 
         val thread = repository.get(ThreadId(id)) ?: throw NotFoundException("Thread not found")
         val user = userContextProvider.getCurrentUser()
         teamMemberRepository.getByUserIdAndProjectId(user.id, thread.projectId)
             ?: throw IllegalStateException("Team member not found")
-        val updatedThread = service.removeDislike(ThreadId(id), user.id)
+        val updatedThread = service.removeDislike(ThreadId(id))
 
         return updatedThread.toDislikeRemoved(user)
     }

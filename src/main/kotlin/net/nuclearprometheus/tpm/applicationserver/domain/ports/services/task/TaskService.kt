@@ -58,3 +58,4 @@ interface TaskService {
     fun cancel(id: TaskId): Task
     fun reopen(id: TaskId): Task
 }
+

@@ -2,8 +2,8 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.file
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.FileApplicationService
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.requests.FileRequest
-import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.FileResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.requests.ListFiles
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.file.responses.File as FileResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -24,13 +24,13 @@ class FileController(private val service: FileApplicationService) {
     private val logger = loggerFor(FileController::class.java)
 
     @GetMapping("")
-    fun getFiles(query: FileRequest.List) = with(logger) {
+    fun getFiles(query: ListFiles) = with(logger) {
         info("GET /api/v1/file")
         ResponseEntity.ok().body(service.getFiles(query))
     }
 
     @GetMapping("/export", produces = ["text/csv"])
-    fun export(query: FileRequest.List) = with(logger) {
+    fun export(query: ListFiles) = with(logger) {
         info("GET /api/v1/file/export")
 
         val files = service.getFiles(query)
@@ -40,7 +40,7 @@ class FileController(private val service: FileApplicationService) {
 
         thread {
             val writer = OutputStreamWriter(output)
-            val beanToCsv = StatefulBeanToCsvBuilder<FileResponse.File>(writer)
+            val beanToCsv = StatefulBeanToCsvBuilder<FileResponse>(writer)
                 .build()
             beanToCsv.write(files.items)
             writer.flush()
@@ -80,7 +80,7 @@ class FileController(private val service: FileApplicationService) {
         ResponseEntity.ok()
             .headers(
                 HttpHeaders().apply {
-                    add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$name")
+                    add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=${name.name}")
                     add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
                     add(HttpHeaders.PRAGMA, "no-cache")
                     add(HttpHeaders.EXPIRES, "0")
