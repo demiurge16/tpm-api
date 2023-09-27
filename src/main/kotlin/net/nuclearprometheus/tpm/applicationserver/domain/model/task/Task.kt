@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskStatusChangeException
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
@@ -140,56 +141,56 @@ class Task(
 
     fun start() {
         if (status != TaskStatus.ASSIGNED) {
-            throw TaskValidationException("Task must be assigned to someone to start")
+            throw TaskStatusChangeException("Task must be assigned to someone to start")
         }
         status = TaskStatus.IN_PROGRESS
     }
 
     fun startReview() {
         if (status != TaskStatus.IN_PROGRESS) {
-            throw TaskValidationException("Task must be in progress to complete")
+            throw TaskStatusChangeException("Task must be in progress to complete")
         }
         status = TaskStatus.IN_REVIEW
     }
 
     fun reject() {
         if (status != TaskStatus.IN_REVIEW) {
-            throw TaskValidationException("Task must be in needs review to request revisions")
+            throw TaskStatusChangeException("Task must be in needs review to request revisions")
         }
         status = TaskStatus.IN_PROGRESS
     }
 
     fun approve() {
         if (status != TaskStatus.IN_REVIEW) {
-            throw TaskValidationException("Task must be in review to complete revisions")
+            throw TaskStatusChangeException("Task must be in review to complete revisions")
         }
         status = TaskStatus.READY_TO_DELIVER
     }
 
     fun complete() {
         if (status != TaskStatus.READY_TO_DELIVER) {
-            throw TaskValidationException("Task must be in needs review to deliver")
+            throw TaskStatusChangeException("Task must be in needs review to deliver")
         }
         status = TaskStatus.COMPLETED
     }
 
     fun putOnHold() {
         if (status !in listOf(TaskStatus.ASSIGNED, TaskStatus.IN_PROGRESS)) {
-            throw TaskValidationException("Task must be in progress to put on hold")
+            throw TaskStatusChangeException("Task must be in progress to put on hold")
         }
         status = TaskStatus.ON_HOLD
     }
 
     fun resume() {
         if (status != TaskStatus.ON_HOLD) {
-            throw TaskValidationException("Task must be on hold to resume")
+            throw TaskStatusChangeException("Task must be on hold to resume")
         }
         status = TaskStatus.IN_PROGRESS
     }
 
     fun cancel() {
         if (status == TaskStatus.COMPLETED) {
-            throw TaskValidationException("Task cannot be cancelled once it has been completed")
+            throw TaskStatusChangeException("Task cannot be cancelled once it has been completed")
         }
         status = TaskStatus.CANCELLED
         assignee = null
@@ -197,7 +198,7 @@ class Task(
 
     fun reopen() {
         if (status != TaskStatus.CANCELLED) {
-            throw TaskValidationException("Task can only be reopened if it has been cancelled")
+            throw TaskStatusChangeException("Task can only be reopened if it has been cancelled")
         }
         status = TaskStatus.DRAFT
         assignee = null
