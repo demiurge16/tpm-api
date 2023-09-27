@@ -32,7 +32,7 @@ class ThreadServiceImpl(
         val author = userRepository.get(currentUser.id) ?: throw NotFoundException("Author with id ${currentUser.id} not found")
         val project = projectRepository.get(projectId) ?: throw NotFoundException("Project with id $projectId not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             throw ProjectAccessException("User ${currentUser.id} is not a member of project $projectId")
         }
 
@@ -55,7 +55,7 @@ class ThreadServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
 
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot update thread $id")
         }
 
@@ -175,7 +175,7 @@ class ThreadServiceImpl(
 
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot change status of thread $id")
         }
 
@@ -189,7 +189,7 @@ class ThreadServiceImpl(
 
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot change status of thread $id")
         }
 
@@ -203,7 +203,7 @@ class ThreadServiceImpl(
 
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot change status of thread $id")
         }
 
@@ -217,7 +217,7 @@ class ThreadServiceImpl(
 
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot change status of thread $id")
         }
 
@@ -231,7 +231,7 @@ class ThreadServiceImpl(
 
         val currentUser = userContextProvider.getCurrentUser()
         val thread = repository.get(id) ?: throw NotFoundException("Thread with id $id not found")
-        if (thread.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (thread.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot change status of thread $id")
         }
 

@@ -140,7 +140,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to move project start")
         }
 
@@ -152,7 +152,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to move project deadlines")
         }
 
@@ -164,7 +164,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -176,7 +176,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -188,7 +188,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -200,7 +200,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -212,7 +212,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -224,7 +224,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -236,7 +236,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -248,7 +248,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -260,7 +260,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -272,7 +272,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -284,7 +284,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -296,7 +296,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 
@@ -308,7 +308,7 @@ class ProjectServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val project = projectRepository.get(id) ?: throw NotFoundException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("User is not allowed to change project status")
         }
 

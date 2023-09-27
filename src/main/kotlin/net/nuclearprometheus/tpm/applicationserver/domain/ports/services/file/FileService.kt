@@ -6,13 +6,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectI
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 
 interface FileService {
-    fun create(
-        name: String,
-        size: Long,
-        type: String,
-        uploaderId: UserId,
-        projectId: ProjectId,
-        location: String
-    ): File
+
+    fun create(name: String, size: Long, type: String, projectId: ProjectId, location: String): File
     fun delete(id: FileId)
 }

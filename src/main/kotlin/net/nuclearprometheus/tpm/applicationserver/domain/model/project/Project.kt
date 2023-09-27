@@ -61,40 +61,6 @@ class Project(
     var threads = threads; private set
     var client = client; private set
 
-    init {
-        validateTitle()
-        validateDates()
-        validateBudget()
-        validateAmount()
-    }
-
-    private fun validateTitle() {
-        if (title.isBlank()) {
-            throw IllegalArgumentException("Title cannot be blank")
-        }
-    }
-
-    private fun validateDates() {
-        if (expectedStart.isAfter(internalDeadline)) {
-            throw ProjectValidationException("Expected start date must be before internal deadline")
-        }
-        if (internalDeadline.isAfter(externalDeadline)) {
-            throw ProjectValidationException("Internal deadline must be before external deadline")
-        }
-    }
-
-    private fun validateAmount() {
-        if (amount <= 0) {
-            throw ProjectValidationException("Amount must be greater than 0")
-        }
-    }
-
-    private fun validateBudget() {
-        if (budget <= BigDecimal.ZERO) {
-            throw ProjectValidationException("Budget must be greater than 0")
-        }
-    }
-
     fun update(
         title: String,
         description: String,
@@ -121,23 +87,15 @@ class Project(
         this.budget = budget
         this.currency = currency
         this.client = client
-
-        validateTitle()
-        validateAmount()
-        validateBudget()
     }
 
     fun moveStart(expectedStart: ZonedDateTime) {
         this.expectedStart = expectedStart
-
-        validateDates()
     }
 
     fun moveDeadlines(internalDeadline: ZonedDateTime, externalDeadline: ZonedDateTime) {
         this.internalDeadline = internalDeadline
         this.externalDeadline = externalDeadline
-
-        validateDates()
     }
 
     fun finishDraft() {

@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskStatusChangeException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
@@ -51,37 +50,6 @@ class Task(
     var projectId = projectId; private set
     var timeEntries = timeEntries; private set
 
-    init {
-        validateTitle()
-        validateDates()
-        validateAmount()
-        validateBudget()
-    }
-
-    private fun validateTitle() {
-        if (title.isBlank()) {
-            throw TaskValidationException("Title cannot be blank")
-        }
-    }
-
-    private fun validateDates() {
-        if (deadline.isBefore(expectedStart)) {
-            throw TaskValidationException("Deadline cannot be before expected start")
-        }
-    }
-
-    private fun validateAmount() {
-        if (amount <= 0) {
-            throw TaskValidationException("Amount must be greater than 0")
-        }
-    }
-
-    private fun validateBudget() {
-        if (budget <= BigDecimal.ZERO) {
-            throw TaskValidationException("Budget must be greater than 0")
-        }
-    }
-
     fun update(
         title: String,
         description: String,
@@ -106,20 +74,14 @@ class Task(
         this.amount = amount
         this.budget = budget
         this.currency = currency
-
-        validateTitle()
-        validateAmount()
-        validateBudget()
     }
 
     fun moveStart(expectedStart: ZonedDateTime) {
         this.expectedStart = expectedStart
-        validateDates()
     }
 
     fun moveDeadline(deadline: ZonedDateTime) {
         this.deadline = deadline
-        validateDates()
     }
 
     fun changePriority(priority: Priority) {

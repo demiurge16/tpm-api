@@ -56,7 +56,7 @@ class ReplyServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val reply = repository.get(id) ?: throw NotFoundException("Reply with id $id not found")
 
-        if (reply.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (reply.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ThreadAccessException("User ${currentUser.id} cannot update reply ${reply.id}")
         }
 
@@ -185,7 +185,7 @@ class ReplyServiceImpl(
         val currentUser = userContextProvider.getCurrentUser()
         val reply = repository.get(id) ?: throw NotFoundException("Reply with id $id not found")
 
-        if (reply.author.id != currentUser.id || !currentUser.hasRole(UserRole.ADMIN)) {
+        if (reply.author.id != currentUser.id && !currentUser.hasRole(UserRole.ADMIN)) {
             throw ReplyAccessException("User ${currentUser.id} cannot delete reply ${reply.id}")
         }
 

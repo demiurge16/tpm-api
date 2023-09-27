@@ -15,7 +15,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.logging.Logger
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import java.time.LocalDate
-import java.time.ZonedDateTime
 
 class TimeEntryServiceImpl(
     private val timeEntryRepository: TimeEntryRepository,

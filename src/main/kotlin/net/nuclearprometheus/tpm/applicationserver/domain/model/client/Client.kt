@@ -1,6 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.client
 
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.client.ClientValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
 
@@ -33,21 +32,6 @@ class Client(
     var type: ClientType = type; private set
     var active: Boolean = active; private set
 
-    private fun validateName() {
-        if (name.isBlank()) {
-            throw ClientValidationException("Client name cannot be blank")
-        }
-    }
-
-    private fun validateEmail() {
-        if (email.isBlank()) {
-            throw ClientValidationException("Client email cannot be blank")
-        }
-        if (!email.matches(Regex("^[A-Za-z0-9+_.-]+@(.+)\$"))) {
-            throw ClientValidationException("Client email is not valid")
-        }
-    }
-
     fun update(
         name : String,
         email : String,
@@ -72,9 +56,6 @@ class Client(
         this.vat = vat
         this.notes = notes
         this.type = type
-
-        validateName()
-        validateEmail()
     }
 
     fun activate() {

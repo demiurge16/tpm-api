@@ -29,7 +29,7 @@ class TeamMemberServiceImpl(
         val project = projectRepository.get(projectId) ?: throw NotFoundException("Project does not exist")
         userRepository.get(userId) ?: throw NotFoundException("User does not exist")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             throw ProjectAccessException("Only admin or project manager can add team members and assign project roles")
         }
 

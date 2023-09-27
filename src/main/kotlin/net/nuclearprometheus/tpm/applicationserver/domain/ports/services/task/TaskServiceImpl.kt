@@ -99,12 +99,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not allowed to update task ${task.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to update task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to update task ${task.id}")
         }
@@ -131,12 +131,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             logger.error("User ${currentUser.id} is not allowed to update task ${task.id} start")
             throw TaskAccessException("User ${currentUser.id} is not allowed to update task ${task.id} start")
         }
@@ -150,12 +150,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             logger.error("User ${currentUser.id} is not allowed to update task ${task.id} deadline")
             throw TaskAccessException("User ${currentUser.id} is not allowed to update task ${task.id} deadline")
         }
@@ -169,12 +169,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             logger.error("User ${currentUser.id} is not allowed to update task ${task.id} priority")
             throw TaskAccessException("User ${currentUser.id} is not allowed to update task ${task.id} priority")
         }
@@ -189,7 +189,7 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
@@ -210,7 +210,7 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
@@ -225,12 +225,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to start task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to start task ${task.id}")
         }
@@ -245,12 +245,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to start review of task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to start review of task ${task.id}")
         }
@@ -265,12 +265,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to reject task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to reject task ${task.id}")
         }
@@ -285,12 +285,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to approve task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to approve task ${task.id}")
         }
@@ -305,12 +305,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to put task ${task.id} on hold")
             throw TaskAccessException("User ${currentUser.id} is not allowed to put task ${task.id} on hold")
         }
@@ -325,12 +325,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to resume task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to resume task ${task.id}")
         }
@@ -345,12 +345,12 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMember(currentUser.id)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMember(currentUser.id)) {
             logger.error("User ${currentUser.id} is not a member of project ${project.id}")
             throw ProjectAccessException("User ${currentUser.id} is not a member of project ${project.id}")
         }
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) || task.assignee?.id != currentUser.id) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER) && task.assignee?.id != currentUser.id) {
             logger.error("User ${currentUser.id} is not allowed to complete task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to complete task ${task.id}")
         }
@@ -365,7 +365,7 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             logger.error("User ${currentUser.id} is not allowed to complete task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to complete task ${task.id}")
         }
@@ -380,7 +380,7 @@ class TaskServiceImpl(
         val task = taskRepository.get(id) ?: throw NotFoundException("Task not found")
         val project = projectRepository.get(task.projectId) ?: throw IllegalStateException("Project not found")
 
-        if (!currentUser.hasRole(UserRole.ADMIN) || !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
+        if (!currentUser.hasRole(UserRole.ADMIN) && !project.hasTeamMemberWithRole(currentUser.id, ProjectRole.PROJECT_MANAGER)) {
             logger.error("User ${currentUser.id} is not allowed to reopen task ${task.id}")
             throw TaskAccessException("User ${currentUser.id} is not allowed to reopen task ${task.id}")
         }
