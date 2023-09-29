@@ -5,8 +5,12 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClientType
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ListClientTypes
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClientType
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ValidationErrorResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.ClientType as ClientTypeResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -16,7 +20,7 @@ import java.io.OutputStreamWriter
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 import kotlin.concurrent.thread
 
 @RestController
@@ -108,4 +112,21 @@ class ClientTypeController(private val service: ClientTypeApplicationService) {
             ResponseEntity.ok().body(service.deactivateClientType(id))
         }
 
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
+        logger.warn("NotFoundException: ${e.message}")
+        return ResponseEntity.notFound().build()
+    }
+
+    @ExceptionHandler(ValidationException::class)
+    fun handleValidationException(e: ValidationException): ResponseEntity<ValidationErrorResponse> {
+        logger.warn("ValidationException: ${e.message}")
+        return ResponseEntity.badRequest().body(ValidationErrorResponse("Validation failed", e.errors))
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException): ResponseEntity<ErrorResponse> {
+        logger.warn("IllegalStateException: ${e.message}")
+        return ResponseEntity.internalServerError().body(ErrorResponse(e.message ?: "Illegal state"))
+    }
 }

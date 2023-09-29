@@ -61,12 +61,29 @@ spring:
         default_schema: application
     open-in-view: false
   liquibase:
-    change-log: db/changelog/db.changelog-master.yml
+    change-log: db/changelog/db.changelog-master.xml
     default-schema: application
   security:
     oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: tpm-backend-swagger
+            client-secret: 64e4MeOGEV8mD5qNtPmY8154jRwDp7zv
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/tpm
+            user-info-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
+            authorization-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/auth
+            token-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/token
+            user-name-attribute: preferred_username
       resourceserver:
         jwt:
+          issuer-uri: http://localhost:8081/realms/tpm
           jwk-set-uri: http://localhost:8081/realms/tpm/protocol/openid-connect/certs
   servlet:
     multipart:
@@ -83,3 +100,12 @@ springdoc:
     config-url: /v3/api-docs/swagger-config
     disable-swagger-default-url: true
   packages-to-scan: net.nuclearprometheus.tpm.applicationserver
+
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: on
+    metrics:
+      enabled: on

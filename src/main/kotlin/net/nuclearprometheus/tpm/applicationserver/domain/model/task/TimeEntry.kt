@@ -1,7 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TimeEntryStatusChangeException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TimeEntryValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
 import java.time.LocalDate

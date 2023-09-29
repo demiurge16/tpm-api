@@ -13,7 +13,7 @@ data class Client(
     val state: String,
     val zip: String,
     val country: Country,
-    val vat: String,
+    val vat: String?,
     val notes: String,
     val type: ClientType,
     val active: Boolean,

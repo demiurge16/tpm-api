@@ -4,6 +4,7 @@ import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnfo
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -22,12 +23,49 @@ class SecurityConfiguration(
 ) {
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.cors { it.configurationSource { corsConfiguration() } }
+    @Order(1)
+    fun actuatorFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.securityMatchers { it.requestMatchers("/actuator", "/actuator/**") }
+            .authorizeHttpRequests { it.anyRequest().permitAll() }
+            .cors { it.configurationSource { corsConfiguration() } }
             .csrf { it.disable() }
+
+        return http.build()
+    }
+
+    @Bean
+    @Order(2)
+    fun swaggerFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.securityMatchers { it.requestMatchers("/swagger-ui", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**") }
             .authorizeHttpRequests { it.anyRequest().authenticated() }
+            .oauth2Client {  }
+            .oauth2Login {  }
+            .logout { it.logoutSuccessUrl("/") }
+            .cors { it.configurationSource { corsConfiguration() } }
+            .csrf { it.disable() }
+
+        return http.build()
+    }
+
+    @Bean
+    @Order(3)
+    fun apiFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.securityMatchers { it.requestMatchers("/api/**") }
+            .authorizeHttpRequests { it.requestMatchers("/api/**").authenticated() }
             .oauth2ResourceServer { it.jwt(Customizer.withDefaults()) }
             .addFilterAfter(createPolicyEnforcerFilter(), BearerTokenAuthenticationFilter::class.java)
+            .cors { it.configurationSource { corsConfiguration() } }
+            .csrf { it.disable() }
+
+        return http.build()
+    }
+
+    @Bean
+    @Order(4)
+    fun defaultFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.authorizeHttpRequests { it.anyRequest().permitAll() }
+            .cors { it.configurationSource { corsConfiguration() } }
+            .csrf { it.disable() }
 
         return http.build()
     }
@@ -67,4 +105,3 @@ class SecurityConfiguration(
     @Bean
     fun jwtDecoder(): JwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
 }
-

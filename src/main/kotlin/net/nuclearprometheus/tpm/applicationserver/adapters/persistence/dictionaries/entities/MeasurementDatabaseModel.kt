@@ -3,5 +3,6 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 enum class MeasurementDatabaseModel {
     CHARACTERS,
     POINTS,
-    HOURS
+    HOURS,
+    MINUTES
 }

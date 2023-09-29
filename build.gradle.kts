@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.liquibase.gradle") version "2.2.0"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
@@ -27,7 +26,6 @@ val springCloudVersion: String by extra { "2022.0.4" }
 val liquibaseVersion: String by extra { "4.20.0" }
 val springdocVersion: String by extra { "2.1.0" }
 val minioVersion: String by extra { "8.5.2" }
-val picocliVersion: String by extra { "4.6.3" }
 val keycloakVersion: String by extra { "22.0.1" }
 val openCsvVersion: String by extra { "5.8" }
 val logstashLogbackEncoderVersion: String by extra { "7.4" }
@@ -37,6 +35,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -59,12 +58,6 @@ dependencies {
     implementation("io.minio:minio:$minioVersion")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     runtimeOnly("org.postgresql:postgresql")
-    liquibaseRuntime("info.picocli:picocli:$picocliVersion")
-    liquibaseRuntime("org.liquibase:liquibase-core:$liquibaseVersion")
-    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate6:$liquibaseVersion")
-    liquibaseRuntime("org.postgresql:postgresql")
-    liquibaseRuntime("org.springframework.boot:spring-boot-starter-data-jpa")
-    liquibaseRuntime(sourceSets.getByName("main").output)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.springframework.security:spring-security-test")
@@ -73,21 +66,6 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
-    }
-}
-
-liquibase {
-    activities {
-        create("main") {
-            arguments = mapOf(
-                "driver" to "org.postgresql.Driver",
-                "url" to "jdbc:postgresql://localhost:5432/tpm",
-                "username" to "application",
-                "password" to "1qaz@WSX",
-                "changelogFile" to "./src/main/resources/db/changelog/db.changelog-master.yml",
-                "referenceUrl" to "hibernate:spring:net.nuclearprometheus.tpm.applicationserver.adapters.database?dialect=org.hibernate.dialect.PostgreSQLDialect"
-            )
-        }
     }
 }
 
@@ -104,16 +82,4 @@ tasks.named<Jar>("jar") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-tasks.named("diff") {
-    dependsOn("compileKotlin")
-}
-
-tasks.named("diffChangelog") {
-    dependsOn("compileKotlin")
-}
-
-tasks.named("generateChangelog") {
-    dependsOn("compileKotlin")
 }

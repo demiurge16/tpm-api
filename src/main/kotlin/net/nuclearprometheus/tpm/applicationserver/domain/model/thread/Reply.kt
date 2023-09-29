@@ -1,7 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.thread
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
+import net.nuclearprometheus.tpm.applicationserver.domain.validator.validate
 import java.time.ZonedDateTime
 
 class Reply(
@@ -15,6 +17,18 @@ class Reply(
     parentReplyId: ReplyId? = null,
     threadId: ThreadId
 ) : Entity<ReplyId>(id) {
+
+    init {
+        validate {
+            assert { content.isNotBlank() } otherwise {
+                ValidationError("content", "Content cannot be blank")
+            }
+            assert { id != parentReplyId } otherwise {
+                ValidationError("parentReplyId", "Reply cannot be parent of itself")
+            }
+        }
+    }
+
     var content = content; private set
     var author = author; private set
     var createdAt = createdAt; private set
@@ -25,6 +39,12 @@ class Reply(
     var threadId = threadId; private set
 
     fun update(content: String) {
+        validate {
+            assert { content.isNotBlank() } otherwise {
+                ValidationError("content", "Content cannot be blank")
+            }
+        }
+
         this.content = content
     }
 

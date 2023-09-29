@@ -1,0 +1,120 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="006-initial-schema-threads" author="oleh-shatskyi">
+    <createTable tableName="thread">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false" primaryKeyName="threadPK"/>
+      </column>
+      <column name="title" type="VARCHAR(512)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="VARCHAR(128)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="project_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="thread_project_id_fk" referencedTableName="project" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="reply">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false" primaryKeyName="replyPK"/>
+      </column>
+      <column name="content" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="deleted" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="parent_reply_id" type="UUID">
+        <constraints nullable="true" foreignKeyName="reply_parent_reply_id_fk" referencedTableName="reply" referencedColumnNames="id"/>
+      </column>
+      <column name="thread_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="reply_thread_id_fk" referencedTableName="thread" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="tag">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="thread_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="tag_thread_id_fk" referencedTableName="thread" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="reply_like">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reply_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="reply_like_reply_id_fk" referencedTableName="reply" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="reply_dislike">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reply_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="reply_dislike_reply_id_fk" referencedTableName="reply" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="thread_like">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="thread_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="thread_like_thread_id_fk" referencedTableName="thread" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="thread_dislike">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="author_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="thread_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="thread_dislike_thread_id_fk" referencedTableName="thread" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.project
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectStatusChangeException
-import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.project.ProjectValidationException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.Task
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
+import net.nuclearprometheus.tpm.applicationserver.domain.validator.validate
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -38,6 +39,50 @@ class Project(
     threads: List<Thread> = mutableListOf(),
     client: Client
 ) : Entity<ProjectId>(id) {
+
+    init {
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { description.isNotBlank() } otherwise {
+                ValidationError("description", "Description cannot be blank")
+            }
+            assert { targetLanguages.isNotEmpty() } otherwise {
+                ValidationError("targetLanguages", "Target languages cannot be empty")
+            }
+            assert { accuracy.active } otherwise {
+                ValidationError("accuracy", "Accuracy must be active")
+            }
+            assert { industry.active } otherwise {
+                ValidationError("industry", "Industry must be active")
+            }
+            assert { unit.active } otherwise {
+                ValidationError("unit", "Unit must be active")
+            }
+            assert { serviceTypes.isNotEmpty() } otherwise {
+                ValidationError("serviceTypes", "Service types cannot be empty")
+            }
+            assert { serviceTypes.all { it.active } } otherwise {
+                ValidationError("serviceTypes", "All service types must be active")
+            }
+            assert { amount > 0 } otherwise {
+                ValidationError("amount", "Amount must be greater than zero")
+            }
+            assert { budget > BigDecimal.ZERO } otherwise {
+                ValidationError("budget", "Budget must be greater than zero")
+            }
+            assert { internalDeadline.isAfter(expectedStart) } otherwise {
+                ValidationError("internalDeadline", "Internal deadline must be after expected start")
+            }
+            assert { externalDeadline.isAfter(internalDeadline) } otherwise {
+                ValidationError("externalDeadline", "External deadline must be after internal deadline")
+            }
+            assert { client.active } otherwise {
+                ValidationError("client", "Client must be active")
+            }
+        }
+    }
 
     var title = title; private set
     var description = description; private set
@@ -75,6 +120,48 @@ class Project(
         currency: Currency,
         client: Client
     ) {
+        val accuracyChanged = { this.accuracy.id != accuracy.id }
+        val industryChanged = { this.industry.id != industry.id }
+        val unitChanged = { this.unit.id != unit.id }
+        val serviceTypesChanged = { this.serviceTypes.map { it.id } != serviceTypes.map { it.id } }
+        val clientChanged = { this.client.id != client.id }
+
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { description.isNotBlank() } otherwise {
+                ValidationError("description", "Description cannot be blank")
+            }
+            assert { targetLanguages.isNotEmpty() } otherwise {
+                ValidationError("targetLanguages", "Target languages cannot be empty")
+            }
+            assertIf(accuracyChanged) { accuracy.active } otherwise {
+                ValidationError("accuracy", "Accuracy must be active")
+            }
+            assertIf(industryChanged) { industry.active } otherwise {
+                ValidationError("industry", "Industry must be active")
+            }
+            assertIf(unitChanged) { unit.active } otherwise {
+                ValidationError("unit", "Unit must be active")
+            }
+            assertIf(serviceTypesChanged) { serviceTypes.isNotEmpty() } otherwise {
+                ValidationError("serviceTypes", "Service types cannot be empty")
+            }
+            assertIf(serviceTypesChanged) { serviceTypes.all { it.active } } otherwise {
+                ValidationError("serviceTypes", "All service types must be active")
+            }
+            assert { amount > 0 } otherwise {
+                ValidationError("amount", "Amount must be greater than zero")
+            }
+            assert { budget > BigDecimal.ZERO } otherwise {
+                ValidationError("budget", "Budget must be greater than zero")
+            }
+            assertIf(clientChanged) { client.active } otherwise {
+                ValidationError("client", "Client must be active")
+            }
+        }
+
         this.title = title
         this.description = description
         this.sourceLanguage = sourceLanguage
@@ -90,10 +177,25 @@ class Project(
     }
 
     fun moveStart(expectedStart: ZonedDateTime) {
+        validate {
+            assert { expectedStart.isBefore(internalDeadline) } otherwise {
+                ValidationError("expectedStart", "Expected start must be in the future")
+            }
+        }
+
         this.expectedStart = expectedStart
     }
 
     fun moveDeadlines(internalDeadline: ZonedDateTime, externalDeadline: ZonedDateTime) {
+        validate {
+            assert { internalDeadline.isAfter(expectedStart) } otherwise {
+                ValidationError("internalDeadline", "Internal deadline must be after expected start")
+            }
+            assert { externalDeadline.isAfter(internalDeadline) } otherwise {
+                ValidationError("externalDeadline", "External deadline must be after internal deadline")
+            }
+        }
+
         this.internalDeadline = internalDeadline
         this.externalDeadline = externalDeadline
     }

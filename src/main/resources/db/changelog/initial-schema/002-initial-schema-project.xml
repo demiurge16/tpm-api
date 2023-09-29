@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet id="002-initial-schema-project" author="oleh-shatskyi">
+    <createTable tableName="project">
+      <column name="id" type="UUID">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="projectPK"/>
+      </column>
+      <column name="amount" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="budget" type="numeric(38, 2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="currency" type="VARCHAR(16)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="VARCHAR(512)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="expected_start" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="external_deadline" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="internal_deadline" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="source_language" type="VARCHAR(16)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="title" type="VARCHAR(128)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="accuracy_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_accuracy_id_fk" referencedTableName="accuracy" referencedColumnNames="id"/>
+      </column>
+      <column name="client_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_client_id_fk" referencedTableName="client" referencedColumnNames="id"/>
+      </column>
+      <column name="industry_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_industry_id_fk" referencedTableName="industry" referencedColumnNames="id"/>
+      </column>
+      <column name="unit_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_unit_id_fk" referencedTableName="unit" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="project_target_language">
+      <column name="project_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_target_language_project_id_fk" referencedTableName="project" referencedColumnNames="id"/>
+      </column>
+      <column name="target_language" type="VARCHAR(16)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="project_service_type">
+      <column name="project_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_service_type_project_id_fk" referencedTableName="project" referencedColumnNames="id"/>
+      </column>
+      <column name="service_type_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="project_service_type_service_type_id_fk" referencedTableName="service_type" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+    <createTable tableName="team_member_role">
+      <column name="id" type="UUID">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="team_member_rolePK"/>
+      </column>
+      <column name="role" type="VARCHAR(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="project_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="team_member_project_id_fk" referencedTableName="project" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

@@ -1,9 +1,11 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.thread
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.thread.ThreadStatusChangeException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
+import net.nuclearprometheus.tpm.applicationserver.domain.validator.validate
 import java.time.ZonedDateTime
 
 class Thread(
@@ -20,6 +22,17 @@ class Thread(
     projectId: ProjectId
 ): Entity<ThreadId>(id) {
 
+    init {
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { content.isNotBlank() } otherwise {
+                ValidationError("content", "Content cannot be blank")
+            }
+        }
+    }
+
     var title = title; private set
     var content = content; private set
     var author = author; private set
@@ -32,6 +45,15 @@ class Thread(
     var projectId = projectId; private set
 
     fun update(title: String, content: String, tags: List<Tag>) {
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { content.isNotBlank() } otherwise {
+                ValidationError("content", "Content cannot be blank")
+            }
+        }
+
         this.title = title
         this.content = content
         this.tags = tags

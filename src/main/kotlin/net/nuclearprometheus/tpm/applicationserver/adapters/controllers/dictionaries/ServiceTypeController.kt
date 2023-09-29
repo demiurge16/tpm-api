@@ -1,12 +1,15 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ValidationErrorResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.ServiceTypeApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.CreateServiceTypes
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListServiceTypes
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.UpdateServiceTypes
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.ServiceType as ServiceTypeResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -93,5 +96,23 @@ class ServiceTypeController(private val service: ServiceTypeApplicationService) 
     fun deactivate(@PathVariable(name = "serviceTypeId") id: UUID) = with(logger) {
         info("PATCH /api/v1/service-type/$id/deactivate")
         ResponseEntity.ok().body(service.deactivateServiceType(id))
+    }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
+        logger.warn("NotFoundException: ${e.message}")
+        return ResponseEntity.notFound().build()
+    }
+
+    @ExceptionHandler(ValidationException::class)
+    fun handleValidationException(e: ValidationException): ResponseEntity<ValidationErrorResponse> {
+        logger.warn("ValidationException: ${e.message}")
+        return ResponseEntity.badRequest().body(ValidationErrorResponse("Validation failed", e.errors))
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException): ResponseEntity<Unit> {
+        logger.warn("IllegalStateException: ${e.message}")
+        return ResponseEntity.internalServerError().build()
     }
 }

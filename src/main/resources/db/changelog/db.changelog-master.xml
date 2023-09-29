@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <include file="initial-schema/000-initial-schema-dictionaries.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/001-initial-schema-client.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/002-initial-schema-project.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/003-initial-schema-task.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/004-initial-schema-expense.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/005-initial-schema-file.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/006-initial-schema-threads.xml" relativeToChangelogFile="true" />
+  <include file="initial-schema/007-initial-schema-default-dictionaries.sql" relativeToChangelogFile="true" />
+</databaseChangeLog>

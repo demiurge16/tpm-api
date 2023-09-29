@@ -1,18 +1,18 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.dictionaries
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ValidationErrorResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.LanguageApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.requests.ListLanguages
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.dictionaries.responses.Language as LanguageResponse
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.io.OutputStreamWriter
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
@@ -98,4 +98,16 @@ class LanguageController(private val service: LanguageApplicationService) {
 
             ResponseEntity.ok().body(service.getLanguageTypes())
         }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
+        logger.warn("NotFoundException: ${e.message}")
+        return ResponseEntity.notFound().build()
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException): ResponseEntity<Unit> {
+        logger.warn("IllegalStateException: ${e.message}")
+        return ResponseEntity.internalServerError().build()
+    }
 }

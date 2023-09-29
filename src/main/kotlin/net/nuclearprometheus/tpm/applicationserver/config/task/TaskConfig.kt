@@ -6,11 +6,11 @@ import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,8 +26,8 @@ class TaskConfig(
     private val currencyRepository: CurrencyRepository,
     private val priorityRepository: PriorityRepository,
     private val projectRepository: ProjectRepository,
-    private val teamMemberRepository: TeamMemberRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userContextProvider: UserContextProvider
 ) {
 
     @Bean
@@ -42,8 +42,8 @@ class TaskConfig(
             currencyRepository,
             priorityRepository,
             projectRepository,
-            teamMemberRepository,
             userRepository,
+            userContextProvider,
             loggerFor(TaskService::class.java)
         )
 

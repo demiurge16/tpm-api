@@ -52,6 +52,7 @@ class UnitRepositoryImpl(
             MeasurementDatabaseModel.CHARACTERS -> Measurement.CHARACTERS
             MeasurementDatabaseModel.POINTS -> Measurement.POINTS
             MeasurementDatabaseModel.HOURS -> Measurement.HOURS
+            MeasurementDatabaseModel.MINUTES -> Measurement.MINUTES
         }
 
         fun Unit.toDatabaseModel() = UnitDatabaseModel(
@@ -67,6 +68,7 @@ class UnitRepositoryImpl(
             Measurement.CHARACTERS -> MeasurementDatabaseModel.CHARACTERS
             Measurement.POINTS -> MeasurementDatabaseModel.POINTS
             Measurement.HOURS -> MeasurementDatabaseModel.HOURS
+            Measurement.MINUTES -> MeasurementDatabaseModel.MINUTES
         }
     }
 }

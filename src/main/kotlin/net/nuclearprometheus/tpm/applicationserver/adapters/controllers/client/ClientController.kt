@@ -5,9 +5,12 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClient
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ListClients
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.UpdateClient
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ErrorResponse
+import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.common.responses.ValidationErrorResponse
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.Client as ClientResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -113,5 +116,17 @@ class ClientController(private val service: ClientApplicationService) {
     fun handleNotFoundException(e: NotFoundException): ResponseEntity<Unit> {
         logger.warn("NotFoundException: ${e.message}")
         return ResponseEntity.notFound().build()
+    }
+
+    @ExceptionHandler(ValidationException::class)
+    fun handleValidationException(e: ValidationException): ResponseEntity<ValidationErrorResponse> {
+        logger.warn("ValidationException: ${e.message}")
+        return ResponseEntity.badRequest().body(ValidationErrorResponse("Validation failed", e.errors))
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException): ResponseEntity<ErrorResponse> {
+        logger.warn("IllegalStateException: ${e.message}")
+        return ResponseEntity.internalServerError().body(ErrorResponse(e.message ?: "Illegal state"))
     }
 }

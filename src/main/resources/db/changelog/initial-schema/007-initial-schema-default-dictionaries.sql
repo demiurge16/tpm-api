@@ -52,8 +52,8 @@ INSERT INTO expense_category (id, name, description, active) VALUES
 (uuid_generate_v4(), 'Other', 'Other expense category', true);
 
 INSERT INTO unit (id, name, description, volume, measurement, active) VALUES
-(uuid_generate_v4(), 'Minute', 'Minute unit', 1, 'POINTS', true),
-(uuid_generate_v4(), 'Act', 'Act (10 minutes) unit', 2, 'POINTS', true),
+(uuid_generate_v4(), 'Minute', 'Minute unit', 1, 'MINUTES', true),
+(uuid_generate_v4(), 'Act', 'Act (10 minutes) unit', 2, 'MINUTES', true),
 (uuid_generate_v4(), 'Hour', 'Hour unit', 1, 'HOURS', true),
 (uuid_generate_v4(), 'Page', 'Page unit', 1800, 'CHARACTERS', true),
 (uuid_generate_v4(), 'Short page', 'Short page unit', 1500, 'CHARACTERS', true),
@@ -61,7 +61,8 @@ INSERT INTO unit (id, name, description, volume, measurement, active) VALUES
 (uuid_generate_v4(), 'Sheet', 'Sheet unit', 200000, 'CHARACTERS', true),
 (uuid_generate_v4(), 'Verse', 'Verse unit', 60, 'CHARACTERS', true),
 (uuid_generate_v4(), 'Word', 'Word unit', 6, 'CHARACTERS', true),
-(uuid_generate_v4(), 'Character', 'Character unit', 1, 'CHARACTERS', true);
+(uuid_generate_v4(), 'Character', 'Character unit', 1, 'CHARACTERS', true),
+(uuid_generate_v4(), 'Story point', 'Story point unit', 1, 'POINTS', true);
 
 INSERT INTO priority (id, name, description, emoji, value, active) VALUES
 (uuid_generate_v4(), 'Unspecified', 'Unspecified priority', '❓', 0, true),

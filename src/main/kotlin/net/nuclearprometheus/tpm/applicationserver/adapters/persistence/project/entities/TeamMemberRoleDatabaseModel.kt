@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity(name = "TeamMember")
-@Table(name = "team_member")
+@Table(name = "team_member_role")
 open class TeamMemberRoleDatabaseModel(
     @Id() open var id: UUID,
     @Column(nullable = false) @Enumerated(EnumType.STRING) open var role: ProjectRoleDatabaseModel,

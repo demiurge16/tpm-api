@@ -7,7 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.file.FileRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRepository
-import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.user.UserRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
@@ -28,7 +27,6 @@ class ProjectFileApplicationService(
     private val fileStorageService: FileStorageService,
     private val teamMemberRepository: TeamMemberRepository,
     private val userContextProvider: UserContextProvider,
-    private val userRepository: UserRepository,
     @Value("\${app.file-storage.minio.bucket-name}") private val fileStorageLocation: String
 ) {
 
@@ -43,8 +41,6 @@ class ProjectFileApplicationService(
         info("addFile($projectId, $request)")
 
         val currentUser = userContextProvider.getCurrentUser()
-        val uploader = userRepository.get(currentUser.id)
-            ?: throw IllegalStateException("User with id ${currentUser.id} does not exist")
         teamMemberRepository.getByUserIdAndProjectId(currentUser.id, ProjectId(projectId))
             ?: throw IllegalStateException("User with id ${currentUser.id} is not a member of project with id $projectId")
 
@@ -53,7 +49,6 @@ class ProjectFileApplicationService(
             name = request.originalFilename!!,
             size = request.size,
             type = request.contentType!!,
-            uploaderId = uploader.id,
             projectId = ProjectId(projectId),
             location = fileStorageLocation
         ).toView()

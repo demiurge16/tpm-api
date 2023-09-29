@@ -1,11 +1,13 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.task
 
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.task.TaskStatusChangeException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.common.Entity
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.User
+import net.nuclearprometheus.tpm.applicationserver.domain.validator.validate
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -30,6 +32,41 @@ class Task(
     projectId: ProjectId,
     timeEntries: List<TimeEntry> = mutableListOf(),
 ) : Entity<TaskId>(id) {
+
+    init {
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { description.isNotBlank() } otherwise {
+                ValidationError("description", "Description cannot be blank")
+            }
+            assert { accuracy.active } otherwise {
+                ValidationError("accuracy", "Accuracy cannot be inactive")
+            }
+            assert { industry.active } otherwise {
+                ValidationError("industry", "Industry cannot be inactive")
+            }
+            assert { unit.active } otherwise {
+                ValidationError("unit", "Unit cannot be inactive")
+            }
+            assert { serviceType.active } otherwise {
+                ValidationError("serviceType", "Service type cannot be inactive")
+            }
+            assert { amount > 0 } otherwise {
+                ValidationError("amount", "Amount must be greater than zero")
+            }
+            assert { budget > BigDecimal.ZERO } otherwise {
+                ValidationError("budget", "Budget must be greater than zero")
+            }
+            assert { priority.active } otherwise {
+                ValidationError("priority", "Priority cannot be inactive")
+            }
+            assert { expectedStart.isBefore(deadline) } otherwise {
+                ValidationError("expectedStart", "Expected start must be before deadline")
+            }
+        }
+    }
 
     var title = title; private set
     var description = description; private set
@@ -63,6 +100,38 @@ class Task(
         budget: BigDecimal,
         currency: Currency,
     ) {
+        val accuracyChanged = { this.accuracy.id != accuracy.id }
+        val industryChanged = { this.industry.id != industry.id }
+        val unitChanged = { this.unit.id != unit.id }
+        val serviceTypeChanged = { this.serviceType.id != serviceType.id }
+
+        validate {
+            assert { title.isNotBlank() } otherwise {
+                ValidationError("title", "Title cannot be blank")
+            }
+            assert { description.isNotBlank() } otherwise {
+                ValidationError("description", "Description cannot be blank")
+            }
+            assert { accuracy.active } otherwise {
+                ValidationError("accuracy", "Accuracy cannot be inactive")
+            }
+            assert { industry.active } otherwise {
+                ValidationError("industry", "Industry cannot be inactive")
+            }
+            assert { unit.active } otherwise {
+                ValidationError("unit", "Unit cannot be inactive")
+            }
+            assert { serviceType.active } otherwise {
+                ValidationError("serviceType", "Service type cannot be inactive")
+            }
+            assert { amount > 0 } otherwise {
+                ValidationError("amount", "Amount must be greater than zero")
+            }
+            assert { budget > BigDecimal.ZERO } otherwise {
+                ValidationError("budget", "Budget must be greater than zero")
+            }
+        }
+
         this.title = title
         this.description = description
         this.sourceLanguage = sourceLanguage
@@ -77,14 +146,32 @@ class Task(
     }
 
     fun moveStart(expectedStart: ZonedDateTime) {
+        validate {
+            assert { expectedStart.isBefore(deadline) } otherwise {
+                ValidationError("expectedStart", "Expected start must be before deadline")
+            }
+        }
+
         this.expectedStart = expectedStart
     }
 
     fun moveDeadline(deadline: ZonedDateTime) {
+        validate {
+            assert { expectedStart.isBefore(deadline) } otherwise {
+                ValidationError("expectedStart", "Expected start must be before deadline")
+            }
+        }
+
         this.deadline = deadline
     }
 
     fun changePriority(priority: Priority) {
+        validate {
+            assert { priority.active } otherwise {
+                ValidationError("priority", "Priority cannot be inactive")
+            }
+        }
+
         this.priority = priority
     }
 
