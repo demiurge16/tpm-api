@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.controllers.client
 
 import com.opencsv.bean.StatefulBeanToCsvBuilder
+import jakarta.validation.Valid
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.ClientApplicationService
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.CreateClient
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.requests.ListClients
@@ -10,11 +11,13 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.
 import net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices.client.responses.Client as ClientResponse
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.*
 import java.io.OutputStreamWriter
 import java.io.PipedInputStream
@@ -81,7 +84,7 @@ class ClientController(private val service: ClientApplicationService) {
         }
 
     @PostMapping("")
-    fun createClient(@RequestBody request: CreateClient) =
+    fun createClient(@RequestBody @Valid request: CreateClient) =
         with(logger) {
             info("POST /api/v1/client")
 
@@ -128,5 +131,16 @@ class ClientController(private val service: ClientApplicationService) {
     fun handleIllegalStateException(e: IllegalStateException): ResponseEntity<ErrorResponse> {
         logger.warn("IllegalStateException: ${e.message}")
         return ResponseEntity.internalServerError().body(ErrorResponse(e.message ?: "Illegal state"))
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ValidationErrorResponse> {
+        logger.warn("MethodArgumentNotValidException: ${e.message}")
+        return ResponseEntity.badRequest().body(
+            ValidationErrorResponse(
+                "Validation failed",
+                e.fieldErrors.map { ValidationError(it.field, it.defaultMessage ?: "Validation failed" ) }
+            )
+        )
     }
 }

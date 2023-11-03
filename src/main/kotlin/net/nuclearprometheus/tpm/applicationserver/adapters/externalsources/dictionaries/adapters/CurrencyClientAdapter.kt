@@ -18,16 +18,16 @@ class CurrencyClientAdapter(
 ) : CurrencyRepository {
 
     override fun getAll() = client.getSymbols()
-        .symbols
-        .map { Currency(CurrencyCode(it.key), it.value.description) }
+        .currencies
+        .map { Currency(CurrencyCode(it.key), it.value) }
 
     override fun get(query: Query<Currency>) = currencyQueryExecutor.execute(query) { getAll() }
 
     override fun get(code: CurrencyCode) = client.getSymbols()
-        .symbols
+        .currencies
         .filterKeys { it == code.value.uppercase() }
-        .map { Currency(CurrencyCode(it.key), it.value.description) }
+        .map { Currency(CurrencyCode(it.key), it.value) }
         .firstOrNull()
 
-    override fun getExchangeRates(code: CurrencyCode, amount: BigDecimal) = client.getLatest(code.value, amount).toDomain(amount)
+    override fun getExchangeRates(code: CurrencyCode, amount: BigDecimal) = client.getLatest(code.value).toDomain(amount)
 }

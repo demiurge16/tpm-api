@@ -5,7 +5,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cou
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.ValidationError
 import net.nuclearprometheus.tpm.applicationserver.domain.validator.validate
 
-
 class Client(
     id: ClientId = ClientId(),
     name: String,

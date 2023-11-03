@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import java.math.BigDecimal
 
-@FeignClient(name = "currencies", url = "https://api.exchangerate.host")
+@FeignClient(name = "currencies", url = "http://api.exchangerate.host")
 interface CurrencyClient {
 
-    @RequestMapping(method = [RequestMethod.GET], value = ["/latest?base={base}&amount={amount}"])
-    @Cacheable(value = ["currencies-client-cache"], key = "'latest-' + #base + '-' + #amount")
-    fun getLatest(@PathVariable(name = "base") base: String, @PathVariable(name = "amount") amount: BigDecimal): CurrencyExchangeRatesExternalModel
+    @RequestMapping(method = [RequestMethod.GET], value = ["/live?source={base}&access_key=10fa6bb928862f8f4800b150be047ea9"])
+    @Cacheable(value = ["currencies-client-cache"], key = "'live'")
+    fun getLatest(@PathVariable(name = "source") source: String): CurrencyExchangeRatesExternalModel
 
-    @RequestMapping(method = [RequestMethod.GET], value = ["/symbols"])
+    @RequestMapping(method = [RequestMethod.GET], value = ["/list?access_key=10fa6bb928862f8f4800b150be047ea9"])
     @Cacheable(value = ["currencies-client-cache"], key = "'symbols'")
     fun getSymbols(): CurrencySymbolsExternalModel
 }

@@ -74,12 +74,12 @@ class SecurityConfiguration(
         CorsConfiguration().apply {
             allowedOrigins = listOf(
                 "http://localhost",
-                "http://localhost:3000",
+                "http://localhost:5173",
                 "http://localhost:8080",
                 "http://localhost:8081",
                 "http://localhost:8082",
                 "http://26.44.49.6",
-                "http://26.44.49.6:3000",
+                "http://26.44.49.6:5173",
                 "http://26.44.49.6:8080",
                 "http://26.44.49.6:8081",
                 "http://26.44.49.6:8082"
