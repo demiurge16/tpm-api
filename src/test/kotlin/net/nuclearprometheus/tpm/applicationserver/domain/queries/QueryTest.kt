@@ -1,374 +1,170 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.search
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.sort
-import org.junit.jupiter.api.Assertions
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.dsl.*
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.operations.*
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.dsl.orderBy
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.dsl.sortSpecification
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class QueryTest {
 
     @Test
-    fun `must build correct operation stack with string`() {
+    fun `should build correct query tree`() {
+        val queryTree = where {
+            not {
+                string(Person::name).eq("tom") or string(Person::name).eq("jerry")
+            } and {
+                string(Person::middlename).isNull()
+            } and {
+                string(Person::lastname).eq("smith")
+            } or {
+                comparable(Person::age).gt(18) and comparable(Person::age).lt(30)
+            } and {
+                collection(Person::occupations).any("programmer", "developer")
+            } and {
+                collection(Person::countries).any("USA", "UK")
+            } and {
+                collection(Person::hobbies).all("football", "basketball") or collection(Person::hobbies).none("tennis", "golf")
+            } and {
+                enum(Person::mood).eq(Mood.HAPPY)
+            }
+        }
+
+        val expectedTree = Search(
+            And(
+                Not(
+                    Or(
+                        StringToken(Person::name).eq("tom"),
+                        StringToken(Person::name).eq("jerry")
+                    )
+                ),
+                And(
+                    StringToken(Person::middlename).isNull(),
+                    Or(
+                        StringToken(Person::lastname).eq("smith"),
+                        And(
+                            And(
+                                ComparableToken(Person::age, Int::class).gt(18),
+                                ComparableToken(Person::age, Int::class).lt(30)
+                            ),
+                            And(
+                                CollectionToken(Person::occupations, String::class).any("programmer", "developer"),
+                                And(
+                                    CollectionToken(Person::countries, String::class).any("USA", "UK"),
+                                    And(
+                                        Or(
+                                            CollectionToken(Person::hobbies, String::class).all("football", "basketball"),
+                                            CollectionToken(Person::hobbies, String::class).none("tennis", "golf")
+                                        ),
+                                        EnumToken(Person::mood, Mood::class).eq(Mood.HAPPY)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+
+        assert(queryTree == expectedTree)
+    }
+
+    @Test
+    fun `should build query from string using query specification`() {
         val queryString = """
             !(name:eq:"tom" | name:eq:"jerry")
             & middlename:null
             & lastname:eq:"smith"
             | (age:gt:18 & age:lt:30)
-            & occupations:all:"programmer","developer"
-            & countries:any:"USA","UK"
-            & favouriteNumbers:any:1,2,3,4,5,6,7,8,9,10
+            & occupations:in:"programmer","developer"
+            & countries:in:"USA","UK"
+            & (hobbies:all:"football","basketball" | hobbies:none:"tennis","golf")
+            & mood:eq:HAPPY
         """.trimIndent()
 
-        // When
-        val stringQuery = Query<Person>(search = createSearch(queryString))
-        val correctStack = listOf<Operation<Person>>(
-            Operation.Equals("name", "tom"),
-            Operation.Equals("name", "jerry"),
-            Operation.Or(),
-            Operation.Not(),
-            Operation.IsNull("middlename"),
-            Operation.And(),
-            Operation.Equals("lastname", "smith"),
-            Operation.And(),
-            Operation.GreaterThan("age", "18"),
-            Operation.LessThan("age", "30"),
-            Operation.And(),
-            Operation.Or(),
-            Operation.AllElements("occupations", listOf("programmer", "developer")),
-            Operation.And(),
-            Operation.AnyElement("countries", listOf("USA", "UK")),
-            Operation.And(),
-            Operation.AnyElement("favouriteNumbers", listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")),
-            Operation.And()
-        )
+        val querySpecification = searchSpecification<Person> {
+            uniqueToken("id", UUID::class) using Person::id
+            string("name") using Person::name
+            string("middlename") using Person::middlename
+            string("lastname") using Person::lastname
+            comparable("age", Int::class) using Person::age
+            collection("occupations", String::class) using Person::occupations
+            collection("countries", String::class) using Person::countries
+            collection("favouriteNumbers", Int::class) using Person::favouriteNumbers
+            collection("hobbies", String::class) using Person::hobbies
+            enum("mood", Mood::class) using Person::mood
+        }
 
-        // Then
-        assert(stringQuery.search.operationStack == correctStack)
-    }
+        val query = createSearch(queryString, querySpecification)
 
-    @Test
-    fun `must build correct operation stack with builder`() {
-        // Given
-        val dslQuery = Query<Person>(
-            search = search {
-                not {
-                    or {
-                        equals("name", "tom")
-                        equals("name", "jerry")
-                    }
-                }
-                and {
-                    isNull("middlename")
-                }
-                and {
-                    equals("lastname", "smith")
-                }
-                or {
-                    and {
-                        greaterThan("age", "18")
-                        lessThan("age", "30")
-                    }
-                }
-                and {
-                    all("occupations", listOf("programmer", "developer"))
-                }
-                and {
-                    any("countries", listOf("USA", "UK"))
-                }
-                and {
-                    any("favouriteNumbers", listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
-                }
+        val queryTree = where {
+            not {
+                string(Person::name).eq("tom") or string(Person::name).eq("jerry")
+            } and {
+                string(Person::middlename).isNull()
+            } and {
+                string(Person::lastname).eq("smith")
+            } or {
+                comparable(Person::age).gt(18) and comparable(Person::age).lt(30)
+            } and {
+                collection(Person::occupations).any("programmer", "developer")
+            } and {
+                collection(Person::countries).any("USA", "UK")
+            } and {
+                collection(Person::hobbies).all("football", "basketball") or collection(Person::hobbies).none("tennis", "golf")
+            } and {
+                enum(Person::mood).eq(Mood.HAPPY)
             }
-        )
+        }
 
-        // When
-        val correctStack = listOf<Operation<Person>>(
-            Operation.Equals("name", "tom"),
-            Operation.Equals("name", "jerry"),
-            Operation.Or(),
-            Operation.Not(),
-            Operation.IsNull("middlename"),
-            Operation.And(),
-            Operation.Equals("lastname", "smith"),
-            Operation.And(),
-            Operation.GreaterThan("age", "18"),
-            Operation.LessThan("age", "30"),
-            Operation.And(),
-            Operation.Or(),
-            Operation.AllElements("occupations", listOf("programmer", "developer")),
-            Operation.And(),
-            Operation.AnyElement("countries", listOf("USA", "UK")),
-            Operation.And(),
-            Operation.AnyElement("favouriteNumbers", listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")),
-            Operation.And()
-        )
-
-        // Then
-        assert(dslQuery.search.operationStack == correctStack)
+        assert(query == queryTree)
     }
 
     @Test
-    fun `must match entity`() {
-        val queryString = """
-            !(name:eq:"tom" | name:eq:"jerry")
-            & middlename:null
-            & lastname:eq:"smith"
-            | (age:gt:18 & age:lt:30)
-            & occupations:all:"programmer","developer"
-            & countries:any:"USA","UK"
-            & favouriteNumbers:any:1,2,3,4,5,6,7,8,9,10
-        """.trimIndent()
+    fun `should sort using sort specification`() {
+        val sortSpecification = sortSpecification<Person> {
+            sorter("name") using Comparator { o1: Person, o2: Person -> o1.name.compareTo(o2.name, ignoreCase = true) }
+            sorter("middlename") using Comparator { o1: Person, o2: Person ->
+                o1.middlename?.compareTo(o2.middlename ?: "", ignoreCase = true) ?: 0
+            }
+            sorter("lastname") using Comparator { o1: Person, o2: Person -> o1.lastname.compareTo(o2.lastname, ignoreCase = true) }
+            sorter("age") using Comparator { o1: Person, o2: Person -> o1.age.compareTo(o2.age) }
+        }
 
-        val person = Person(
-            name = "adam",
-            lastname = "smith",
-            age = 20,
-            occupations = listOf("programmer", "developer"),
-            countries = listOf("USA", "UK"),
-            favouriteNumbers = listOf(7, 16, 42)
-        )
-
-        val query = Query<Person>(search = createSearch(queryString))
-        val result = PersonQueryExecutor().execute(query, listOf(person))
-
-        assert(result.items.size == 1)
-        assert(result.items[0] == person)
-    }
-
-    @Test
-    fun `empty query should return true`() {
-        val queryString = ""
-        val person = Person(
-            name = "tom",
-            lastname = "smith",
-            age = 20,
-            occupations = listOf("programmer", "developer"),
-            countries = listOf("USA", "UK"),
-            favouriteNumbers = listOf(7, 16, 42)
-        )
-
-        val query = Query<Person>(search = createSearch(queryString))
-        val result = PersonQueryExecutor().execute(query, listOf(person))
-
-        assert(result.items.size == 1)
-        assert(result.items[0] == person)
-    }
-
-    @Test
-    fun `should sort by name`() {
-        val query = Query<Person>(
-            sort = sort {
+        val query = Query(
+            sort = orderBy {
                 ascending("name")
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals("Alice", result.items[0].name, "First person should be Alice")
-        Assertions.assertEquals("Bob", result.items[1].name, "Second person should be Bob")
-        Assertions.assertEquals("Jake", result.items[2].name, "Third person should be Jake")
-        Assertions.assertEquals("John", result.items[3].name, "Fourth person should be John")
-    }
-
-    @Test
-    fun `should sort by name descending`() {
-        val query = Query<Person>(
-            sort = sort {
-                descending("name")
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals("John", result.items[0].name, "First person should be John")
-        Assertions.assertEquals("Jake", result.items[1].name, "Second person should be Jake")
-        Assertions.assertEquals("Bob", result.items[2].name, "Third person should be Bob")
-        Assertions.assertEquals("Alice", result.items[3].name, "Fourth person should be Alice")
-    }
-
-    @Test
-    fun `should sort by name and age`() {
-        val query = Query<Person>(
-            sort = sort {
-                ascending("name")
+                descending("middlename")
+                ascending("lastname")
                 descending("age")
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals("Alice", result.items[0].name, "First person should be Alice")
-        Assertions.assertEquals("Bob", result.items[1].name, "Second person should be Bob")
-        Assertions.assertEquals("Jake", result.items[2].name, "Third person should be Jake")
-        Assertions.assertEquals("John", result.items[3].name, "Fourth person should be John")
-    }
-
-    @Test
-    fun `should filter by mood`() {
-        val query = Query<Person>(
-            search = search {
-                equals("mood", Mood.BORED)
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf(), Mood.BORED),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(1, result.items.size, "Should be 1 result")
-        Assertions.assertEquals("Alice", result.items[0].name, "First person should be Alice")
-    }
-
-    @Test
-    fun `should filter by occupations`() {
-        val query = Query<Person>(
-            search = search {
-                any("occupations", listOf("Developer"))
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(4, result.items.size, "Should be 4 results")
-        Assertions.assertEquals("John", result.items[0].name, "First person should be John")
-        Assertions.assertEquals("Alice", result.items[1].name, "Second person should be Alice")
-        Assertions.assertEquals("Bob", result.items[2].name, "Third person should be Bob")
-        Assertions.assertEquals("Jake", result.items[3].name, "Fourth person should be Jake")
-    }
-
-    @Test
-    fun `should filter by age greater than`() {
-        val query = Query<Person>(
-            search = search {
-                greaterThan("age", "20")
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(2, result.items.size, "Should be 2 results")
-        Assertions.assertEquals("John", result.items[0].name, "First person should be John")
-        Assertions.assertEquals("Bob", result.items[1].name, "Second person should be Bob")
-    }
-
-    @Test
-    fun `should filter by age greater than and less than`() {
-        val query = Query<Person>(
-            search = search {
-                and {
-                    greaterThan("age", "20")
-                    lessThan("age", "40")
+            },
+            search = where {
+                not {
+                    string(Person::name).eq("tom") or string(Person::name).eq("jerry")
+                } and {
+                    string(Person::middlename).isNull()
+                } and {
+                    string(Person::lastname).eq("smith")
+                } or {
+                    comparable(Person::age).gt(18) and comparable(Person::age).lt(30)
+                } and {
+                    collection(Person::occupations).any("programmer", "developer")
+                } and {
+                    collection(Person::countries).any("USA", "UK")
+                } and {
+                    collection(Person::hobbies).all("football", "basketball") or collection(Person::hobbies).none("tennis", "golf")
+                } and {
+                    enum(Person::mood).eq(Mood.HAPPY)
                 }
             }
         )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
 
-        Assertions.assertEquals(1, result.items.size, "Should be 1 result")
-        Assertions.assertEquals("John", result.items[0].name, "First person should be John")
-    }
-
-    @Test
-    fun `should filter by age greater than equals or less than equals`() {
-        val query = Query<Person>(
-            search = search {
-                or {
-                    lessThanOrEqual("age", "20")
-                    greaterThanOrEqual("age", "40")
-                }
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(4, result.items.size, "Should be 4 results")
-        Assertions.assertEquals("Alice", result.items[0].name, "First person should be Alice")
-        Assertions.assertEquals("Bob", result.items[1].name, "Second person should be Bob")
-        Assertions.assertEquals("Jake", result.items[2].name, "Third person should be Jake")
-        Assertions.assertEquals("Tom", result.items[3].name, "Fourth person should be Tom")
-    }
-
-    @Test
-    fun `should filter by none occupation`() {
-        val query = Query<Person>(
-            search = search {
-                none("occupations", listOf("Developer"))
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(1, result.items.size, "Should be 1 result")
-        Assertions.assertEquals("Tom", result.items[0].name, "First person should be Tom")
-    }
-
-    @Test
-    fun `should filter by all occupations`() {
-        val query = Query<Person>(
-            search = search {
-                all("occupations", listOf("Developer", "Programmer"))
-            }
-        )
-        val executor = PersonQueryExecutor()
-        val result = executor.execute(query, listOf(
-            Person("John", "Doe", "Smith", 30, listOf("Developer", "Designer"), listOf(), listOf()),
-            Person("Alice", "Doe", "Smith", 20, listOf("Developer", "Programmer"), listOf(), listOf()),
-            Person("Bob", "Doe", "Smith", 40, listOf("Developer"), listOf(), listOf()),
-            Person("Jake", "Doe", "Smith", 10, listOf("Developer", "Programmer"), listOf(), listOf()),
-            Person("Tom", "Doe", "Smith", 10, listOf("Programmer"), listOf(), listOf()),
-        ))
-
-        Assertions.assertEquals(2, result.items.size, "Should be 2 results")
-        Assertions.assertEquals("Alice", result.items[0].name, "First person should be Alice")
-        Assertions.assertEquals("Jake", result.items[1].name, "Second person should be Jake")
+        PersonQueryExecutor.execute(query) {
+            listOf(
+                Person(name = "Tom", lastname = "Smith", age = 20, occupations = listOf("programmer"), countries = listOf("USA"), favouriteNumbers = listOf(1, 2, 3))
+            )
+        }
     }
 }

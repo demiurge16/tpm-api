@@ -5,7 +5,6 @@ import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
 import org.springframework.data.jpa.domain.Specification
 
 // possible type combinations and filters:
@@ -49,7 +48,7 @@ abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
                     val predicate = criteriaBuilder.not(predicates.removeLast())
                     predicates.add(predicate)
                 }
-                is Operation.Comparison -> {
+                is Operation.Comparison<*, *> -> {
                     val (field, op, value) = operation.filter
                     val predicateSupplier = filterPredicates[field, op.symbol]
                     predicates.add(predicateSupplier(criteriaBuilder, criteriaQuery, root, value))

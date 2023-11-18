@@ -2,27 +2,26 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries.executors
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.dsl.SearchSpecification
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.SortDirection
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sorter
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.dsl.SortSpecification
 
 typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue
-typealias FilterExecutor<TEntity> = (entity: TEntity, value: Any) -> Boolean
 
 abstract class InMemoryQueryExecutor<TEntity : Any> {
 
-    protected abstract val querySorters: Map<String, Comparator<TEntity>>
-    protected abstract val queryFilters: Map<String, Map<String, FilterExecutor<TEntity>>>
+    protected abstract val querySorters: SortSpecification<TEntity>
+    protected abstract val searchSpecification: SearchSpecification<TEntity>
 
-    private fun sortComparator(sort: List<Sort>): Comparator<TEntity> {
+    private fun sortComparator(sort: List<Sorter>): Comparator<TEntity> {
         if (sort.isEmpty()) {
             return Comparator { _, _ -> 0 }
         }
 
         return sort.map {
             val (field, direction) = it
-            val sortComparator = querySorters[field] ?: throw IllegalArgumentException("Invalid sort expression: $field")
+            val sortComparator = querySorters.getSorter(field)
             if (direction == SortDirection.DESC) {
                 sortComparator.reversed()
             } else {
@@ -31,62 +30,24 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
         }.reduce { acc, comparator -> acc.thenComparing(comparator) }
     }
 
-    private fun filterPredicate(search: Search<TEntity>): (TEntity) -> Boolean {
-        return { entity: TEntity ->
-            val stack = mutableListOf<Boolean>()
-            if (search.operationStack.isEmpty()) {
-                stack.add(true)
-            }
-
-            search.operationStack.forEach { operation ->
-                when (operation) {
-                    is Operation.Comparison<*> -> {
-                        val filter = (operation as Operation.Comparison<TEntity>).filter
-                        val (field, operator, value) = filter
-                        val availablePredicates = queryFilters[field]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
-                        val filterOperation = availablePredicates[operator.symbol]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
-
-                        stack.add(filterOperation(entity, value))
-                    }
-                    is Operation.And -> {
-                        val right = stack.removeLast()
-                        val left = stack.removeLast()
-                        stack.add(left && right)
-                    }
-                    is Operation.Or -> {
-                        val right = stack.removeLast()
-                        val left = stack.removeLast()
-                        stack.add(left || right)
-                    }
-                    is Operation.Not -> {
-                        val value = stack.removeLast()
-                        stack.add(!value)
-                    }
-                }
-            }
-
-            stack.removeLast()
-        }
-    }
 
     fun execute(query: Query<TEntity>, items: List<TEntity>): Page<TEntity> {
         return execute(query) { items }
     }
 
     fun execute(query: Query<TEntity>, supplier: () -> List<TEntity>): Page<TEntity> {
+        val (page, size, sort, search) = query
         val filteredItems = supplier().asSequence()
-            .filter(filterPredicate(query.search))
-            .sortedWith(sortComparator(query.sort))
+            .filter { search.matches(it) }
+            .sortedWith(sortComparator(sort.sorters))
             .toList()
 
         val totalItems = filteredItems.size
-        val totalPages = totalItems / (query.size ?: 1)
-        val currentPage = query.page ?: 0
+        val totalPages = totalItems / (size ?: 1)
+        val currentPage = page ?: 0
 
         return Page(
-            items = filteredItems.drop(currentPage * (query.size ?: 0)).take(query.size ?: Int.MAX_VALUE),
+            items = filteredItems.drop(currentPage * (size ?: 0)).take(size ?: Int.MAX_VALUE),
             currentPage = currentPage,
             totalPages = totalPages,
             totalItems = totalItems.toLong()

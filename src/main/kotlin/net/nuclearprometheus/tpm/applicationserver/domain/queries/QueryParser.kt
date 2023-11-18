@@ -1,8 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operator
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.dsl.SearchSpecification
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.operations.*
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.tokenizer.Tokenizer.tokenize
 
 /**
  * This function parses a query string into a [Search] object.
@@ -39,6 +40,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
  * Double - 1.0
  * Boolean - true
  * List - ("value1","value2")
+ * Constant value - CONSTANT_VALUE
  *
  * Nested queries are supported
  *
@@ -49,104 +51,74 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
  * | (age:gt:18 & age:lt:30)
  * & occupations:in:"programmer","developer"
  * & countries:in:"USA","UK"
+ * & (hobbies:all:"football","basketball" | hobbies:none:"tennis","golf")
+ * & mood:eq:HAPPY
  *
- * @param query The query string to parse
+ * @param expression The query string to parse
+ * @param specification The specification to use for parsing
+ * @param TEntity The type of the entity to filter
  * @return The parsed query object
  */
-fun <TEntity : Any> createSearch(query: String): Search<TEntity> {
-    val tokens = query.sanitize().tokenize()
+fun <TEntity : Any> createSearch(expression: String, specification: SearchSpecification<TEntity>): Search<TEntity> {
+    val tokens = expression.tokenize()
 
     val priorities = mapOf(
-        TokenType.OPEN_PARENTHESIS to 0,
-        TokenType.CLOSE_PARENTHESIS to 0,
-        TokenType.NOT to 1,
-        TokenType.AND to 1,
-        TokenType.OR to 1,
-        TokenType.COMPARISON to 2,
+        Token.OpenParenthesis::class to 0,
+        Token.CloseParenthesis::class to 0,
+        Token.Not::class to 1,
+        Token.And::class to 1,
+        Token.Or::class to 1,
+        Token.Comparison::class to 2,
     )
 
     val stack = mutableListOf<Token>()
     val output = mutableListOf<Token>()
 
     tokens.forEach { token ->
-        when (token.type) {
-            TokenType.OPEN_PARENTHESIS -> stack.add(token.asOpenParenthesisToken())
-            TokenType.CLOSE_PARENTHESIS -> {
-                while (stack.isNotEmpty() && stack.last().type != TokenType.OPEN_PARENTHESIS) {
+        when (token) {
+            is Token.OpenParenthesis -> stack.add(token)
+            is Token.CloseParenthesis -> {
+                while (stack.isNotEmpty() && stack.last() !is Token.OpenParenthesis) {
                     output.add(stack.removeLast())
                 }
                 stack.removeLast()
             }
-            TokenType.COMPARISON -> output.add(token.asComparisonToken())
-            TokenType.NOT, TokenType.AND, TokenType.OR -> {
-                while (stack.isNotEmpty() && priorities[stack.last().type]!! >= priorities[token.type]!!) {
+            is Token.Comparison -> output.add(token)
+            is Token.Not, is Token.And, is Token.Or -> {
+                while (stack.isNotEmpty() && priorities[stack.last()::class]!! >= priorities[token::class]!!) {
                     output.add(stack.removeLast())
                 }
-                stack.add(token.asLogicalToken())
+                stack.add(token)
             }
         }
     }
 
-    while (stack.isNotEmpty()) {
-        output.add(stack.removeLast())
-    }
+    val root = output.fold(mutableListOf<OperationNode<TEntity>>()) { outputStack, token ->
+        when (token) {
+            is Token.Comparison -> {
+                val operation = specification.createOperation(token.field, token.operator, token.value)
+                outputStack.add(operation)
+            }
+            is Token.Not -> {
+                val operation = outputStack.removeLast()
+                outputStack.add(Not(operation))
+            }
+            is Token.And -> {
+                val right = outputStack.removeLast()
+                val left = outputStack.removeLast()
 
-    val resultStack = output.map {
-        when (it.type) {
-            TokenType.COMPARISON -> it.toOperator<TEntity>()
-            TokenType.NOT -> Operation.Not()
-            TokenType.AND -> Operation.And()
-            TokenType.OR -> Operation.Or()
-            else -> throw IllegalArgumentException("Invalid token type: ${it.type}")
+                outputStack.add(And(left, right))
+            }
+            is Token.Or -> {
+                val right = outputStack.removeLast()
+                val left = outputStack.removeLast()
+
+                outputStack.add(Or(left, right))
+            }
+            else -> throw IllegalArgumentException("Invalid token: $token")
         }
-    }
+        outputStack
+    }.removeLast()
 
-    return Search(resultStack)
+    return Search(root)
 }
-
-private fun <TEntity : Any> Token.toOperator(): Operation.Comparison<TEntity> {
-    val tokens = this.value.split(":")
-
-    val field = tokens.get(0)
-    val operator = tokens.get(1)
-    val value = tokens.getOrNull(2)
-
-    return when (operator.toOperationType()) {
-        Operator.EQUALS -> Operation.Equals(field, value!!.trimQuotes())
-        Operator.CONTAINS -> Operation.Contains(field, value!!.trimQuotes())
-        Operator.GREATER_THAN -> Operation.GreaterThan(field, value!!.trimQuotes())
-        Operator.LESS_THAN -> Operation.LessThan(field, value!!.trimQuotes())
-        Operator.GREATER_THAN_OR_EQUAL -> Operation.GreaterThanOrEqual(field, value!!.trimQuotes())
-        Operator.LESS_THAN_OR_EQUAL -> Operation.LessThanOrEqual(field, value!!.trimQuotes())
-        Operator.ANY -> Operation.AnyElement(field, value!!.toList())
-        Operator.ALL -> Operation.AllElements(field, value!!.toList())
-        Operator.NONE -> Operation.NoneElement(field, value!!.toList())
-        Operator.IS_NULL -> Operation.IsNull(field)
-        Operator.IS_EMPTY -> Operation.IsEmpty(field)
-    }
-}
-
-private fun String.toOperationType() = Operator.values().find { it.symbol == this }
-    ?: throw IllegalArgumentException("Unknown operation type: $this")
-
-private fun String.trimQuotes() = this.trim('"')
-
-private fun String.sanitize() = this.replace(" ", "")
-    .replace("\t", "")
-    .replace("\r", "")
-    .replace("\n", "")
-
-private fun String.toList() = this.split(",").map { it.trim().trimQuotes() }
-
-private fun String.tokenize() = this.replace(TokenType.OPEN_PARENTHESIS.symbol, " ( ")
-    .replace(TokenType.CLOSE_PARENTHESIS.symbol, " ) ")
-    .replace(TokenType.NOT.symbol, " ! ")
-    .replace(TokenType.AND.symbol, " & ")
-    .replace(TokenType.OR.symbol, " | ")
-    .split(" ")
-    .filter { it.isNotBlank() }
-
-private fun String.asOpenParenthesisToken() = Token(TokenType.OPEN_PARENTHESIS, this)
-private fun String.asComparisonToken() = Token(TokenType.COMPARISON, this)
-private fun String.asLogicalToken() = Token(TokenType.fromSymbol(this), this)
-private val String.type: TokenType; get() = TokenType.fromSymbol(this)

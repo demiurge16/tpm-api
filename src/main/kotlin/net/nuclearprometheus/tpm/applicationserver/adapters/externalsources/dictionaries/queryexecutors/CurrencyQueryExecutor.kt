@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.externalsources.dic
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.executors.*
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.dsl.searchSpecification
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,18 +13,8 @@ class CurrencyQueryExecutor : InMemoryQueryExecutor<Currency>() {
         "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
     )
 
-    override val queryFilters: Map<String, Map<String, FilterExecutor<Currency>>> = mapOf(
-        "code" to mapOf(
-            "eq" to equal { it.id.value },
-            "contains" to contains { it.id.value },
-            "null" to isNull { it.id.value },
-            "empty" to isEmpty { it.id.value }
-        ),
-        "name" to mapOf(
-            "eq" to equal { it.name },
-            "contains" to contains { it.name },
-            "null" to isNull { it.name },
-            "empty" to isEmpty { it.name },
-        )
-    )
+    override val searchSpecification = searchSpecification<Currency> {
+        uniqueToken("code", String::class) using { it.id.value }
+        string("name") using { it.name }
+    }
 }
