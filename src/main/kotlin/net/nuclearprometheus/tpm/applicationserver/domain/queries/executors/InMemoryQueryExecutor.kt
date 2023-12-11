@@ -2,10 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries.executors
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Search
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.SortDirection
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Operation
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Search
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Order
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
 
 typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue
 typealias FilterExecutor<TEntity> = (entity: TEntity, value: Any) -> Boolean
@@ -15,15 +15,15 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
     protected abstract val querySorters: Map<String, Comparator<TEntity>>
     protected abstract val queryFilters: Map<String, Map<String, FilterExecutor<TEntity>>>
 
-    private fun sortComparator(sort: List<Sort>): Comparator<TEntity> {
-        if (sort.isEmpty()) {
+    private fun sortComparator(order: List<Order>): Comparator<TEntity> {
+        if (order.isEmpty()) {
             return Comparator { _, _ -> 0 }
         }
 
-        return sort.map {
+        return order.map {
             val (field, direction) = it
             val sortComparator = querySorters[field] ?: throw IllegalArgumentException("Invalid sort expression: $field")
-            if (direction == SortDirection.DESC) {
+            if (direction == Direction.DESC) {
                 sortComparator.reversed()
             } else {
                 sortComparator

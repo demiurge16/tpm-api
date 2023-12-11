@@ -1,4 +1,4 @@
-package net.nuclearprometheus.tpm.applicationserver.domain.queries.search
+package net.nuclearprometheus.tpm.applicationserver.domain.queries.specification
 
 enum class Operator(val symbol: String) {
     EQUALS("eq"),

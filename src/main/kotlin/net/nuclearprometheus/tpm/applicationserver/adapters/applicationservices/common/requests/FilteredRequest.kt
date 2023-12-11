@@ -2,9 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.applicationservices
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.createSearch
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.nonFiltered
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.SortDirection
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.nonFiltered
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Order
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 
 abstract class FilteredRequest<TEntity : Any>(
@@ -15,7 +15,7 @@ abstract class FilteredRequest<TEntity : Any>(
 ) {
     private val logger = loggerFor(this::class.java)
 
-    fun sort(): List<Sort> {
+    fun sort(): List<Order> {
         if (sort.isNullOrEmpty()) {
             return emptyList()
         }
@@ -23,7 +23,7 @@ abstract class FilteredRequest<TEntity : Any>(
         val expressionTokens = sort.split("&")
         return expressionTokens.map { token ->
             val (sort, direction) = token.split(":")
-            Sort(sort, if (direction == "desc") SortDirection.DESC else SortDirection.ASC)
+            Order(sort, if (direction == "desc") Direction.DESC else Direction.ASC)
         }
     }
 

@@ -5,7 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.search.Operation
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Operation
 import org.springframework.data.jpa.domain.Specification
 
 // possible type combinations and filters:

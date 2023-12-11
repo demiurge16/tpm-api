@@ -1,5 +1,5 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries.sort
 
-enum class SortDirection {
+enum class Direction {
     ASC, DESC
 }

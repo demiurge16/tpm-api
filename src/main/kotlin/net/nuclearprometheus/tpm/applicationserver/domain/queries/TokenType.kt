@@ -7,8 +7,4 @@ enum class TokenType(val symbol: String) {
     AND("&"),
     OR("|"),
     COMPARISON("");
-
-    companion object {
-        fun fromSymbol(symbol: String) = values().find { it.symbol == symbol } ?: COMPARISON
-    }
 }
