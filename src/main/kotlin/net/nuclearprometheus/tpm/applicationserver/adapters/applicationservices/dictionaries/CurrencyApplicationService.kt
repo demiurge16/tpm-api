@@ -7,19 +7,22 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cur
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CurrencyRepository
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
-import org.springframework.cache.annotation.Cacheable
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class CurrencyApplicationService(private val repository: CurrencyRepository) {
+class CurrencyApplicationService(
+    private val repository: CurrencyRepository,
+    private val specificationBuilder: SpecificationBuilder<Currency>
+) {
 
     private val logger = loggerFor(this::class.java)
 
     fun getCurrencies(query: FilteredRequest<Currency>) =
         with(logger) {
             info("getCurrencies($query)")
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         }
 
     fun getCurrencyByCode(code: String) =

@@ -15,6 +15,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeService
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -24,14 +25,15 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class ServiceTypeApplicationService(
     private val service: ServiceTypeService,
-    private val repository: ServiceTypeRepository
+    private val repository: ServiceTypeRepository,
+    private val specificationBuilder: SpecificationBuilder<ServiceType>
 ) {
 
     private val logger = loggerFor(ServiceTypeController::class.java)
 
     fun getServiceTypes(query: FilteredRequest<ServiceType>): Page<ServiceTypeResponse> {
         logger.info("getServiceTypes($query)")
-        return repository.get(query.toQuery()).map { it.toView() }
+        return repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getServiceType(serviceTypeId: UUID): ServiceTypeResponse {

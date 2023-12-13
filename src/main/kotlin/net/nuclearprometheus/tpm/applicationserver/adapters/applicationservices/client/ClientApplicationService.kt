@@ -13,6 +13,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Cou
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -24,7 +25,8 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class ClientApplicationService(
     private val service: ClientService,
-    private val repository: ClientRepository
+    private val repository: ClientRepository,
+    private val specificationBuilder: SpecificationBuilder<Client>
 ) {
 
     private val logger = loggerFor(this::class.java)
@@ -33,7 +35,7 @@ class ClientApplicationService(
     fun getClients(query: FilteredRequest<Client>) =
         with(logger) {
             info("getClients($query)")
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         }
 
     @Cacheable("clients-cache")

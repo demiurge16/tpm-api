@@ -11,10 +11,10 @@ fun <TEntity : Any> Query<TEntity>.toPageable(): Pageable =
         page ?: 0,
         size ?: Int.MAX_VALUE,
         Sort.by(
-            sort.map {
+            sort.order.map {
                 when (it.direction) {
-                    Direction.ASC -> Sort.Order.asc(it.field)
-                    Direction.DESC -> Sort.Order.desc(it.field)
+                    Direction.ASC -> Sort.Order.asc(it.name)
+                    Direction.DESC -> Sort.Order.desc(it.name)
                 }
             }
         )

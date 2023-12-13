@@ -6,18 +6,21 @@ import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotF
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Country
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.CountryRepository
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
-import org.springframework.cache.annotation.Cacheable
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 
 @Service
-class CountryApplicationService(private val repository: CountryRepository) {
+class CountryApplicationService(
+    private val repository: CountryRepository,
+    private val specificationBuilder: SpecificationBuilder<Country>
+) {
 
     private val logger = loggerFor(this::class.java)
 
     fun getCountries(query: FilteredRequest<Country>) =
         with(logger) {
             info("getCountries($query)")
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         }
 
     fun getCountry(code: String) =

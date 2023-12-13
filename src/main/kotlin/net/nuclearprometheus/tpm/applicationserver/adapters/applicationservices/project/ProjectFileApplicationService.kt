@@ -12,6 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.Fi
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -25,6 +26,7 @@ class ProjectFileApplicationService(
     private val fileRepository: FileRepository,
     private val fileService: FileService,
     private val fileStorageService: FileStorageService,
+    private val specificationBuilder: SpecificationBuilder<File>,
     private val teamMemberRepository: TeamMemberRepository,
     private val userContextProvider: UserContextProvider,
     @Value("\${app.file-storage.minio.bucket-name}") private val fileStorageLocation: String
@@ -34,7 +36,7 @@ class ProjectFileApplicationService(
 
     fun getFilesForProject(projectId: UUID, query: FilteredRequest<File>): Page<FileResponse> {
         logger.info("getFiles($projectId)")
-        return fileRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery()).map { it.toView() }
+        return fileRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun addFile(projectId: UUID, request: MultipartFile) = with(logger) {

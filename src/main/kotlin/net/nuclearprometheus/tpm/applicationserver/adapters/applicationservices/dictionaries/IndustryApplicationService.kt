@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Ind
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.IndustryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.IndustryService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -20,14 +21,15 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class IndustryApplicationService(
     private val service: IndustryService,
-    private val repository: IndustryRepository
+    private val repository: IndustryRepository,
+    private val specificationBuilder: SpecificationBuilder<Industry>
 ) {
 
     private val logger = loggerFor(IndustryApplicationService::class.java)
 
     fun getIndustries(query: FilteredRequest<Industry>) = with(logger) {
         info("getIndustries($query)")
-        repository.get(query.toQuery()).map { it.toView() }
+        repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getIndustry(id: UUID) = with(logger) {

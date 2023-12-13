@@ -5,8 +5,8 @@ import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Operation
-import org.springframework.data.jpa.domain.Specification
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
+import org.springframework.data.jpa.domain.Specification as SpringSpecification
 
 // possible type combinations and filters:
 // any unique singular token: eq, any, none, null
@@ -22,42 +22,46 @@ typealias PredicateSupplier<T> = (CriteriaBuilder, CriteriaQuery<*>, Root<T>, An
 
 abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
 
-    fun build(query: Query<TEntity>): Specification<TDatabaseModel> {
-        return Specification { root, criteriaQuery, criteriaBuilder ->
-            buildPredicate(query.search.operationStack, root, criteriaQuery, criteriaBuilder)
+    fun build(query: Query<TEntity>): SpringSpecification<TDatabaseModel> {
+        return SpringSpecification { root, criteriaQuery, criteriaBuilder ->
+            buildPredicate(query.specification, root, criteriaQuery, criteriaBuilder)
         }
     }
 
     private fun buildPredicate(
-        operations: List<Operation<TEntity>>,
+        specification: Specification<TEntity>,
         root: Root<TDatabaseModel>,
         criteriaQuery: CriteriaQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
-        val predicates = mutableListOf<Predicate>()
-        for (operation in operations) {
-            when (operation) {
-                is Operation.And -> {
-                    val predicate = criteriaBuilder.and(predicates.removeLast(), predicates.removeLast())
-                    predicates.add(predicate)
-                }
-                is Operation.Or -> {
-                    val predicate = criteriaBuilder.or(predicates.removeLast(), predicates.removeLast())
-                    predicates.add(predicate)
-                }
-                is Operation.Not -> {
-                    val predicate = criteriaBuilder.not(predicates.removeLast())
-                    predicates.add(predicate)
-                }
-                is Operation.Comparison -> {
-                    val (field, op, value) = operation.filter
-                    val predicateSupplier = filterPredicates[field, op.symbol]
-                    predicates.add(predicateSupplier(criteriaBuilder, criteriaQuery, root, value))
-                }
+        return when (specification) {
+            is Specification.AndSpecification -> {
+                val left = buildPredicate(specification.left, root, criteriaQuery, criteriaBuilder)
+                val right = buildPredicate(specification.right, root, criteriaQuery, criteriaBuilder)
+                criteriaBuilder.and(left, right)
+            }
+            is Specification.OrSpecification -> {
+                val left = buildPredicate(specification.left, root, criteriaQuery, criteriaBuilder)
+                val right = buildPredicate(specification.right, root, criteriaQuery, criteriaBuilder)
+                criteriaBuilder.or(left, right)
+            }
+            is Specification.NotSpecification -> {
+                val spec = buildPredicate(specification.specification, root, criteriaQuery, criteriaBuilder)
+                criteriaBuilder.not(spec)
+            }
+            is Specification.TrueSpecification -> {
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true))
+            }
+            is Specification.FalseSpecification -> {
+                criteriaBuilder.isFalse(criteriaBuilder.literal(false))
+            }
+            is Specification.UnarySpecification -> {
+                TODO("Implement unary specification")
+            }
+            is Specification.BinarySpecification<TEntity, *> -> {
+                TODO("Implement binary specification")
             }
         }
-
-        return predicates.singleOrNull() ?: criteriaBuilder.conjunction()
     }
 
     abstract val filterPredicates: FilterPredicates<TDatabaseModel>

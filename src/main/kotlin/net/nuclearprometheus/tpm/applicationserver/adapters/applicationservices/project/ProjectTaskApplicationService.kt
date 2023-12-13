@@ -13,6 +13,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.Ta
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.emptyPage
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +24,8 @@ import java.util.*
 class ProjectTaskApplicationService(
     private val taskService: TaskService,
     private val taskRepository: TaskRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val specificationBuilder: SpecificationBuilder<Task>
 ) {
 
     private val logger = loggerFor(ProjectTaskApplicationService::class.java)
@@ -32,7 +34,7 @@ class ProjectTaskApplicationService(
         logger.info("getTasksForProject($projectId)")
 
         val project = projectRepository.get(ProjectId(projectId)) ?: return emptyPage()
-        return taskRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery()).map { it.toView(project) }
+        return taskRepository.getAllByProjectIdAndQuery(ProjectId(projectId), query.toQuery(specificationBuilder)).map { it.toView(project) }
     }
 
     fun createTask(projectId: UUID, request: CreateTask): TaskResponse {

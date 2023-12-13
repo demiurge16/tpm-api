@@ -13,6 +13,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Uni
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.UnitRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.UnitService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -22,14 +23,15 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class UnitApplicationService(
     private val repository: UnitRepository,
-    private val service: UnitService
+    private val service: UnitService,
+    private val specificationBuilder: SpecificationBuilder<Unit>
 ) {
 
     private val logger = loggerFor(UnitApplicationService::class.java)
 
     fun getUnits(query: FilteredRequest<Unit>) = with(logger) {
         info("getUnits($query)")
-        repository.get(query.toQuery()).map { it.toView() }
+        repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getUnit(id: UUID) = with(logger) {

@@ -1,5 +1,9 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Order
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.SpecificationParser
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.CollectionSpecification
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.ComparableSpecification
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
@@ -10,19 +14,11 @@ class QueryTest {
 
     @Test
     fun `must build correct specification with dsl`() {
-        val queryString = """
-            !(name:eq:"tom" | name:eq:"jerry")
-            & middlename:null
-            & lastname:eq:"smith"
-            | (age:gt:18 & age:lt:30)
-            & occupations:all:"programmer","developer"
-            & countries:any:"USA","UK"
-            & favouriteNumbers:any:1,2,3,4,5,6,7,8,9,10
-        """.trimIndent()
-
         val search = query<Person> {
-            where(PersonSpecification) {
-                not(name.eq("tom") or name.eq("jerry")) and middlename.isNull() and lastname.eq("smith") or (age.gt(18) and age.lt(30)) and occupations.all("programmer", "developer") and countries.any("USA", "UK") and favouriteNumbers.any(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+            where {
+                with(PersonSpecification) {
+                    not(name.eq("tom") or name.eq("jerry")) and middlename.isNull() and lastname.eq("smith") or (age.gt(18) and age.lt(30)) and occupations.all("programmer", "developer") and countries.any("USA", "UK") and favouriteNumbers.any(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                }
             }
         }
 
@@ -34,7 +30,7 @@ class QueryTest {
                             Specification.AndSpecification(
                                 Specification.NotSpecification(
                                     Specification.OrSpecification(
-                                        StringSpecification.Eq("name", "tom"),
+                                        StringSpecification.Eq<String>("name", "tom"),
                                         StringSpecification.Eq("name", "jerry")
                                     )
                                 ),
@@ -54,27 +50,48 @@ class QueryTest {
             CollectionSpecification.AnyElement("favouriteNumbers", listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
         )
 
+        assert(search.specification == expected)
     }
 
     @Test
     fun `must build correct specification with query string`() {
         val queryString = """
-            !(name:eq:"tom" | name:eq:"jerry")
+            !(name:eq:tom | name:eq:jerry)
             & middlename:null
-            & lastname:eq:"smith"
+            & lastname:eq:smith
             | (age:gt:18 & age:lt:30)
-            & occupations:all:"programmer","developer"
-            & countries:any:"USA","UK"
+            & occupations:all:programmer,developer
+            & countries:any:USA,UK
             & favouriteNumbers:any:1,2,3,4,5,6,7,8,9,10
         """.trimIndent()
 
-        val search = QueryParser.createSearch<Person>(queryString)
-        val expected = query<Person> {
-            where(PersonSpecification) {
-                not(name.eq("tom") or name.eq("jerry")) and middlename.isNull() and lastname.eq("smith") or (age.gt(18) and age.lt(30)) and occupations.all("programmer", "developer") and countries.any("USA", "UK") and favouriteNumbers.any(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        val specification = SpecificationParser.parseSpecification(queryString, PersonSpecification)
+        val expected = query {
+            where {
+                with(PersonSpecification) {
+                    not(name.eq("tom") or name.eq("jerry")) and middlename.isNull() and lastname.eq("smith") or (age.gt(18) and age.lt(30)) and occupations.all("programmer", "developer") and countries.any("USA", "UK") and favouriteNumbers.any(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                }
             }
         }
 
-        assert(search == expected.search)
+        assert(specification == expected.specification)
+    }
+
+    @Test
+    fun `must build correct sort with dsl`() {
+        val search = query<Person> {
+            orderBy(PersonSort) {
+                name.ascending and age.descending
+            }
+        }
+
+        val expected = Sort<Person>(
+            listOf(
+                Order("name", Direction.ASC),
+                Order("age", Direction.DESC)
+            )
+        )
+
+        assert(search.sort == expected)
     }
 }

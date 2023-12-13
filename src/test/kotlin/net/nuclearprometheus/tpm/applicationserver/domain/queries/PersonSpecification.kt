@@ -1,7 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Operator
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 import java.util.*
 
 object PersonSpecification : SpecificationBuilder<Person>() {
@@ -15,18 +15,4 @@ object PersonSpecification : SpecificationBuilder<Person>() {
     val favouriteNumbers = collection("favouriteNumbers", Int::class)
     val mood = enum("mood", Mood::class)
 
-    override fun createSpecification(field: String, operator: Operator, value: Any): Specification<Person> {
-        return when (field) {
-            "id" -> id.createSpecification(operator, value)
-            "name" -> name.createSpecification(operator, value)
-            "middlename" -> middlename.createSpecification(operator, value)
-            "lastname" -> lastname.createSpecification(operator, value)
-            "age" -> age.createSpecification(operator, value)
-            "occupations" -> occupations.createSpecification(operator, value)
-            "countries" -> countries.createSpecification(operator, value)
-            "favouriteNumbers" -> favouriteNumbers.createSpecification(operator, value)
-            "mood" -> mood.createSpecification(operator, value)
-            else -> throw IllegalArgumentException("Unknown field $field")
-        }
-    }
 }

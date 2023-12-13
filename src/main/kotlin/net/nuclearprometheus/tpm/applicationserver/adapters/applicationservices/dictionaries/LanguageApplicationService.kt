@@ -10,18 +10,21 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Lan
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.LanguageRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.singlePage
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
-import org.springframework.cache.annotation.Cacheable
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 
 @Service
-class LanguageApplicationService(private val repository: LanguageRepository) {
+class LanguageApplicationService(
+    private val repository: LanguageRepository,
+    private val specificationBuilder: SpecificationBuilder<Language>
+) {
 
     private val logger = loggerFor(this::class.java)
 
     fun getLanguages(query: FilteredRequest<Language>) =
         with(logger) {
             info("getLanguages($query)")
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         }
 
     fun getLanguage(code: String) =

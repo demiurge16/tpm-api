@@ -10,20 +10,22 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserApplicationService(
     private val userRepository: UserRepository,
-    private val userContextProvider: UserContextProvider
+    private val userContextProvider: UserContextProvider,
+    private val specificationBuilder: SpecificationBuilder<User>
 ) {
 
     private val logger = loggerFor(UserApplicationService::class.java)
 
     fun getUsers(query: FilteredRequest<User>): Page<UserResponse> {
         logger.info("getUsers($query)")
-        return userRepository.get(query.toQuery()).map { it.toView() }
+        return userRepository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getUser(userId: UUID): UserResponse {

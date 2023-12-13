@@ -2,10 +2,9 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries.executors
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Operation
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.Search
-import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Order
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 
 typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue
 typealias FilterExecutor<TEntity> = (entity: TEntity, value: Any) -> Boolean
@@ -15,12 +14,12 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
     protected abstract val querySorters: Map<String, Comparator<TEntity>>
     protected abstract val queryFilters: Map<String, Map<String, FilterExecutor<TEntity>>>
 
-    private fun sortComparator(order: List<Order>): Comparator<TEntity> {
-        if (order.isEmpty()) {
+    private fun sortComparator(sort: Sort<TEntity>): Comparator<TEntity> {
+        if (sort.order.isEmpty()) {
             return Comparator { _, _ -> 0 }
         }
 
-        return order.map {
+        return sort.order.map {
             val (field, direction) = it
             val sortComparator = querySorters[field] ?: throw IllegalArgumentException("Invalid sort expression: $field")
             if (direction == Direction.DESC) {
@@ -31,43 +30,36 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
         }.reduce { acc, comparator -> acc.thenComparing(comparator) }
     }
 
-    private fun filterPredicate(search: Search<TEntity>): (TEntity) -> Boolean {
+    private fun filterPredicate(search: Specification<TEntity>): (TEntity) -> Boolean {
         return { entity: TEntity ->
-            val stack = mutableListOf<Boolean>()
-            if (search.operationStack.isEmpty()) {
-                stack.add(true)
-            }
-
-            search.operationStack.forEach { operation ->
-                when (operation) {
-                    is Operation.Comparison<*> -> {
-                        val filter = (operation as Operation.Comparison<TEntity>).filter
-                        val (field, operator, value) = filter
-                        val availablePredicates = queryFilters[field]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
-                        val filterOperation = availablePredicates[operator.symbol]
-                            ?: throw IllegalArgumentException("Invalid filter expression: $field:$operator")
-
-                        stack.add(filterOperation(entity, value))
-                    }
-                    is Operation.And -> {
-                        val right = stack.removeLast()
-                        val left = stack.removeLast()
-                        stack.add(left && right)
-                    }
-                    is Operation.Or -> {
-                        val right = stack.removeLast()
-                        val left = stack.removeLast()
-                        stack.add(left || right)
-                    }
-                    is Operation.Not -> {
-                        val value = stack.removeLast()
-                        stack.add(!value)
-                    }
+            when (search) {
+                is Specification.AndSpecification -> {
+                    val left = filterPredicate(search.left)
+                    val right = filterPredicate(search.right)
+                    left(entity) && right(entity)
+                }
+                is Specification.OrSpecification -> {
+                    val left = filterPredicate(search.left)
+                    val right = filterPredicate(search.right)
+                    left(entity) || right(entity)
+                }
+                is Specification.NotSpecification -> {
+                    val spec = filterPredicate(search.specification)
+                    !spec(entity)
+                }
+                is Specification.TrueSpecification -> {
+                    true
+                }
+                is Specification.FalseSpecification -> {
+                    false
+                }
+                is Specification.UnarySpecification -> {
+                    TODO("Implement unary specification")
+                }
+                is Specification.BinarySpecification<TEntity, *> -> {
+                    TODO("Implement binary specification")
                 }
             }
-
-            stack.removeLast()
         }
     }
 
@@ -77,7 +69,7 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
 
     fun execute(query: Query<TEntity>, supplier: () -> List<TEntity>): Page<TEntity> {
         val filteredItems = supplier().asSequence()
-            .filter(filterPredicate(query.search))
+            .filter(filterPredicate(query.specification))
             .sortedWith(sortComparator(query.sort))
             .toList()
 

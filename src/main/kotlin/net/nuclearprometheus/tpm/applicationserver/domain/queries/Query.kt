@@ -4,9 +4,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 
 class Query<TEntity : Any>(
-    val search: Specification<TEntity>? = null,
-    val orderBy: Sort<TEntity>? = null,
-    val page: Pair<Int, Int>? = null,
-    val offset: Int? = null,
-    val limit: Int? = null
+    val specification: Specification<TEntity>,
+    val sort: Sort<TEntity>,
+    val page: Int? = null,
+    val size: Int? = null
 )

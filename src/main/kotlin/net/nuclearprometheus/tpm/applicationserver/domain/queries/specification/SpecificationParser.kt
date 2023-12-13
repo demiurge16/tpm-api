@@ -1,10 +1,11 @@
-package net.nuclearprometheus.tpm.applicationserver.domain.queries
+package net.nuclearprometheus.tpm.applicationserver.domain.queries.specification
 
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.Token
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.tokenizer.Tokenizer.tokenize
 
-object QueryParser {
+object SpecificationParser {
 
     /**
      * This function parses a query string into a [Specification] object.
@@ -55,7 +56,7 @@ object QueryParser {
      * @param query The query string to parse
      * @return The parsed query object
      */
-    fun <TEntity : Any> createSearch(query: String, specificationBuilder: SpecificationBuilder<TEntity>): Specification<TEntity> {
+    fun <TEntity : Any> parseSpecification(query: String, specificationBuilder: SpecificationBuilder<TEntity>): Specification<TEntity> {
         val tokens = query.tokenize()
 
         val priorities = mapOf(

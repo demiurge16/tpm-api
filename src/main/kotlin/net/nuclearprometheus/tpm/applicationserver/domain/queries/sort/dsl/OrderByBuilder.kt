@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.dsl
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Order
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 
 abstract class OrderByBuilder<TEntity : Any> {
 
@@ -18,11 +19,11 @@ abstract class OrderByBuilder<TEntity : Any> {
             get() = Order(name, Direction.DESC)
     }
 
-    infix fun Order<TEntity>.and(other: Order<TEntity>): List<Order<TEntity>> {
-        return listOf(this, other)
+    infix fun Order<TEntity>.and(other: Order<TEntity>): Sort<TEntity> {
+        return Sort(listOf(this, other))
     }
 
-    infix fun List<Order<TEntity>>.and(other: Order<TEntity>): List<Order<TEntity>> {
-        return this + other
+    infix fun Sort<TEntity>.and(other: Order<TEntity>): Sort<TEntity> {
+        return Sort(this.order + other)
     }
 }

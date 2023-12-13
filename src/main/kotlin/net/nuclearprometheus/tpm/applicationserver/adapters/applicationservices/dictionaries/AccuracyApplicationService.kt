@@ -12,6 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Acc
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.AccuracyRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.AccuracyService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -21,14 +22,15 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class AccuracyApplicationService(
     private val service: AccuracyService,
-    private val repository: AccuracyRepository
+    private val repository: AccuracyRepository,
+    private val specificationBuilder: SpecificationBuilder<Accuracy>
 ) {
 
     private val logger = loggerFor(AccuracyController::class.java)
 
     fun getAccuracies(query: FilteredRequest<Accuracy>) = with(logger) {
         info("getAccuracies($query)")
-        repository.get(query.toQuery()).map { it.toView() }
+        repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getAccuracy(id: UUID) = with(logger) {
