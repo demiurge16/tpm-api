@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.executors.*
 import org.springframework.stereotype.Component
 
 @Component
-class CurrencyQueryExecutor : InMemoryQueryExecutor<Currency>() {
+class CurrencyQueryExecutor : QueryExecutor<Currency>() {
 
     override val querySorters: Map<String, Comparator<Currency>> = mapOf(
         "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },

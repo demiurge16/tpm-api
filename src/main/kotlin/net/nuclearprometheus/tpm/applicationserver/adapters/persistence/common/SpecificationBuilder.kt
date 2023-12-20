@@ -55,11 +55,8 @@ abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
             is Specification.FalseSpecification -> {
                 criteriaBuilder.isFalse(criteriaBuilder.literal(false))
             }
-            is Specification.UnarySpecification -> {
+            is Specification.ParameterizedSpecification -> {
                 TODO("Implement unary specification")
-            }
-            is Specification.BinarySpecification<TEntity, *> -> {
-                TODO("Implement binary specification")
             }
         }
     }

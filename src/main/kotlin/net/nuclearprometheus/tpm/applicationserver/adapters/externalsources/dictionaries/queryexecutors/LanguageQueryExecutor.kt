@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.executors.*
 import org.springframework.stereotype.Component
 
 @Component
-class LanguageQueryExecutor : InMemoryQueryExecutor<Language>() {
+class LanguageQueryExecutor : QueryExecutor<Language>() {
 
     override val querySorters: Map<String, Comparator<Language>> = mapOf(
         "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },

@@ -1,8 +1,8 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications
 
 sealed class EnumSpecification {
-    class Eq<TEntity : Any, TValue : Enum<TValue>>(name: String, value: TValue) : Specification.BinarySpecification<TEntity, TValue>(name, value)
-    class AnyElement<TEntity : Any, TValue : Enum<TValue>>(name: String, value: Collection<TValue>) : Specification.BinarySpecification<TEntity, Collection<TValue>>(name, value)
-    class NoneElement<TEntity : Any, TValue : Enum<TValue>>(name: String, value: Collection<TValue>) : Specification.BinarySpecification<TEntity, Collection<TValue>>(name, value)
-    class IsNull<TEntity : Any>(name: String) : Specification.UnarySpecification<TEntity>(name)
+    class Eq<TEntity : Any, TValue : Enum<TValue>>(name: String, val value: TValue) : Specification.ParameterizedSpecification<TEntity>(name)
+    class AnyElement<TEntity : Any, TValue : Enum<TValue>>(name: String, val value: Collection<TValue>) : Specification.ParameterizedSpecification<TEntity>(name)
+    class NoneElement<TEntity : Any, TValue : Enum<TValue>>(name: String, val value: Collection<TValue>) : Specification.ParameterizedSpecification<TEntity>(name)
+    class IsNull<TEntity : Any>(name: String) : Specification.ParameterizedSpecification<TEntity>(name)
 }

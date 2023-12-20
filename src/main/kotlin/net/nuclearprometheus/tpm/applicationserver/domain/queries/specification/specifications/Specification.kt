@@ -75,10 +75,10 @@ sealed class Specification<TEntity : Any> {
         }
     }
 
-    abstract class UnarySpecification<TEntity : Any>(val name: String) : Specification<TEntity>() {
+    abstract class ParameterizedSpecification<TEntity : Any>(val name: String) : Specification<TEntity>() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (other !is UnarySpecification<*>) return false
+            if (other !is ParameterizedSpecification<*>) return false
 
             if (name != other.name) return false
 
@@ -87,24 +87,6 @@ sealed class Specification<TEntity : Any> {
 
         override fun hashCode(): Int {
             return name.hashCode()
-        }
-    }
-    abstract class BinarySpecification<TEntity : Any, TValue : Any>(val name: String, val value: TValue?) : Specification<TEntity>() {
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is BinarySpecification<*, *>) return false
-
-            if (name != other.name) return false
-            if (value != other.value) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            var result = name.hashCode()
-            result = 31 * result + (value?.hashCode() ?: 0)
-            return result
         }
     }
 }

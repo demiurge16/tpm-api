@@ -6,13 +6,13 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Direction
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 
-typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue
+typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue?
 typealias FilterExecutor<TEntity> = (entity: TEntity, value: Any) -> Boolean
 
-abstract class InMemoryQueryExecutor<TEntity : Any> {
+abstract class QueryExecutor<TEntity : Any> {
 
     protected abstract val querySorters: Map<String, Comparator<TEntity>>
-    protected abstract val queryFilters: Map<String, Map<String, FilterExecutor<TEntity>>>
+    protected abstract val specificationExecutors: Map<String, SpecificationExecutor<TEntity, *>>
 
     private fun sortComparator(sort: Sort<TEntity>): Comparator<TEntity> {
         if (sort.order.isEmpty()) {
@@ -53,11 +53,11 @@ abstract class InMemoryQueryExecutor<TEntity : Any> {
                 is Specification.FalseSpecification -> {
                     false
                 }
-                is Specification.UnarySpecification -> {
-                    TODO("Implement unary specification")
-                }
-                is Specification.BinarySpecification<TEntity, *> -> {
-                    TODO("Implement binary specification")
+                is Specification.ParameterizedSpecification -> {
+                    val executor = specificationExecutors[search.name]
+                        ?: throw IllegalArgumentException("Invalid filter expression: ${search.name}")
+
+                    executor.execute(entity, search)
                 }
             }
         }
