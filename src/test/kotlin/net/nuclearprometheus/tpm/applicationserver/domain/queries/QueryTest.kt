@@ -78,6 +78,31 @@ class QueryTest {
     }
 
     @Test
+    fun `must match specification`() {
+        val specification = query<Person> {
+            where {
+                with(PersonSpecification) {
+                    not(name.eq("tom") or name.eq("jerry")) and middlename.isNull() and lastname.eq("smith") or (age.gt(18) and age.lt(30)) and occupations.all("programmer", "developer") and countries.any("USA", "UK") and favouriteNumbers.any(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                }
+            }
+        }
+
+        val person = Person(
+            name = "john",
+            middlename = null,
+            lastname = "smith",
+            age = 25,
+            occupations = listOf("programmer", "developer"),
+            countries = listOf("USA", "UK"),
+            favouriteNumbers = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        )
+
+        PersonQueryExecutor.execute(specification, listOf(person))
+
+        assert(PersonQueryExecutor.execute(specification, listOf(person)).items.contains(person))
+    }
+
+    @Test
     fun `must build correct sort with dsl`() {
         val search = query<Person> {
             orderBy(PersonSort) {

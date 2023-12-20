@@ -30,43 +30,13 @@ class LanguageQueryExecutor : QueryExecutor<Language>() {
         }
     )
 
-    override val queryFilters: Map<String, Map<String, FilterExecutor<Language>>> = mapOf(
-        "code" to mapOf(
-            "eq" to equal { it.id.value },
-            "contains" to contains { it.id.value },
-            "null" to isNull { it.id.value },
-            "empty" to isEmpty { it.id.value }
-        ),
-        "name" to mapOf(
-            "eq" to equal { it.name },
-            "contains" to contains { it.name },
-            "null" to isNull { it.name },
-            "empty" to isEmpty { it.name },
-        ),
-        "iso6392t" to mapOf(
-            "eq" to equal { it.iso6392T },
-            "contains" to contains { it.iso6392T },
-            "null" to isNull { it.iso6392T },
-            "empty" to isEmpty { it.iso6392T },
-        ),
-        "iso6392b" to mapOf(
-            "eq" to equal { it.iso6392B },
-            "contains" to contains { it.iso6392B },
-            "null" to isNull { it.iso6392B },
-            "empty" to isEmpty { it.iso6392B },
-        ),
-        "iso6391" to mapOf(
-            "eq" to isNull { it.iso6391 },
-            "contains" to contains { it.iso6391 },
-            "null" to isNull { it.iso6391 },
-            "empty" to isEmpty { it.iso6391 },
-        ),
-        "scope" to mapOf(
-            "eq" to equal { it.scope },
-            "all" to all { it.scope },
-            "any" to any { it.scope },
-            "none" to none { it.scope },
-            "null" to isNull { it.scope }
-        ),
+    override val specificationExecutors: Map<String, SpecificationExecutor<Language, *>> = mapOf(
+        uniqueValue("code") { it.id.value },
+        string("name") { it.name },
+        uniqueValue("iso6392t") { it.iso6392T },
+        uniqueValue("iso6392b") { it.iso6392B },
+        uniqueValue("iso6391") { it.iso6391 },
+        enum("type") { it.type },
+        enum("scope") { it.scope }
     )
 }

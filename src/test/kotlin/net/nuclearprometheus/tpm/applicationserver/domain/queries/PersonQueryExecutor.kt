@@ -2,7 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.executors.*
 
-class PersonQueryExecutor : QueryExecutor<Person>() {
+object PersonQueryExecutor : QueryExecutor<Person>() {
 
     override val querySorters = mapOf(
         "name" to Comparator { o1: Person, o2: Person -> o1.name.compareTo(o2.name, ignoreCase = true) },

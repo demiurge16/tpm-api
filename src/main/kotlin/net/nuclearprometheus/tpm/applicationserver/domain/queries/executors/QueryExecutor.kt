@@ -7,7 +7,6 @@ import net.nuclearprometheus.tpm.applicationserver.domain.queries.sort.Sort
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 
 typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue?
-typealias FilterExecutor<TEntity> = (entity: TEntity, value: Any) -> Boolean
 
 abstract class QueryExecutor<TEntity : Any> {
 
