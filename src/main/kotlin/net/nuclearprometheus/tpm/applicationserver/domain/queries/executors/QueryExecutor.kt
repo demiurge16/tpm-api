@@ -11,7 +11,7 @@ typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue?
 abstract class QueryExecutor<TEntity : Any> {
 
     protected abstract val querySorters: Map<String, Comparator<TEntity>>
-    protected abstract val specificationExecutors: Map<String, SpecificationExecutor<TEntity, *>>
+    protected abstract val specificationExecutors: SpecificationExecutors<TEntity>
 
     private fun sortComparator(sort: Sort<TEntity>): Comparator<TEntity> {
         if (sort.order.isEmpty()) {
@@ -53,10 +53,7 @@ abstract class QueryExecutor<TEntity : Any> {
                     false
                 }
                 is Specification.ParameterizedSpecification -> {
-                    val executor = specificationExecutors[search.name]
-                        ?: throw IllegalArgumentException("Invalid filter expression: ${search.name}")
-
-                    executor.execute(entity, search)
+                    specificationExecutors[search.name].execute(entity, search)
                 }
             }
         }

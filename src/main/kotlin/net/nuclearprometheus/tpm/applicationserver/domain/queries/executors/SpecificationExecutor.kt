@@ -15,3 +15,4 @@ abstract class SpecificationExecutor<TEntity : Any, TValue : Any>(protected val 
         return false
     }
 }
+

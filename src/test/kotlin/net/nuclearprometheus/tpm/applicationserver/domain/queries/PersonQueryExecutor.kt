@@ -13,14 +13,14 @@ object PersonQueryExecutor : QueryExecutor<Person>() {
         "age" to Comparator { o1: Person, o2: Person -> o1.age.compareTo(o2.age) }
     )
 
-    override val specificationExecutors: Map<String, SpecificationExecutor<Person, *>> = mapOf(
-        string("name", Person::name),
-        string("middlename", Person::middlename),
-        string("lastname", Person::lastname),
-        comparable("age", Person::age),
-        collection("occupations", Person::occupations),
-        collection("countries", Person::countries),
-        collection("favouriteNumbers", Person::favouriteNumbers),
+    override val specificationExecutors = specificationExecutors {
+        string("name", Person::name)
+        string("middlename", Person::middlename)
+        string("lastname", Person::lastname)
+        comparable("age", Person::age)
+        collection("occupations", Person::occupations)
+        collection("countries", Person::countries)
+        collection("favouriteNumbers", Person::favouriteNumbers)
         enum("mood", Person::mood)
-    )
+    }
 }

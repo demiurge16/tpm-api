@@ -1,25 +1,38 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.queries.executors
 
-fun <TEntity : Any, TValue : Any> uniqueValue(name: String, valueProvider: ValueGetter<TEntity, TValue>): Pair<String, SpecificationExecutor<TEntity, TValue>> {
-    return name to UniqueValueSpecificationExecutor(valueProvider)
+fun <TEntity : Any> specificationExecutors(init: SpecificationExecutorsBuilder<TEntity>.() -> Unit): SpecificationExecutors<TEntity> {
+    val builder = SpecificationExecutorsBuilder<TEntity>()
+    builder.init()
+    return builder.build()
 }
 
-fun <TEntity : Any> string(name: String, valueProvider: ValueGetter<TEntity, String>): Pair<String, SpecificationExecutor<TEntity, String>> {
-    return name to StringSpecificationExecutor(valueProvider)
-}
+class SpecificationExecutorsBuilder<TEntity : Any>(
+    private val executors: MutableMap<String, SpecificationExecutor<TEntity, *>> = mutableMapOf()
+) {
 
-fun <TEntity : Any, TValue : Comparable<TValue>> comparable(name: String, valueProvider: ValueGetter<TEntity, TValue>): Pair<String, SpecificationExecutor<TEntity, TValue>> {
-    return name to ComparableSpecificationExecutor(valueProvider)
-}
+    fun <TValue : Any> uniqueValue(name: String, valueProvider: ValueGetter<TEntity, TValue>) {
+        executors[name] = UniqueValueSpecificationExecutor(valueProvider)
+    }
 
-fun <TEntity : Any, TValue : Any> collection(name: String, valueProvider: ValueGetter<TEntity, Collection<TValue>>): Pair<String, SpecificationExecutor<TEntity, Collection<TValue>>> {
-    return name to CollectionSpecificationExecutor(valueProvider)
-}
+    fun string(name: String, valueProvider: ValueGetter<TEntity, String>) {
+        executors[name] = StringSpecificationExecutor(valueProvider)
+    }
 
-fun <TEntity : Any> boolean(name: String, valueProvider: ValueGetter<TEntity, Boolean>): Pair<String, SpecificationExecutor<TEntity, Boolean>> {
-    return name to BooleanSpecificationExecutor(valueProvider)
-}
+    fun <TValue : Comparable<TValue>> comparable(name: String, valueProvider: ValueGetter<TEntity, TValue>) {
+        executors[name] = ComparableSpecificationExecutor(valueProvider)
+    }
 
-fun <TEntity : Any, TValue : Enum<TValue>> enum(name: String, valueProvider: ValueGetter<TEntity, TValue>): Pair<String, SpecificationExecutor<TEntity, TValue>> {
-    return name to EnumSpecificationExecutor(valueProvider)
+    fun <TValue : Any> collection(name: String, valueProvider: ValueGetter<TEntity, Collection<TValue>>) {
+        executors[name] = CollectionSpecificationExecutor(valueProvider)
+    }
+
+    fun boolean(name: String, valueProvider: ValueGetter<TEntity, Boolean>) {
+        executors[name] = BooleanSpecificationExecutor(valueProvider)
+    }
+
+    fun <TValue : Enum<TValue>> enum(name: String, valueProvider: ValueGetter<TEntity, TValue>) {
+        executors[name] = EnumSpecificationExecutor(valueProvider)
+    }
+
+    fun build(): SpecificationExecutors<TEntity> = SpecificationExecutors(executors)
 }
