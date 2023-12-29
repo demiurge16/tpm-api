@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class TaskSpecificationBuilder : SpecificationBuilder<Task, TaskDatabaseModel>() {
+class TaskSpecificationFactory : SpecificationFactory<Task, TaskDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<Task, TaskDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

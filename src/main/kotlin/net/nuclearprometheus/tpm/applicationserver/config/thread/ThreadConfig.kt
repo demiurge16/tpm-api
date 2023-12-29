@@ -11,6 +11,10 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ThreadServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.TagSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ThreadDislikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ThreadLikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ThreadSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -35,6 +39,18 @@ class ThreadConfig(
         projectRepository = projectRepository,
         logger = loggerFor(ThreadService::class.java)
     )
+
+    @Bean
+    fun threadSpecificationBuilder() = ThreadSpecificationBuilder
+
+    @Bean
+    fun threadLikeSpecificationBuilder() = ThreadLikeSpecificationBuilder
+
+    @Bean
+    fun threadDislikeSpecificationBuilder() = ThreadDislikeSpecificationBuilder
+
+    @Bean
+    fun tagSpecificationBuilder() = TagSpecificationBuilder
 
     @Bean
     fun threadPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

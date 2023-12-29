@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.t
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.MeasurementDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.UnitJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.UnitSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.UnitSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Measurement
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Unit
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.UnitId
@@ -16,14 +16,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class UnitRepositoryImpl(
     private val jpaRepository: UnitJpaRepository,
-    private val specificationBuilder: UnitSpecificationBuilder
+    private val specificationBuilder: UnitSpecificationFactory
 ) : UnitRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: UnitId): Unit? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<UnitId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Unit>): Page<Unit> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

@@ -9,6 +9,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.ProjectServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.specification.ProjectSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
@@ -41,6 +42,9 @@ class ProjectConfig(
             userContextProvider,
             loggerFor(ProjectService::class.java)
         )
+
+    @Bean
+    fun projectSpecificationBuilder() = ProjectSpecificationBuilder
 
     @Bean
     fun projectPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

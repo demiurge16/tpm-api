@@ -8,6 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserRole
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.user.specification.UserSpecificationBuilder
 import org.keycloak.KeycloakPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,6 +20,9 @@ import java.util.*
 class UserConfig {
 
     private val logger = loggerFor(UserConfig::class.java)
+
+    @Bean
+    fun userSpecificationBuilder() = UserSpecificationBuilder
 
     @Bean
     fun userContextProvider(): UserContextProvider = object : UserContextProvider {

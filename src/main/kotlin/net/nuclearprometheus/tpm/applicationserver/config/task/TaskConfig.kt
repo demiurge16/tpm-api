@@ -10,6 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.specification.TaskSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
@@ -46,6 +47,9 @@ class TaskConfig(
             userContextProvider,
             loggerFor(TaskService::class.java)
         )
+
+    @Bean
+    fun taskSpecificationBuilder() = TaskSpecificationBuilder
 
     @Bean
     fun taskPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

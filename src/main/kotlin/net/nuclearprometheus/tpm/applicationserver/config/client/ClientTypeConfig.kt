@@ -3,6 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.config.client
 import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
 import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.specification.ClientTypeSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeServiceImpl
@@ -14,6 +15,9 @@ class ClientTypeConfig(private val clientTypeRepository: ClientTypeRepository) {
 
     @Bean
     fun clientTypeService(): ClientTypeService = ClientTypeServiceImpl(clientTypeRepository)
+
+    @Bean
+    fun clientTypeSpecificationBuilder() = ClientTypeSpecificationBuilder
 
     @Bean
     fun clientTypePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

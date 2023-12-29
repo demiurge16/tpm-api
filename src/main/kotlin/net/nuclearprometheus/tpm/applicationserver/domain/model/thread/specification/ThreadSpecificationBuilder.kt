@@ -1,5 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification
 
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadStatus
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import java.time.ZonedDateTime

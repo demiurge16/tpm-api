@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.IndustryService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.IndustryServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.IndustrySpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,6 +19,9 @@ class IndustryConfig(private val industryRepository: IndustryRepository) {
         industryRepository,
         loggerFor(IndustryService::class.java)
     )
+
+    @Bean
+    fun industrySpecificationBuilder() = IndustrySpecificationBuilder
 
     @Bean
     fun industryPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

@@ -1,8 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TimeEntryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TimeEntryStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TimeUnitDatabaseModel
@@ -12,7 +11,7 @@ import java.time.LocalDate
 import java.util.*
 
 @Component
-class TimeEntrySpecificationBuilder : SpecificationBuilder<TimeEntry, TimeEntryDatabaseModel>() {
+class TimeEntrySpecificationFactory : SpecificationFactory<TimeEntry, TimeEntryDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<TimeEntry, TimeEntryDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

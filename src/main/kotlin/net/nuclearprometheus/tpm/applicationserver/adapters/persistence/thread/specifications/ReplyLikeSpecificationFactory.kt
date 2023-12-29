@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyLikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyLike
@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class ReplyLikeSpecificationBuilder : SpecificationBuilder<ReplyLike, ReplyLikeDatabaseModel>() {
+class ReplyLikeSpecificationFactory : SpecificationFactory<ReplyLike, ReplyLikeDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<ReplyLike, ReplyLikeDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

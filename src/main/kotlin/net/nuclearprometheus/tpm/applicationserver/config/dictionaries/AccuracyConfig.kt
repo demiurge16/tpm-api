@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.AccuracyService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.AccuracyServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.AccuracySpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,6 +19,9 @@ class AccuracyConfig(private val accuracyRepository: AccuracyRepository) {
         accuracyRepository,
         loggerFor(AccuracyService::class.java)
     )
+
+    @Bean
+    fun accuracySpecificationBuilder() = AccuracySpecificationBuilder
 
     @Bean
     fun accuracyPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

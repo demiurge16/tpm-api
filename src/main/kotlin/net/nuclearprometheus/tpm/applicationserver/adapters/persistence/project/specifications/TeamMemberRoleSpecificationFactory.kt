@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.TeamMemberRoleDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectRoleDatabaseModel
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class TeamMemberRoleSpecificationBuilder : SpecificationBuilder<TeamMemberRole, TeamMemberRoleDatabaseModel>() {
+class TeamMemberRoleSpecificationFactory : SpecificationFactory<TeamMemberRole, TeamMemberRoleDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<TeamMemberRole, TeamMemberRoleDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.entities.ExpenseDatabaseModel
@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class ExpenseSpecificationBuilder : SpecificationBuilder<Expense, ExpenseDatabaseModel>() {
+class ExpenseSpecificationFactory : SpecificationFactory<Expense, ExpenseDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<Expense, ExpenseDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.TagDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.TagJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.TagSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.TagSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Tag
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.TagId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
@@ -15,14 +15,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class TagRepositoryImpl(
     private val jpaRepository: TagJpaRepository,
-    private val specificationBuilder: TagSpecificationBuilder
+    private val specificationBuilder: TagSpecificationFactory
 ) : TagRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: TagId) = jpaRepository.findById(id.value).orElse(null)?.toDomain()
     override fun get(ids: List<TagId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Tag>): Page<Tag> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

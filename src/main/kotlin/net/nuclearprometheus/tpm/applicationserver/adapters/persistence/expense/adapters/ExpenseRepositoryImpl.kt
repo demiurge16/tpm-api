@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.adapters.ExpenseCategoryRepositoryImpl.Mappers.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.entities.ExpenseDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.repositories.ExpenseJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications.ExpenseSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.expense.specifications.ExpenseSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency.UnknownCurrency
 import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.Expense
@@ -23,7 +23,7 @@ import java.util.*
 @Repository
 class ExpenseRepositoryImpl(
     private val jpaRepository: ExpenseJpaRepository,
-    private val specificationBuilder: ExpenseSpecificationBuilder,
+    private val specificationBuilder: ExpenseSpecificationFactory,
     private val userRepository: UserRepository,
     private val currencyRepository: CurrencyRepository
 ) : ExpenseRepository {
@@ -32,7 +32,7 @@ class ExpenseRepositoryImpl(
     override fun get(id: ExpenseId): Expense? = jpaRepository.findById(id.value).map { it.toDomain(currencyRepository, userRepository) }.orElse(null)
     override fun get(ids: List<ExpenseId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(currencyRepository, userRepository) }
     override fun get(query: Query<Expense>): Page<Expense> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(currencyRepository, userRepository) },
             currentPage = page.number,
@@ -49,7 +49,7 @@ class ExpenseRepositoryImpl(
     override fun deleteAll(ids: List<ExpenseId>) = jpaRepository.deleteAllById(ids.map { it.value })
     override fun getAllByProjectId(projectId: ProjectId) = jpaRepository.findAllByProjectId(projectId.value).map { it.toDomain(currencyRepository, userRepository) }
     override fun getAllByProjectIdAndQuery(projectId: ProjectId, query: Query<Expense>): Page<Expense> {
-        val specification = specificationBuilder.build(query)
+        val specification = specificationBuilder.create(query)
             .and { root, _, criteriaBuilder -> criteriaBuilder.equal(root.get<UUID>("projectId"), projectId.value) }
         val page = jpaRepository.findAll(specification, query.toPageable())
         return Page(

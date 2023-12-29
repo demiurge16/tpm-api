@@ -2,14 +2,14 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientTypeDatabaseModel
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class ClientSpecificationBuilder : SpecificationBuilder<Client, ClientDatabaseModel>() {
+class ClientSpecificationFactory : SpecificationFactory<Client, ClientDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<Client, ClientDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

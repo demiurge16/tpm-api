@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadDislikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ThreadDislikeJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadDislikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadDislikeSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadDislike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadDislikeId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ThreadDislikeRepositoryImpl(
     private val jpaRepository: ThreadDislikeJpaRepository,
-    private val specificationBuilder: ThreadDislikeSpecificationBuilder,
+    private val specificationBuilder: ThreadDislikeSpecificationFactory,
     private val userRepository: UserRepository
 ) : ThreadDislikeRepository {
 
@@ -29,7 +29,7 @@ class ThreadDislikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ThreadDislike>): Page<ThreadDislike> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(userRepository) },
             currentPage = page.number,

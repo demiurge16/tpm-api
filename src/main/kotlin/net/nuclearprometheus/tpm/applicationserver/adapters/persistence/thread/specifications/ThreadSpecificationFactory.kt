@@ -1,8 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.TagDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
@@ -11,7 +10,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class ThreadSpecificationBuilder : SpecificationBuilder<Thread, ThreadDatabaseModel>() {
+class ThreadSpecificationFactory : SpecificationFactory<Thread, ThreadDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<Thread, ThreadDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

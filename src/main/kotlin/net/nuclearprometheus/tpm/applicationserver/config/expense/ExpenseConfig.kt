@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.expense.specification.ExpenseSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -36,6 +37,9 @@ class ExpenseConfig(
             userContextProvider,
             loggerFor(ExpenseService::class.java)
         )
+
+    @Bean
+    fun expenseSpecificationBuilder() = ExpenseSpecificationBuilder
 
     @Bean
     fun expensePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

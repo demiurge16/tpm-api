@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.a
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.adapters.ClientTypeRepositoryImpl.Mapping.toDomain
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.repositories.ClientJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications.ClientSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications.ClientSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientId
@@ -15,13 +15,12 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Query
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 class ClientRepositoryImpl(
     private val jpaRepository: ClientJpaRepository,
     private val countryRepository: CountryRepository,
-    private val clientSpecificationBuilder: ClientSpecificationBuilder
+    private val clientSpecificationBuilder: ClientSpecificationFactory
 ) : ClientRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(countryRepository) }
@@ -29,7 +28,7 @@ class ClientRepositoryImpl(
     override fun get(ids: List<ClientId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(countryRepository) }
 
     override fun get(query: Query<Client>): Page<Client> {
-        val page = jpaRepository.findAll(clientSpecificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(clientSpecificationBuilder.create(query), query.toPageable())
 
         return Page(
             items = page.content.map { it.toDomain(countryRepository) },

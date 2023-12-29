@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.t
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.TeamMemberRoleDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectRoleDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.repositories.TeamMemberRoleJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.TeamMemberRoleSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.TeamMemberRoleSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectRole
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.TeamMemberRole
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class TeamMemberRoleRepositoryImpl(
     private val jpaRepository: TeamMemberRoleJpaRepository,
-    private val specificationBuilder: TeamMemberRoleSpecificationBuilder
+    private val specificationBuilder: TeamMemberRoleSpecificationFactory
 ) : TeamMemberRoleRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: TeamMemberRoleId) = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<TeamMemberRoleId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<TeamMemberRole>): Page<TeamMemberRole> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

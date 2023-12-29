@@ -3,12 +3,16 @@ package net.nuclearprometheus.tpm.applicationserver.config.dictionaries
 import net.nuclearprometheus.tpm.applicationserver.config.security.PolicyEnforcerPathsProvider
 import net.nuclearprometheus.tpm.applicationserver.config.security.methodConfig
 import net.nuclearprometheus.tpm.applicationserver.config.security.pathConfig
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.LanguageSpecificationBuilder
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class LanguageConfig {
+
+    @Bean
+    fun languageSpecificationBuilder() = LanguageSpecificationBuilder
 
     @Bean
     fun languagePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

@@ -8,6 +8,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.file.specification.FileSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,6 +27,9 @@ class FileConfig(
         userContextProvider,
         loggerFor(FileService::class.java)
     )
+
+    @Bean
+    fun fileSpecificationBuilder() = FileSpecificationBuilder
 
     @Bean
     fun filePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

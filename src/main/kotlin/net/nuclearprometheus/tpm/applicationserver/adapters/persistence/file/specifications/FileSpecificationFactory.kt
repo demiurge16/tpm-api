@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.file.entities.FileDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.domain.model.file.File
@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class FileSpecificationBuilder : SpecificationBuilder<File, FileDatabaseModel>() {
+class FileSpecificationFactory : SpecificationFactory<File, FileDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<File, FileDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }

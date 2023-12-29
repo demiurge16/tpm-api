@@ -5,7 +5,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.ent
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TimeEntryStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TimeUnitDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.repositories.TimeEntryJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TimeEntrySpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TimeEntrySpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.task.*
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TimeEntryRepository
@@ -18,13 +18,13 @@ import org.springframework.stereotype.Repository
 class TimeEntryRepositoryImpl(
     private val jpaRepository: TimeEntryJpaRepository,
     private val userRepository: UserRepository,
-    private val specificationBuilder: TimeEntrySpecificationBuilder
+    private val specificationBuilder: TimeEntrySpecificationFactory
 ) : TimeEntryRepository {
     override fun getAll() = jpaRepository.findAll().map { it.toDomain(userRepository) }
     override fun get(id: TimeEntryId) = jpaRepository.findById(id.value).map { it.toDomain(userRepository) }.orElse(null)
     override fun get(ids: List<TimeEntryId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain(userRepository) }
     override fun get(query: Query<TimeEntry>): Page<TimeEntry> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(userRepository) },
             currentPage = page.number,

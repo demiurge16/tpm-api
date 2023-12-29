@@ -1,6 +1,6 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications
 
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.SpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.filterPredicates
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.MeasurementDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.UnitDatabaseModel
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class UnitSpecificationBuilder : SpecificationBuilder<Unit, UnitDatabaseModel>() {
+class UnitSpecificationFactory : SpecificationFactory<Unit, UnitDatabaseModel>() {
 
     override val filterPredicates = filterPredicates<Unit, UnitDatabaseModel> {
         uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }
