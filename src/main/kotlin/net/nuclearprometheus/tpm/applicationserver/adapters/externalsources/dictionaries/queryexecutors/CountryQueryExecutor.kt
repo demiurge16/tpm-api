@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component
 @Component
 class CountryQueryExecutor : QueryExecutor<Country>() {
 
-    override val querySorters: Map<String, Comparator<Country>> = mapOf(
-        "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-        "name" to Comparator { o1, o2 -> o1.name.official.compareTo(o2.name.official, ignoreCase = true) }
-    )
+    override val querySorters = sortExecutors<Country> {
+        sort("code", compareBy { it.id.value })
+        sort("name", compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.official })
+    }
 
-    override val specificationExecutors: Map<String, SpecificationExecutor<Country, *>> = mapOf(
-        uniqueValue("code") { it.id.value },
+    override val specificationExecutors = specificationExecutors<Country> {
+        uniqueValue("code") { it.id.value }
         string("name") { it.name.official }
-    )
+    }
 }

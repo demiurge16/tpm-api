@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component
 @Component
 class CurrencyQueryExecutor : QueryExecutor<Currency>() {
 
-    override val querySorters: Map<String, Comparator<Currency>> = mapOf(
-        "code" to Comparator { o1, o2 -> compareValues(o1.id.value, o2.id.value) },
-        "name" to Comparator { o1, o2 -> o1.name.compareTo(o2.name, ignoreCase = true) }
-    )
+    override val querySorters = sortExecutors<Currency> {
+        sort("code", compareBy { it.id.value })
+        sort("name", compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+    }
 
-    override val specificationExecutors: Map<String, SpecificationExecutor<Currency, *>> = mapOf(
-        uniqueValue("code") { it.id.value },
+    override val specificationExecutors = specificationExecutors<Currency> {
+        uniqueValue("code") { it.id.value }
         string("name") { it.name }
-    )
+    }
 }

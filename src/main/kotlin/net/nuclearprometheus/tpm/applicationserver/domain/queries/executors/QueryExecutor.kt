@@ -10,7 +10,7 @@ typealias ValueGetter<TEntity, TValue> = (TEntity) -> TValue?
 
 abstract class QueryExecutor<TEntity : Any> {
 
-    protected abstract val querySorters: Map<String, Comparator<TEntity>>
+    protected abstract val querySorters: SortExecutors<TEntity>
     protected abstract val specificationExecutors: SpecificationExecutors<TEntity>
 
     private fun sortComparator(sort: Sort<TEntity>): Comparator<TEntity> {
@@ -20,7 +20,7 @@ abstract class QueryExecutor<TEntity : Any> {
 
         return sort.order.map {
             val (field, direction) = it
-            val sortComparator = querySorters[field] ?: throw IllegalArgumentException("Invalid sort expression: $field")
+            val sortComparator = querySorters[field]
             if (direction == Direction.DESC) {
                 sortComparator.reversed()
             } else {
