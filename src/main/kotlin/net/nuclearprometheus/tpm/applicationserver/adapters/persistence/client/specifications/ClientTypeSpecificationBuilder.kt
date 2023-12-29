@@ -10,59 +10,10 @@ import java.util.*
 @Component
 class ClientTypeSpecificationBuilder : SpecificationBuilder<ClientType, ClientTypeDatabaseModel>() {
 
-    override val filterPredicates = filterPredicates<ClientTypeDatabaseModel> {
-        field("id") {
-            eq { criteriaBuilder, _, root, value ->
-                val uuid = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("id"), uuid)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val list = value as List<String>
-                root.get<UUID>("id").`in`(list.map { UUID.fromString(it) })
-            }
-            none { criteriaBuilder, _, root, value ->
-                val list = value as List<String>
-                criteriaBuilder.not(root.get<UUID>("id").`in`(list.map { UUID.fromString(it) }))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("id"))
-            }
-        }
-        field("name") {
-            eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<String>("name"), value)
-            }
-            contains { criteriaBuilder, _, root, value ->
-                criteriaBuilder.like(root.get<String>("name"), "%$value%")
-            }
-            any { criteriaBuilder, _, root, value ->
-                root.get<String>("name").`in`(value)
-            }
-            none { criteriaBuilder, _, root, value ->
-                criteriaBuilder.not(root.get<String>("name").`in`(value))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<String>("name"))
-            }
-            isEmpty { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<String>("name"))
-            }
-        }
-        field("corporate") {
-            eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("corporate"), (value as String).toBoolean())
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<Boolean>("corporate"))
-            }
-        }
-        field("active") {
-            eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("active"), (value as String).toBoolean())
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<Boolean>("active"))
-            }
-        }
+    override val filterPredicates = filterPredicates<ClientType, ClientTypeDatabaseModel> {
+        uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }
+        string("name") { root, _, _ -> root.get("name") }
+        boolean("corporate") { root, _, _ -> root.get("corporate") }
+        boolean("active") { root, _, _ -> root.get("active") }
     }
 }

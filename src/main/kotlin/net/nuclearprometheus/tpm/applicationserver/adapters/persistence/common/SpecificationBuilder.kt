@@ -18,8 +18,6 @@ import org.springframework.data.jpa.domain.Specification as SpringSpecification
 // any collection type: all, any, none, null, empty
 // leave the possibility to add custom filters
 
-typealias PredicateSupplier<T> = (CriteriaBuilder, CriteriaQuery<*>, Root<T>, Any) -> Predicate
-
 abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
 
     fun build(query: Query<TEntity>): SpringSpecification<TDatabaseModel> {
@@ -56,10 +54,10 @@ abstract class SpecificationBuilder<TEntity : Any, TDatabaseModel : Any> {
                 criteriaBuilder.isFalse(criteriaBuilder.literal(false))
             }
             is Specification.ParameterizedSpecification -> {
-                TODO("Implement unary specification")
+                filterPredicates[specification.name].createPredicate(root, criteriaQuery, criteriaBuilder, specification)
             }
         }
     }
 
-    abstract val filterPredicates: FilterPredicates<TDatabaseModel>
+    abstract val filterPredicates: FilterPredicates<TEntity, TDatabaseModel>
 }

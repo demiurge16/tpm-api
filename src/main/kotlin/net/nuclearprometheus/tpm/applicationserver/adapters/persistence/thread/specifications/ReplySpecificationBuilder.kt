@@ -11,115 +11,12 @@ import java.util.*
 @Component
 class ReplySpecificationBuilder : SpecificationBuilder<Reply, ReplyDatabaseModel>() {
 
-    override val filterPredicates = filterPredicates<ReplyDatabaseModel> {
-        field("id") {
-            eq { criteriaBuilder, _, root, value ->
-                val id = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("id"), id)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val ids = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("id").`in`(ids)
-            }
-            none { criteriaBuilder, _, root, value ->
-                val ids = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("id").`in`(ids))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("id"))
-            }
-        }
-        field("createdAt") {
-            eq { criteriaBuilder, _, root, value ->
-                val createdAt = ZonedDateTime.parse(value as String)
-                criteriaBuilder.equal(root.get<ZonedDateTime>("createdAt"), createdAt)
-            }
-            greaterThan { criteriaBuilder, _, root, value ->
-                val createdAt = ZonedDateTime.parse(value as String)
-                criteriaBuilder.greaterThan(root.get("createdAt"), createdAt)
-            }
-            greaterThanOrEqualTo { criteriaBuilder, _, root, value ->
-                val createdAt = ZonedDateTime.parse(value as String)
-                criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), createdAt)
-            }
-            lessThan { criteriaBuilder, _, root, value ->
-                val createdAt = ZonedDateTime.parse(value as String)
-                criteriaBuilder.lessThan(root.get("createdAt"), createdAt)
-            }
-            lessThanOrEqualTo { criteriaBuilder, _, root, value ->
-                val createdAt = ZonedDateTime.parse(value as String)
-                criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), createdAt)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
-                root.get<ZonedDateTime>("createdAt").`in`(createdAt)
-            }
-            none { criteriaBuilder, _, root, value ->
-                val createdAt = (value as List<String>).map { ZonedDateTime.parse(it) }
-                criteriaBuilder.not(root.get<ZonedDateTime>("createdAt").`in`(createdAt))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<ZonedDateTime>("createdAt"))
-            }
-        }
-        field("deleted") {
-            eq { criteriaBuilder, _, root, value ->
-                criteriaBuilder.equal(root.get<Boolean>("deleted"), (value as String).toBoolean())
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<Boolean>("deleted"))
-            }
-        }
-        field("authorId") {
-            eq { criteriaBuilder, _, root, value ->
-                val authorId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("authorId"), authorId)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val authorIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("authorId").`in`(authorIds)
-            }
-            none { criteriaBuilder, _, root, value ->
-                val authorIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("authorId").`in`(authorIds))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("authorId"))
-            }
-        }
-        field("parentReplyId") {
-            eq { criteriaBuilder, _, root, value ->
-                val parentReplyId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("parentReplyId"), parentReplyId)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val parentReplyIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("parentReplyId").`in`(parentReplyIds)
-            }
-            none { criteriaBuilder, _, root, value ->
-                val parentReplyIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("parentReplyId").`in`(parentReplyIds))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("parentReplyId"))
-            }
-        }
-        field("threadId") {
-            eq { criteriaBuilder, _, root, value ->
-                val threadId = UUID.fromString(value as String)
-                criteriaBuilder.equal(root.get<UUID>("threadId"), threadId)
-            }
-            any { criteriaBuilder, _, root, value ->
-                val threadIds = (value as List<String>).map { UUID.fromString(it) }
-                root.get<UUID>("threadId").`in`(threadIds)
-            }
-            none { criteriaBuilder, _, root, value ->
-                val threadIds = (value as List<String>).map { UUID.fromString(it) }
-                criteriaBuilder.not(root.get<UUID>("threadId").`in`(threadIds))
-            }
-            isNull { criteriaBuilder, _, root, _ ->
-                criteriaBuilder.isNull(root.get<UUID>("threadId"))
-            }
-        }
+    override val filterPredicates = filterPredicates<Reply, ReplyDatabaseModel> {
+        uniqueValue("id") { root, _, _ -> root.get<UUID>("id") }
+        comparable("createdAt") { root, _, _ -> root.get<ZonedDateTime>("createdAt") }
+        boolean("deleted") { root, _, _ -> root.get("deleted") }
+        uniqueValue("authorId") { root, _, _ -> root.get<UUID>("authorId") }
+        uniqueValue("parentReplyId") { root, _, _ -> root.get<UUID>("parentReplyId") }
+        uniqueValue("threadId") { root, _, _ -> root.get<UUID>("threadId") }
     }
 }

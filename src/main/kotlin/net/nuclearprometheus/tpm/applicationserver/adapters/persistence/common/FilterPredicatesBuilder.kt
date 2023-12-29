@@ -1,29 +1,53 @@
 package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common
 
-fun <TDatabaseModel> filterPredicates(init: FilterPredicatesBuilder<TDatabaseModel>.() -> Unit): FilterPredicates<TDatabaseModel> {
-    val builder = FilterPredicatesBuilder<TDatabaseModel>()
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.CriteriaQuery
+import jakarta.persistence.criteria.Expression
+import jakarta.persistence.criteria.Root
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.predicates.*
+
+fun <TEntity : Any, TDatabaseModel : Any> filterPredicates(init: FilterPredicatesBuilder<TEntity, TDatabaseModel>.() -> Unit): FilterPredicates<TEntity, TDatabaseModel> {
+    val builder = FilterPredicatesBuilder<TEntity, TDatabaseModel>()
     builder.init()
     return builder.build()
 }
 
-class FilterPredicatesBuilder<TDatabaseModel>(
-    private val filters: MutableMap<String, Map<String, PredicateSupplier<TDatabaseModel>>> = mutableMapOf()
+class FilterPredicatesBuilder<TEntity : Any, TDatabaseModel : Any>(
+    private val filters: MutableMap<String, PredicateFactory<TEntity, TDatabaseModel>> = mutableMapOf()
 ) {
 
-    fun field(field: String, init: FieldPredicateBuilder<TDatabaseModel>.() -> Unit) {
-        val builder = FieldPredicateBuilder<TDatabaseModel>()
-        builder.init()
-        filters[field] = builder.build()
+    fun <TValue : Any> uniqueValue(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<TValue>) {
+        filters[field] = UniqueValuePredicateFactory(expressionSupplier)
     }
 
-    fun build(): FilterPredicates<TDatabaseModel> = FilterPredicates(filters)
+    fun string(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<String>) {
+        filters[field] = StringPredicateFactory(expressionSupplier)
+    }
+
+    fun <TValue : Comparable<TValue>> comparable(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<TValue>) {
+        filters[field] = ComparablePredicateFactory(expressionSupplier)
+    }
+
+    fun <TValue : Any> collection(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<out Collection<TValue>>) {
+        filters[field] = CollectionPredicateFactory(expressionSupplier)
+    }
+
+    fun  boolean(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<Boolean>) {
+        filters[field] = BooleanPredicateFactory(expressionSupplier)
+    }
+
+    fun <TValue : Enum<TValue>> enum(field: String, expressionSupplier: (Root<TDatabaseModel>, CriteriaQuery<*>, CriteriaBuilder) -> Expression<TValue>) {
+        filters[field] = EnumPredicateFactory(expressionSupplier)
+    }
+
+    fun build(): FilterPredicates<TEntity, TDatabaseModel> = FilterPredicates(filters)
 }
 
-class FilterPredicates<TDatabaseModel>(
-    private val predicates: Map<String, Map<String, PredicateSupplier<TDatabaseModel>>>
+class FilterPredicates<TEntity : Any, TDatabaseModel>(
+    private val predicates: Map<String, PredicateFactory<TEntity, TDatabaseModel>>
 ) {
 
-    operator fun get(field: String, filter: String): PredicateSupplier<TDatabaseModel> = predicates[field]?.get(filter)
-        ?: throw IllegalArgumentException("No filter predicate for field '$field' and filter '$filter'")
+    operator fun get(field: String): PredicateFactory<TEntity, TDatabaseModel> = predicates[field]
+        ?: throw IllegalArgumentException("No filter predicate for field '$field'")
 }
 
