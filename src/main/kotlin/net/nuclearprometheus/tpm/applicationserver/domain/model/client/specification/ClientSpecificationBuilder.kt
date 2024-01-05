@@ -2,9 +2,10 @@ package net.nuclearprometheus.tpm.applicationserver.domain.model.client.specific
 
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.Client
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
+import java.util.UUID
 
 object ClientSpecificationBuilder : SpecificationBuilder<Client>() {
-    val id = uniqueValue("id", String::class)
+    val id = uniqueValue("id", UUID::class)
     val name = string("name")
     val email = string("email")
     val phone = string("phone")
@@ -17,4 +18,3 @@ object ClientSpecificationBuilder : SpecificationBuilder<Client>() {
     val vat = string("vat")
     val active = boolean("active")
 }
-

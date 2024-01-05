@@ -23,4 +23,8 @@ object ProjectSpecificationBuilder : SpecificationBuilder<Project>() {
     val currency = uniqueValue("currency", String::class)
     val status = enum("status", ProjectStatus::class)
     val clientId = uniqueValue("clientId", UUID::class)
+
+    val finishedProject = status any listOf(ProjectStatus.CANCELLED, ProjectStatus.DELIVERED, ProjectStatus.INVOICED, ProjectStatus.PAID)
+    val overdueProject = externalDeadline lt ZonedDateTime.now() and not(finishedProject)
 }
+

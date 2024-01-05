@@ -69,7 +69,7 @@ spring:
         registration:
           keycloak:
             provider: keycloak
-            client-id: tpm-backend-swagger
+            client-id: tpm-backend
             client-secret: 64e4MeOGEV8mD5qNtPmY8154jRwDp7zv
             authorization-grant-type: authorization_code
             scope: openid,profile,email

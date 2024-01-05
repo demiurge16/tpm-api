@@ -81,4 +81,3 @@ abstract class QueryExecutor<TEntity : Any> {
         )
     }
 }
-

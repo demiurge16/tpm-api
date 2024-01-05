@@ -79,7 +79,7 @@ class Client(
         notes: String,
         type: ClientType
     ) {
-        val typeChanged = { this.type.id != type.id }
+        val typeChanged = this.type.id != type.id
 
         validate {
             assert { name.isNotBlank() } otherwise {
@@ -103,11 +103,13 @@ class Client(
             assert { zip.isNotBlank() } otherwise {
                 ValidationError("zip", "Zip cannot be blank")
             }
-            assertIf(typeChanged) { type.corporate && !vat.isNullOrBlank() } otherwise {
-                ValidationError("vat", "VAT cannot be blank for corporate clients")
-            }
-            assertIf(typeChanged) { type.active } otherwise {
-                ValidationError("type", "Client type cannot be inactive")
+            if (typeChanged) {
+                assert { type.corporate && !vat.isNullOrBlank() } otherwise {
+                    ValidationError("vat", "VAT cannot be blank for corporate clients")
+                }
+                assert { type.active } otherwise {
+                    ValidationError("type", "Client type cannot be inactive")
+                }
             }
         }
 

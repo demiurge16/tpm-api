@@ -6,6 +6,15 @@ import jakarta.persistence.criteria.Expression
 import jakarta.persistence.criteria.Root
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.predicates.*
 
+class FilterPredicates<TEntity : Any, TDatabaseModel>(
+    private val predicates: Map<String, PredicateFactory<TEntity, TDatabaseModel>>
+) {
+
+    operator fun get(field: String): PredicateFactory<TEntity, TDatabaseModel> = predicates[field]
+        ?: throw IllegalArgumentException("No filter predicate for field '$field'")
+}
+
+
 fun <TEntity : Any, TDatabaseModel : Any> filterPredicates(init: FilterPredicatesBuilder<TEntity, TDatabaseModel>.() -> Unit): FilterPredicates<TEntity, TDatabaseModel> {
     val builder = FilterPredicatesBuilder<TEntity, TDatabaseModel>()
     builder.init()
@@ -42,12 +51,3 @@ class FilterPredicatesBuilder<TEntity : Any, TDatabaseModel : Any>(
 
     fun build(): FilterPredicates<TEntity, TDatabaseModel> = FilterPredicates(filters)
 }
-
-class FilterPredicates<TEntity : Any, TDatabaseModel>(
-    private val predicates: Map<String, PredicateFactory<TEntity, TDatabaseModel>>
-) {
-
-    operator fun get(field: String): PredicateFactory<TEntity, TDatabaseModel> = predicates[field]
-        ?: throw IllegalArgumentException("No filter predicate for field '$field'")
-}
-
