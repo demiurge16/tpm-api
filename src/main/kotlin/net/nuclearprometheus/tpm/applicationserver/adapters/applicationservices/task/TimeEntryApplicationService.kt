@@ -72,4 +72,3 @@ class TimeEntryApplicationService(
         return service.reject(TimeEntryId(timeEntryId)).toTimeEntryStatusResponse()
     }
 }
-
