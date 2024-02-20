@@ -1,6 +1,7 @@
 package net.nuclearprometheus.tpm.applicationserver.config.task
 
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.specification.TimeEntrySpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TaskRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.task.TimeEntryRepository
@@ -30,4 +31,7 @@ class TimeEntryConfig(
             taskRepository = taskRepository,
             logger = loggerFor(TimeEntryService::class.java)
         )
+
+    @Bean
+    fun timeEntrySpecificationBuilder() = TimeEntrySpecificationBuilder
 }

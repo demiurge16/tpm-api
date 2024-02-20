@@ -2,6 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.domain.queries.specification
 
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.Token
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.nonFiltered
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.specifications.Specification
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.tokenizer.Tokenizer.tokenize
 
@@ -93,6 +94,10 @@ object SpecificationParser {
 
         while (stack.isNotEmpty()) {
             output.add(stack.removeLast())
+        }
+
+        if (output.isEmpty()) {
+            return nonFiltered()
         }
 
         return output.fold(mutableListOf<Specification<TEntity>>()) { outputStack, token ->
