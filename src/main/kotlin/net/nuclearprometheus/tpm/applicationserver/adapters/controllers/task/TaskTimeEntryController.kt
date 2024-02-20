@@ -38,7 +38,7 @@ class TaskTimeEntryController(private val service: TaskTimeEntryApplicationServi
 
     @GetMapping("/export", produces = ["text/csv"])
     fun export(@PathVariable(name = "taskId") taskId: UUID, query: ListTimeEntries) = with(logger) {
-        info("GET /api/v1/project/export")
+        info("GET /api/v1/task/$taskId/time-entry/export")
 
         val files = service.getTimeEntriesForTask(taskId, query)
 

@@ -36,7 +36,7 @@ class TimeEntryController(private val service: TimeEntryApplicationService) {
 
     @GetMapping("/export", produces = ["text/csv"])
     fun export(query: ListTimeEntries) = with(logger) {
-        info("GET /api/v1/project/export")
+        info("GET /api/v1/time-entry/export")
 
         val files = service.getTimeEntries(query)
 
