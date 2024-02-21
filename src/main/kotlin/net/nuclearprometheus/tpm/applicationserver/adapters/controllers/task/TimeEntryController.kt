@@ -73,7 +73,7 @@ class TimeEntryController(private val service: TimeEntryApplicationService) {
         return ResponseEntity.ok().body(service.getTimeEntry(timeEntryId))
     }
 
-    @PostMapping("/{timeEntryId}")
+    @PutMapping("/{timeEntryId}")
     fun updateTimeEntry(@PathVariable(name = "timeEntryId") timeEntryId: UUID, @RequestBody request: UpdateTimeEntry): ResponseEntity<TimeEntry> {
         logger.info("POST /api/v1/time-entry/$timeEntryId")
         return ResponseEntity.ok().body(service.updateTimeEntry(timeEntryId, request))

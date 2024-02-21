@@ -137,6 +137,43 @@ class TaskConfig(
     }
 
     @Bean
+    fun taskTimeEntryPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
+        override val paths = mutableListOf(
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:read")
+                    },
+                    methodConfig {
+                        method = "POST"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry/submitted"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "POST"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:read")
+                    }
+                )
+            }
+        )
+    }
+
+    @Bean
     fun taskRefdataPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
         override val paths = mutableListOf(
             pathConfig {
