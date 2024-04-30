@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ServiceTypeServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.ServiceTypeSpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,6 +19,9 @@ class ServiceTypeConfig(private val serviceTypeRepository: ServiceTypeRepository
         serviceTypeRepository,
         loggerFor(ServiceTypeService::class.java)
     )
+
+    @Bean
+    fun serviceTypeSpecificationBuilder() = ServiceTypeSpecificationBuilder
 
     @Bean
     fun serviceTypePolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

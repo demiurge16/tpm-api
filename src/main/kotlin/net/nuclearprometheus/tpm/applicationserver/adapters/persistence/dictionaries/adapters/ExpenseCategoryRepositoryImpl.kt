@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.ExpenseCategoryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.ExpenseCategoryJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.ExpenseCategorySpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.ExpenseCategorySpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.ExpenseCategoryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class ExpenseCategoryRepositoryImpl(
     private val jpaRepository: ExpenseCategoryJpaRepository,
-    private val specificationBuilder: ExpenseCategorySpecificationBuilder
+    private val specificationBuilder: ExpenseCategorySpecificationFactory
 ) : ExpenseCategoryRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ExpenseCategoryId) = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ExpenseCategoryId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<ExpenseCategory>): Page<ExpenseCategory> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

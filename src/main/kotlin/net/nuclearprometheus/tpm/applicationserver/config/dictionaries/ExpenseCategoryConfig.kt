@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ExpenseCategoryService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ExpenseCategoryServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.ExpenseCategorySpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,6 +19,9 @@ class ExpenseCategoryConfig(private val expenseCategoryRepository: ExpenseCatego
         expenseCategoryRepository,
         loggerFor(ExpenseCategoryService::class.java)
     )
+
+    @Bean
+    fun expenseCategorySpecificationBuilder() = ExpenseCategorySpecificationBuilder
 
     @Bean
     fun expenseCategoryPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.UnitService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.UnitServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.UnitSpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -15,6 +16,9 @@ class UnitConfig(private val unitRepository: UnitRepository) {
 
     @Bean
     fun unitService(): UnitService = UnitServiceImpl(unitRepository, loggerFor(UnitService::class.java))
+
+    @Bean
+    fun unitSpecificationBuilder() = UnitSpecificationBuilder
 
     @Bean
     fun unitPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

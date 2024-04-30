@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTyp
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.client.ClientTypeRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientTypeService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -22,7 +23,8 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class ClientTypeApplicationService(
     private val service: ClientTypeService,
-    private val repository: ClientTypeRepository
+    private val repository: ClientTypeRepository,
+    private val specificationBuilder: SpecificationBuilder<ClientType>
 ) {
 
     private val logger = loggerFor(this::class.java)
@@ -31,7 +33,7 @@ class ClientTypeApplicationService(
     fun getClientTypes(query: FilteredRequest<ClientType>) =
         with(logger) {
             info("getClientTypes($query)")
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         }
 
     @Cacheable("client-types-cache")

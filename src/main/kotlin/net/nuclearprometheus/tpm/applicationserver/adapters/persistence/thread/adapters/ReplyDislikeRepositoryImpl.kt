@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyDislikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ReplyDislikeJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyDislikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyDislikeSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyDislikeId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ReplyDislikeRepositoryImpl(
     private val jpaRepository: ReplyDislikeJpaRepository,
-    private val specificationBuilder: ReplyDislikeSpecificationBuilder,
+    private val specificationBuilder: ReplyDislikeSpecificationFactory,
     private val userRepository: UserRepository
 ) : ReplyDislikeRepository {
 
@@ -29,7 +29,7 @@ class ReplyDislikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ReplyDislike>): Page<ReplyDislike> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(userRepository) },
             currentPage = page.number,

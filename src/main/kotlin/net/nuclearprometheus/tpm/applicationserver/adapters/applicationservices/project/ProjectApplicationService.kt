@@ -22,6 +22,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.Us
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
 import net.nuclearprometheus.tpm.applicationserver.domain.model.user.UserRole
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -32,7 +33,8 @@ import java.util.*
 class ProjectApplicationService(
     private val service: ProjectService,
     private val repository: ProjectRepository,
-    private val userContextProvider: UserContextProvider
+    private val userContextProvider: UserContextProvider,
+    private val specificationBuilder: SpecificationBuilder<Project>
 ) {
 
     private val logger = loggerFor(ProjectApplicationService::class.java)
@@ -42,9 +44,9 @@ class ProjectApplicationService(
         val user = userContextProvider.getCurrentUser()
 
         return if (user.roles.contains(UserRole.ADMIN)) {
-            repository.get(query.toQuery()).map { it.toView() }
+            repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
         } else {
-            repository.getProjectsForUser(user.id, query.toQuery()).map { it.toView() }
+            repository.getProjectsForUser(user.id, query.toQuery(specificationBuilder)).map { it.toView() }
         }
     }
 

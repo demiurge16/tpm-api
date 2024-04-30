@@ -68,6 +68,10 @@ class ClientServiceImpl(
         val clientType = clientTypeRepository.get(clientTypeId) ?: throw NotFoundException("Client type not found")
         val country = countryRespository.getByCode(countryCode.value) ?: UnknownCountry(countryCode)
 
+        if (country is UnknownCountry) {
+            logger.warn("Country with code ${countryCode.value} not found. Using UnknownCountry")
+        }
+
         client.update(name, email, phone, address, city, state, zip, country, vat, notes, clientType)
 
         return repository.update(client)

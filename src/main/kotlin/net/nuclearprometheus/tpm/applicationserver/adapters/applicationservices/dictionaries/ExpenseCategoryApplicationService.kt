@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Exp
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.ExpenseCategoryRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.ExpenseCategoryService
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -20,14 +21,15 @@ import java.util.*
 @Transactional(propagation = Propagation.REQUIRED)
 class ExpenseCategoryApplicationService(
     private val service: ExpenseCategoryService,
-    private val repository: ExpenseCategoryRepository
+    private val repository: ExpenseCategoryRepository,
+    private val specificationBuilder: SpecificationBuilder<ExpenseCategory>
 ) {
 
     private val logger = loggerFor(ExpenseCategoryApplicationService::class.java)
 
     fun getExpenseCategories(query: FilteredRequest<ExpenseCategory>) = with(logger) {
         info("getExpenseCategories($query)")
-        repository.get(query.toQuery()).map { it.toView() }
+        repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getExpenseCategory(id: UUID) = with(logger) {

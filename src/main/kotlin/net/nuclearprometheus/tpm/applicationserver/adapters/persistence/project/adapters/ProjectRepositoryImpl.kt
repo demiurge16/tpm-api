@@ -14,7 +14,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.entities.ProjectStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.repositories.ProjectJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.specifications.ProjectUserSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.adapters.TeamMemberRepositoryImpl.Mappers.toDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.project.adapters.TeamMemberRepositoryImpl.Mappers.toTeamMembers
@@ -43,7 +43,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ProjectRepositoryImpl(
     private val jpaRepository: ProjectJpaRepository,
-    private val specificationBuilder: ProjectSpecificationBuilder,
+    private val specificationBuilder: ProjectSpecificationFactory,
     private val userSpecificationBuilder: ProjectUserSpecificationBuilder,
     private val languageRepository: LanguageRepository,
     private val currencyRepository: CurrencyRepository,
@@ -97,7 +97,7 @@ class ProjectRepositoryImpl(
         }
 
     override fun get(query: Query<Project>): Page<Project> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content
                 .map {
@@ -118,7 +118,7 @@ class ProjectRepositoryImpl(
     }
 
     override fun getProjectsForUser(userId: UserId, query: Query<Project>): Page<Project> {
-        val specification = specificationBuilder.build(query)
+        val specification = specificationBuilder.create(query)
             .and(userSpecificationBuilder.build(userId))
         val page = jpaRepository.findAll(specification, query.toPageable())
         return Page(

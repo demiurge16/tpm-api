@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadLikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ThreadLikeJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadLikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadLikeSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ThreadLikeId
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ThreadLikeRepositoryImpl(
     private val jpaRepository: ThreadLikeJpaRepository,
-    private val specificationBuilder: ThreadLikeSpecificationBuilder,
+    private val specificationBuilder: ThreadLikeSpecificationFactory,
     private val userRepository: UserRepository
 ) : ThreadLikeRepository {
 
@@ -29,7 +29,7 @@ class ThreadLikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ThreadLike>): Page<ThreadLike> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(userRepository) },
             currentPage = page.number,

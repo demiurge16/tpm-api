@@ -15,6 +15,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.emptyPage
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -25,7 +26,8 @@ import java.util.*
 class ProjectExpenseApplicationService(
     private val expenseService: ExpenseService,
     private val expenseRepository: ExpenseRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val specificationBuilder: SpecificationBuilder<Expense>
 ) {
 
     private val logger = loggerFor(ProjectExpenseApplicationService::class.java)
@@ -40,7 +42,7 @@ class ProjectExpenseApplicationService(
             return emptyPage()
         }
 
-        return expenseRepository.getAllByProjectIdAndQuery(ProjectId(projectId), request.toQuery()).map {
+        return expenseRepository.getAllByProjectIdAndQuery(ProjectId(projectId), request.toQuery(specificationBuilder)).map {
             val user = project.teamMembers.map { it.user }
                 .distinctBy { it.id }
                 .find { user -> user.id == it.spender.id }

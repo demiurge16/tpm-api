@@ -11,6 +11,6 @@ class ListTasks(
 ) : FilteredRequest<Task>( page, size, sort, search) {
 
     override fun toString(): String {
-        return "TaskRequest.List(page=$page, size=$size, sort=$sort, search=$search)"
+        return "ListTasks(page=$page, size=$size, sort=$sort, search=$search)"
     }
 }

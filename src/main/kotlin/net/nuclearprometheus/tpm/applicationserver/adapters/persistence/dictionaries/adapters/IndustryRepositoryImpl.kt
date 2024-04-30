@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.IndustryDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.IndustryJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.IndustrySpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.IndustrySpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Industry
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.IndustryId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.IndustryRepository
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class IndustryRepositoryImpl(
     private val jpaRepository: IndustryJpaRepository,
-    private val specificationBuilder: IndustrySpecificationBuilder
+    private val specificationBuilder: IndustrySpecificationFactory
 ) : IndustryRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: IndustryId): Industry? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<IndustryId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Industry>): Page<Industry> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

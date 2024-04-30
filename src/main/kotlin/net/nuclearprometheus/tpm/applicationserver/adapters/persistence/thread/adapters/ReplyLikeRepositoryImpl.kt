@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ReplyLikeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ReplyLikeJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyLikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ReplyLikeSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyLike
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.ReplyLikeId
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ReplyLikeRepositoryImpl(
     private val jpaRepository: ReplyLikeJpaRepository,
-    private val specificationBuilder: ReplyLikeSpecificationBuilder,
+    private val specificationBuilder: ReplyLikeSpecificationFactory,
     private val userRepository: UserRepository
 ) : ReplyLikeRepository {
 
@@ -29,7 +29,7 @@ class ReplyLikeRepositoryImpl(
         .map { it.toDomain(userRepository) }
 
     override fun get(query: Query<ReplyLike>): Page<ReplyLike> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(userRepository) },
             currentPage = page.number,

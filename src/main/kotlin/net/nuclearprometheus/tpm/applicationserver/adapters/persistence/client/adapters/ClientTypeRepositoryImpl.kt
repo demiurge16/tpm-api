@@ -2,7 +2,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.
 
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.entities.ClientTypeDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.repositories.ClientTypeJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications.ClientTypeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.client.specifications.ClientTypeSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientType
 import net.nuclearprometheus.tpm.applicationserver.domain.model.client.ClientTypeId
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class ClientTypeRepositoryImpl(
     private var jpaRepository: ClientTypeJpaRepository,
-    private var specificationBuilder: ClientTypeSpecificationBuilder
+    private var specificationBuilder: ClientTypeSpecificationFactory
 ) : ClientTypeRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: ClientTypeId): ClientType? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<ClientTypeId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<ClientType>): Page<ClientType> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

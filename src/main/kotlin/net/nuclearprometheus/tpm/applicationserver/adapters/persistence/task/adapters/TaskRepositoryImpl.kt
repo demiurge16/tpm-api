@@ -14,7 +14,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictiona
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.entities.TaskStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.repositories.TaskJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TaskSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.task.specifications.TaskSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.CurrencyCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.LanguageCode
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Currency.UnknownCurrency
@@ -36,7 +36,7 @@ import java.util.*
 @Repository
 class TaskRepositoryImpl(
     private val jpaRepository: TaskJpaRepository,
-    private val specificationBuilder: TaskSpecificationBuilder,
+    private val specificationBuilder: TaskSpecificationFactory,
     private val languageRepository: LanguageRepository,
     private val currencyRepository: CurrencyRepository,
     private val userRepository: UserRepository
@@ -50,7 +50,7 @@ class TaskRepositoryImpl(
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
 
     override fun get(query: Query<Task>): Page<Task> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain(languageRepository, currencyRepository, userRepository) },
             currentPage = page.number,
@@ -73,7 +73,7 @@ class TaskRepositoryImpl(
         .map { it.toDomain(languageRepository, currencyRepository, userRepository) }
 
     override fun getAllByProjectIdAndQuery(projectId: ProjectId, query: Query<Task>): Page<Task> {
-        val specification = specificationBuilder.build(query)
+        val specification = specificationBuilder.create(query)
             .and { root, _, criteriaBuilder -> criteriaBuilder.equal(root.get<UUID>("projectId"), projectId.value) }
         val page = jpaRepository.findAll(specification, query.toPageable())
         return Page(

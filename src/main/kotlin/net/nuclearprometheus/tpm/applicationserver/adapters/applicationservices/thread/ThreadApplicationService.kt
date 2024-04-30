@@ -22,6 +22,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -34,7 +35,8 @@ class ThreadApplicationService(
     private val repository: ThreadRepository,
     private val projectRepository: ProjectRepository,
     private val userContextProvider: UserContextProvider,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val specificationBuilder: SpecificationBuilder<Thread>
 ) {
 
     private val logger = loggerFor(ThreadApplicationService::class.java)
@@ -42,7 +44,7 @@ class ThreadApplicationService(
     fun getThreads(query: FilteredRequest<Thread>): Page<ThreadResponse> {
         logger.info("getThreads($query)")
 
-        return repository.get(query.toQuery())
+        return repository.get(query.toQuery(specificationBuilder))
             .map {
                 val project = projectRepository.get(it.projectId)
                     ?: throw IllegalStateException("Project with id ${it.projectId} not found")

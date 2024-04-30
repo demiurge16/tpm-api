@@ -11,6 +11,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.pro
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.expense.ExpenseService
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -21,14 +22,15 @@ import java.util.*
 class ExpenseApplicationService(
     private val repository: ExpenseRepository,
     private val service: ExpenseService,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val specificationBuilder: SpecificationBuilder<Expense>
 ) {
 
     private val logger = loggerFor(ExpenseApplicationService::class.java)
 
     fun getExpenses(query: FilteredRequest<Expense>): Page<ExpenseResponse> {
         logger.info("getExpenses($query)")
-        return repository.get(query.toQuery())
+        return repository.get(query.toQuery(specificationBuilder))
             .map {
                 val project = projectRepository.get(it.projectId)
                     ?: throw IllegalStateException("Project with id ${it.projectId} not found")

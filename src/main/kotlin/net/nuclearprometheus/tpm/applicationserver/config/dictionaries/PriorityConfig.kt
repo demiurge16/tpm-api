@@ -7,6 +7,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.PriorityService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.dictionaries.PriorityServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.specification.PrioritySpecificationBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,6 +19,9 @@ class PriorityConfig(private val priorityRepository: PriorityRepository) {
         priorityRepository,
         loggerFor(PriorityService::class.java)
     )
+
+    @Bean
+    fun prioritySpecificationBuilder() = PrioritySpecificationBuilder
 
     @Bean
     fun priorityPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

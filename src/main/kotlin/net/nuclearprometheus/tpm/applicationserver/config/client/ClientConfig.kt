@@ -9,6 +9,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dic
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.client.ClientServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.client.specification.ClientSpecificationBuilder
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -28,6 +30,9 @@ class ClientConfig(
     )
 
     @Bean
+    fun clientSpecificationBuilder() = ClientSpecificationBuilder
+
+    @Bean
     fun clientPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
         override val paths = mutableListOf(
             pathConfig {
@@ -35,7 +40,8 @@ class ClientConfig(
                 methods = mutableListOf(
                     methodConfig {
                         method = "GET"
-                        scopes = mutableListOf("urn:tpm-backend:resource:client:query")
+                        scopes = mutableListOf("urn:tpm-backend:resource:client:query", "urn:tpm-backend:resource:client:read")
+                        scopesEnforcementMode = PolicyEnforcerConfig.ScopeEnforcementMode.ANY
                     },
                     methodConfig {
                         method = "POST"

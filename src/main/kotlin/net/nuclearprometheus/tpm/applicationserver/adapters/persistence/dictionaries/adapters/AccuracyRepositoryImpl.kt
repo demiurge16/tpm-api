@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.AccuracyDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.AccuracyJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.AccuracySpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.AccuracySpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Accuracy
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.AccuracyId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.AccuracyRepository
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class AccuracyRepositoryImpl(
     private val jpaRepository: AccuracyJpaRepository,
-    private val specificationBuilder: AccuracySpecificationBuilder
+    private val specificationBuilder: AccuracySpecificationFactory
 ) : AccuracyRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: AccuracyId): Accuracy? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<AccuracyId>) = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Accuracy>): Page<Accuracy> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

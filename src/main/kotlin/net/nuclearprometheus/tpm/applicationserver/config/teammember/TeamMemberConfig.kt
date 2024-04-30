@@ -6,6 +6,8 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.TeamMemberService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.project.TeamMemberServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.specification.TeamMemberRoleSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.project.specification.TeamMemberSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.TeamMemberRoleRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
@@ -30,4 +32,11 @@ class TeamMemberConfig(
         projectRepository,
         loggerFor(TeamMemberService::class.java)
     )
+
+    @Bean
+    fun teamMemberSpecificationBuilder() = TeamMemberSpecificationBuilder
+
+    @Bean
+    fun teamMemberRoleSpecificationBuilder() = TeamMemberRoleSpecificationBuilder
+
 }

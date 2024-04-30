@@ -11,6 +11,9 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.thread.ReplyServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ReplyDislikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ReplyLikeSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.specification.ReplySpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.project.ProjectRepository
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.springframework.context.annotation.Bean
@@ -36,6 +39,15 @@ class ReplyConfig(
         userContextProvider = userContextProvider,
         logger = loggerFor(ReplyService::class.java)
     )
+
+    @Bean
+    fun replySpecificationBuilder() = ReplySpecificationBuilder
+
+    @Bean
+    fun replyLikeSpecificationBuilder() = ReplyLikeSpecificationBuilder
+
+    @Bean
+    fun replyDislikeSpecificationBuilder() = ReplyDislikeSpecificationBuilder
 
     @Bean
     fun replyPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {

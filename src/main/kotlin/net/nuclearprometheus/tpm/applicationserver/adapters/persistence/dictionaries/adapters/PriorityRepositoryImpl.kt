@@ -3,7 +3,7 @@ package net.nuclearprometheus.tpm.applicationserver.adapters.persistence.diction
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.toPageable
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.entities.PriorityDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.repositories.PriorityJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.PrioritySpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.dictionaries.specifications.PrioritySpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.Priority
 import net.nuclearprometheus.tpm.applicationserver.domain.model.dictionaries.PriorityId
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.dictionaries.PriorityRepository
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class PriorityRepositoryImpl(
     private val jpaRepository: PriorityJpaRepository,
-    private val specificationBuilder: PrioritySpecificationBuilder
+    private val specificationBuilder: PrioritySpecificationFactory
 ) : PriorityRepository {
 
     override fun getAll() = jpaRepository.findAll().map { it.toDomain() }
     override fun get(id: PriorityId): Priority? = jpaRepository.findById(id.value).map { it.toDomain() }.orElse(null)
     override fun get(ids: List<PriorityId>): List<Priority> = jpaRepository.findAllById(ids.map { it.value }).map { it.toDomain() }
     override fun get(query: Query<Priority>): Page<Priority> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content.map { it.toDomain() },
             currentPage = page.number,

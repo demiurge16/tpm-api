@@ -19,6 +19,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.tas
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -29,14 +30,15 @@ import java.util.*
 class TaskApplicationService(
     private val service: TaskService,
     private val repository: TaskRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val specificationBuilder: SpecificationBuilder<Task>
 ) {
 
     private val logger = loggerFor(TaskApplicationService::class.java)
 
     fun getTasks(query: FilteredRequest<Task>): Page<TaskResponse> {
         logger.info("getTasks($query)")
-        return repository.get(query.toQuery()).map {
+        return repository.get(query.toQuery(specificationBuilder)).map {
             val project = projectRepository.get(it.projectId) ?: throw IllegalStateException("Project with id ${it.projectId} not found")
             it.toView(project)
         }

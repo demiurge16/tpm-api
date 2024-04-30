@@ -10,6 +10,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.repositories.use
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskService
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.task.TaskServiceImpl
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.model.task.specification.TaskSpecificationBuilder
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.user.UserContextProvider
 import org.keycloak.representations.adapters.config.PolicyEnforcerConfig
 import org.springframework.context.annotation.Bean
@@ -46,6 +47,9 @@ class TaskConfig(
             userContextProvider,
             loggerFor(TaskService::class.java)
         )
+
+    @Bean
+    fun taskSpecificationBuilder() = TaskSpecificationBuilder
 
     @Bean
     fun taskPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
@@ -126,6 +130,43 @@ class TaskConfig(
                     methodConfig {
                         method = "PATCH"
                         scopes = mutableListOf("urn:tpm-backend:resource:task:manage")
+                    }
+                )
+            }
+        )
+    }
+
+    @Bean
+    fun taskTimeEntryPolicyEnforcerPathsProvider() = object : PolicyEnforcerPathsProvider {
+        override val paths = mutableListOf(
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:read")
+                    },
+                    methodConfig {
+                        method = "POST"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry/submitted"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "POST"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:create")
+                    }
+                )
+            },
+            pathConfig {
+                path = "/api/v1/task/{taskId}/time-entry/export"
+                methods = mutableListOf(
+                    methodConfig {
+                        method = "GET"
+                        scopes = mutableListOf("urn:tpm-backend:resource:time-entry:read")
                     }
                 )
             }

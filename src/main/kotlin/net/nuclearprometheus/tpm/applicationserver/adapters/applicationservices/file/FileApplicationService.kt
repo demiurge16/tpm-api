@@ -12,6 +12,7 @@ import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.Fi
 import net.nuclearprometheus.tpm.applicationserver.domain.ports.services.file.FileStorageService
 import net.nuclearprometheus.tpm.applicationserver.domain.queries.pagination.Page
 import net.nuclearprometheus.tpm.applicationserver.config.logging.loggerFor
+import net.nuclearprometheus.tpm.applicationserver.domain.queries.specification.dsl.SpecificationBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -22,14 +23,15 @@ import java.util.*
 class FileApplicationService(
     private val repository: FileRepository,
     private val service: FileService,
-    private val storageService: FileStorageService
+    private val storageService: FileStorageService,
+    private val specificationBuilder: SpecificationBuilder<File>
 ) {
 
     private val logger = loggerFor(FileApplicationService::class.java)
 
     fun getFiles(query: FilteredRequest<File>): Page<FileResponse> {
         logger.info("getFiles($query)")
-        return repository.get(query.toQuery()).map { it.toView() }
+        return repository.get(query.toQuery(specificationBuilder)).map { it.toView() }
     }
 
     fun getFile(fileId: UUID): FileResponse {

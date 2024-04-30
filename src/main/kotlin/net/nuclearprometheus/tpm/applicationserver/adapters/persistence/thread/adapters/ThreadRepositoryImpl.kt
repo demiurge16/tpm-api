@@ -4,7 +4,7 @@ import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.common.t
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.entities.ThreadStatusDatabaseModel
 import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.repositories.ThreadJpaRepository
-import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadSpecificationBuilder
+import net.nuclearprometheus.tpm.applicationserver.adapters.persistence.thread.specifications.ThreadSpecificationFactory
 import net.nuclearprometheus.tpm.applicationserver.domain.exceptions.common.NotFoundException
 import net.nuclearprometheus.tpm.applicationserver.domain.model.project.ProjectId
 import net.nuclearprometheus.tpm.applicationserver.domain.model.thread.Thread
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ThreadRepositoryImpl(
     private val jpaRepository: ThreadJpaRepository,
-    private val specificationBuilder: ThreadSpecificationBuilder,
+    private val specificationBuilder: ThreadSpecificationFactory,
     private val userRepository: UserRepository,
     private val threadLikeRepository: ThreadLikeRepository,
     private val threadDislikeRepository: ThreadDislikeRepository,
@@ -37,7 +37,7 @@ class ThreadRepositoryImpl(
         .map { it.toDomain(userRepository, replyRepository, threadLikeRepository, threadDislikeRepository, tagRepository) }
 
     override fun get(query: Query<Thread>): Page<Thread> {
-        val page = jpaRepository.findAll(specificationBuilder.build(query), query.toPageable())
+        val page = jpaRepository.findAll(specificationBuilder.create(query), query.toPageable())
         return Page(
             items = page.content
                 .map {
