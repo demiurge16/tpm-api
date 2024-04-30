@@ -86,7 +86,6 @@ class FileController(private val service: FileApplicationService) {
                     add(HttpHeaders.EXPIRES, "0")
                 }
             )
-            .contentLength(stream.available().toLong())
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(resource)
     }
